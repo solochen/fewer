@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId "com.ksydemo.demo"
+        minSdkVersion 19
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets{
+        main{
+            jniLibs.srcDir 'libs'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: '*/so', dir: 'libs/armeabi-v7a')
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.ksyun.media:libksylive-java:2.3.0'
+    compile 'com.ksyun.media:libksylive-armv7a:2.3.0'
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
+    compile project(':playerlib')
+}

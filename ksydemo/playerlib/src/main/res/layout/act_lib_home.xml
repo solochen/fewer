@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dm_lib_container_padding"
+    android:paddingRight="@dimen/dm_lib_container_padding">
+
+    <com.yilan.lib.playerlib.customview.HeaderView
+        android:id="@+id/lib_header_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/lib_bonus_view"
+        android:layout_below="@id/lib_header_view"
+        android:background="#fff"
+        >
+
+        <ImageView
+            android:id="@+id/lib_ad_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_lib_back"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/lib_btn_live_enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="进入直播间"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+    <com.yilan.lib.playerlib.customview.BonusView
+        android:id="@+id/lib_bonus_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lib_layout_revive"
+        android:layout_marginBottom="15dp" />
+
+
+    <LinearLayout
+        android:id="@+id/lib_layout_revive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lib_layout_bottom"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/lib_card_layout_bg"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/lib_ll_more_revive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="onLibBtnClick"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@mipmap/ic_lib_revive" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@string/label_revive_count"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/lib_tv_revive_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="#000"
+                android:textSize="16sp"
+                tools:text="0" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/lib_btn_share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/lib_revive_btn_bg"
+            android:gravity="center"
+            android:onClick="onLibBtnClick"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/btn_share_to_friend"
+            android:textColor="#FFF"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lib_layout_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="获奖名单"
+            android:textColor="#FFF" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:background="#CCC" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="活动规则"
+            android:textColor="#FFF" />
+    </LinearLayout>
+
+</RelativeLayout>
