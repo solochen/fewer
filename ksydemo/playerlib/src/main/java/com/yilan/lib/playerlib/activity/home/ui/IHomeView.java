@@ -1,7 +1,7 @@
 package com.yilan.lib.playerlib.activity.home.ui;
 
-import com.yilan.lib.playerlib.activity.datamodel.GameInfo;
-import com.yilan.lib.playerlib.activity.datamodel.InviteCode;
+import com.yilan.lib.playerlib.data.GameInfo;
+import com.yilan.lib.playerlib.data.InviteCode;
 
 /**
  * Created by chenshaolong on 2018/1/14.

@@ -14,4 +14,13 @@
         android:text="播 放"
          />
 
+
+    <Button
+        android:id="@+id/btn_init_user_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onBtnClick"
+        android:text="获取用户信息"
+        />
+
 </LinearLayout>

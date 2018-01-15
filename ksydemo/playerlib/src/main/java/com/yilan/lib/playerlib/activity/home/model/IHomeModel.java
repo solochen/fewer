@@ -10,5 +10,7 @@ public interface IHomeModel {
 
     void getInviteInfo(String uid, ResponseCallback callback);
 
-    void getGameInfo(String uid, final ResponseCallback callback);
+    void getGameInfo(final ResponseCallback callback);
+
+    void useInviteCode(String uid, String code, ResponseCallback callback);
 }

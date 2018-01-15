@@ -4,6 +4,7 @@ import android.app.Application;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.yilan.lib.playerlib.RongCloud.RcSingleton;
 import com.yilan.lib.playerlib.http.OkGoHttp;
 import com.yilan.lib.playerlib.utils.AppUtils;
 
@@ -27,6 +28,7 @@ public class App extends Application {
         ARouter.init(this);
 
         OkGoHttp.getInstance(this);
+        RcSingleton.getInstance().init(this);
 
     }
 }

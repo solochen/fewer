@@ -1,8 +1,8 @@
 package com.yilan.lib.playerlib.activity.home.presenter;
 
 import com.alibaba.fastjson.JSON;
-import com.yilan.lib.playerlib.activity.datamodel.GameInfo;
-import com.yilan.lib.playerlib.activity.datamodel.InviteCode;
+import com.yilan.lib.playerlib.data.GameInfo;
+import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.activity.home.model.HomeModelImpl;
 import com.yilan.lib.playerlib.activity.home.model.IHomeModel;
 import com.yilan.lib.playerlib.activity.home.ui.IHomeView;
@@ -53,8 +53,8 @@ public class HomePresenter extends MVPBasePresenter<IHomeView> {
     }
 
 
-    public void getGameInfo(String uid) {
-        mHomeModel.getGameInfo(uid, new ResponseCallback() {
+    public void getGameInfo() {
+        mHomeModel.getGameInfo(new ResponseCallback() {
             @Override
             public void onSuccess(String s) {
                 try {

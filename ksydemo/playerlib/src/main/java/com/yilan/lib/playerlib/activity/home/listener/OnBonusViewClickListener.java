@@ -6,7 +6,11 @@ package com.yilan.lib.playerlib.activity.home.listener;
 
 public interface OnBonusViewClickListener {
 
-    void onLoginBtnClick();
+    void onLoginClick();
+
+    void onApplyClick();
+
+    void onShreClick();
 
     void onGetInviteCodeClick();
 }

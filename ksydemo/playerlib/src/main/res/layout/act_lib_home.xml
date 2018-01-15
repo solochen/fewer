@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@mipmap/ic_lib_back"
-            android:visibility="gone"/>
+            />
 
         <Button
             android:id="@+id/lib_btn_live_enter"
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:text="@string/label_revive_count"
+                android:text="@string/label_lib_revive_count"
                 android:textColor="#000"
                 android:textSize="16sp" />
 
@@ -87,7 +87,7 @@
                 android:layout_marginLeft="5dp"
                 android:textColor="#000"
                 android:textSize="16sp"
-                tools:text="0" />
+                android:text="0" />
 
         </LinearLayout>
 
@@ -103,7 +103,7 @@
             android:orientation="horizontal"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="@string/btn_share_to_friend"
+            android:text="@string/btn_lib_share_to_friend"
             android:textColor="#FFF"
             android:textSize="16sp" />
 

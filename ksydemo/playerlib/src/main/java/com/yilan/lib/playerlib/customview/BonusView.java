@@ -30,6 +30,8 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
     Button mBtnLogin;
     Button mBtnGetInviteCode;
 
+    private int mBtnType = 1;  // 1 立即报名， 2.邀请好友，3登录才能赢钱
+
     OnBonusViewClickListener mListener;
 
     public BonusView(Context context) {
@@ -72,14 +74,31 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
     }
 
     /**
-     * 显示输入邀请码按钮
+     * 显示登录状态按钮
+     */
+    public void showLoginBtn(){
+        mBtnType = 3;
+        mBtnLogin.setText(R.string.btn_lib_login_bonus);
+        mBtnLogin.setVisibility(View.VISIBLE);
+    }
+
+
+    /**
+     * 是否显示输入邀请码按钮
      * @param canBeInvited
      */
-    public void showInviteBtn(boolean canBeInvited){
+    public void canBeShowInviteBtn(boolean canBeInvited){
         if(canBeInvited){
             mBtnGetInviteCode.setVisibility(VISIBLE);
+            mBtnLogin.setText(R.string.btn_lib_apply_to_friend);
+            mBtnLogin.setVisibility(View.VISIBLE);
+            mBtnType = 1;
         } else {
             mBtnGetInviteCode.setVisibility(GONE);
+
+            mBtnLogin.setText(R.string.btn_lib_share_to_friend);
+            mBtnLogin.setVisibility(View.VISIBLE);
+            mBtnType = 2;
         }
     }
 
@@ -94,7 +113,17 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
     public void onClick(View v) {
         int id = v.getId();
         if(id == mTvStartTime.getId()){
-            mListener.onLoginBtnClick();
+            switch (mBtnType) {
+                case 1: //立即报名
+                    mListener.onApplyClick();
+                    break;
+                case 2: //分享
+                    mListener.onShreClick();
+                    break;
+                case 3: //登录
+                    mListener.onLoginClick();
+                    break;
+            }
         } else if(id == mBtnGetInviteCode.getId()){
             mListener.onGetInviteCodeClick();
         }

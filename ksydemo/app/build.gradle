@@ -35,9 +35,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile fileTree(include: '*/so', dir: 'libs/armeabi-v7a')
     compile 'com.android.support:appcompat-v7:23.3.0'
+
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.ksyun.media:libksylive-java:2.3.0'
-    compile 'com.ksyun.media:libksylive-armv7a:2.3.0'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
     compile project(':playerlib')
 }

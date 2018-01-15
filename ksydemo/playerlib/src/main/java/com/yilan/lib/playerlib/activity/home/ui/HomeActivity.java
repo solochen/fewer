@@ -8,23 +8,33 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.yilan.lib.playerlib.R;
-import com.yilan.lib.playerlib.activity.datamodel.GameInfo;
-import com.yilan.lib.playerlib.activity.datamodel.InviteCode;
+import com.yilan.lib.playerlib.RongCloud.RcSingleton;
+import com.yilan.lib.playerlib.event.LoginEvent;
+import com.yilan.lib.playerlib.global.SPConstant;
+import com.yilan.lib.playerlib.global.UserManager;
+import com.yilan.lib.playerlib.data.GameInfo;
+import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.activity.home.listener.OnBonusViewClickListener;
 import com.yilan.lib.playerlib.activity.home.presenter.HomePresenter;
 import com.yilan.lib.playerlib.customview.BonusView;
 import com.yilan.lib.playerlib.customview.HeaderView;
 import com.yilan.lib.playerlib.glide.Glides;
-import com.yilan.lib.playerlib.global.RouterHelper;
+import com.yilan.lib.playerlib.global.RouterConstant;
 import com.yilan.lib.playerlib.listener.OnHeaderViewClickListener;
+import com.yilan.lib.playerlib.data.Self;
 import com.yilan.lib.playerlib.mvp.MVPBaseActivity;
 import com.yilan.lib.playerlib.utils.LibToast;
+import com.yilan.lib.playerlib.utils.SPUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
  * Created by chenshaolong on 2018/1/14.
  */
-@Route(path = RouterHelper.HOME_REDIRECT_PATH)
+@Route(path = RouterConstant.HOME_REDIRECT_PATH)
 public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> implements
         IHomeView,
         OnHeaderViewClickListener,
@@ -49,14 +59,25 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onMVPCreate() {
-        mContext = this;
-        String appToken = getIntent().getStringExtra(RouterHelper.HOME_REDIRECT_PARAMS_TOKEN);
 
+        mContext = this;
+        EventBus.getDefault().register(this);
         setClickListener();
 
-        mHeaderView.setUserAvatar("");
-        mPresenter.getInviteInfo("");
-        mPresenter.getGameInfo("");
+        //连接融云 param rctoken
+        String RcToen = "TTV0dNF+5aJ8pog/v0lc5nZ6IRyuHvRWxsFGzQLiIT+ZKsKNcmioSoI/V9fkGZD4qRrNFgY2Hvq2RpAJQQtYfhmz4T96qKNzanybqIc6ZVfct3GfsWgaXg==";
+        RcSingleton.getInstance().connect(RcToen);
+
+        Self self = UserManager.getInstance().getSelf(mContext);
+        if(self == null) {
+            mBonusView.showLoginBtn();
+        } else {
+            mPresenter.getInviteInfo(String.valueOf(self.getData().getUser_id()));
+        }
+
+        mHeaderView.setUserAvatar((self == null) ? "" :self.getData().getAvatar_url());
+        mPresenter.getGameInfo();
+
     }
 
 
@@ -74,12 +95,20 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         return new HomePresenter(this);
     }
 
-    private void setClickListener(){
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void setClickListener() {
         mHeaderView.setClickListener(this);
         mBonusView.setClickListener(this);
     }
 
-    /**------------- 自定义 view 层点击事件 start ---------------**/
+    /**
+     * ------------- 自定义 view 层点击事件 start ---------------
+     **/
 
     @Override
     public void onBackClick() {
@@ -92,8 +121,18 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     }
 
     @Override
-    public void onLoginBtnClick() {
+    public void onLoginClick() {
         LibToast.showToast(this, "登录赢钱按钮点击");
+    }
+
+    @Override
+    public void onApplyClick() {
+        LibToast.showToast(this, "立即报名");
+    }
+
+    @Override
+    public void onShreClick() {
+        LibToast.showToast(this, "邀请好友分享");
     }
 
     @Override
@@ -104,15 +143,20 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     /**------------- 自定义 view 层点击事件 end ---------------**/
 
 
-
-
-    /**-------------  presenter 数据回调更新UI  start ---------------**/
+    /**
+     * -------------  presenter 数据回调更新UI  start ---------------
+     **/
 
     @Override
     public void updateInviteCode(InviteCode inviteCode) {
 
+        //保存邀请码
+        SPUtils.put(this, SPConstant.KEY_INVITE_CODE, inviteCode.getInvite_code());
+        //复活卡数量
         mTvReviveCount.setText(String.valueOf(inviteCode.getRevive_count()));
-        mBonusView.showInviteBtn(inviteCode.getCan_be_invited());
+        //是否显示输入邀请码按钮
+        mBonusView.canBeShowInviteBtn(inviteCode.getCan_be_invited());
+
     }
 
     @Override
@@ -136,16 +180,34 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     }
 
-    /**-------------  presenter 数据回调更新UI  end ---------------**/
+    /**
+     * -------------  presenter 数据回调更新UI  end ---------------
+     **/
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LoginEvent e){
+        switch (e.getType()) {
+            case LoginEvent.EVENT_LOGIN_RESULT:
+
+                /**
+                 * 这里收到登录完成的用户信息
+                 * 1. 更新用户信息
+                 * 2.获取邀请码信息
+                 */
+//                UserManager.getInstance().updateUserInfo();
+//                mPresenter.getInviteInfo(String.valueOf(""));
+                break;
+        }
+    }
 
 
     public void onLibBtnClick(View v) {
-        if(v.getId() == R.id.lib_ll_more_revive){
+        if (v.getId() == R.id.lib_ll_more_revive) {
             LibToast.showToast(mContext, "复活卡点击");
-        } else if(v.getId() == R.id.lib_btn_share){
+        } else if (v.getId() == R.id.lib_btn_share) {
             LibToast.showToast(mContext, "分享好友点击");
-        }else if(v.getId() == R.id.lib_btn_live_enter){
-            if(mGameInfo != null){
+        } else if (v.getId() == R.id.lib_btn_live_enter) {
+            if (mGameInfo != null) {
                 //进入直播间传一些参数
             }
             LibToast.showToast(mContext, "进入直播间");

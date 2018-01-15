@@ -97,7 +97,9 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:background="@drawable/lib_share_btn_bg"
-        android:text="登录才能赢钱"/>
+        android:text="@string/btn_lib_login_bonus"
+        tools:visibility="visible"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/lib_btn_get_invite_code"
@@ -113,6 +115,8 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:background="@drawable/lib_share_btn_bg"
-        android:text="填写好友邀请码"/>
+        android:text="@string/btn_lib_input_code"
+        tools:visibility="visible"
+        android:visibility="gone"/>
 
 </LinearLayout>
