@@ -1,4 +1,4 @@
-package com.yilan.lib.playerlib.activity.live.dialog;
+package com.yilan.lib;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,22 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.yilan.lib.playerlib.R;
-import com.yilan.lib.playerlib.activity.live.ui.CustomPlayerView;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.yilan.lib.playerlib.global.RouterConstant;
 
 
 /**
  * Created by chenshaolong on 2018/1/12.
  */
-public class AnswerDialog extends DialogFragment {
+
+@Route(path = RouterConstant.ROUTER_LOGIN_DIALOG)
+public class LoginDialog extends DialogFragment {
 
     Context mContext;
     LayoutInflater mInflater;
 
-    CustomPlayerView mCustomPlayerView;
-
-    public static AnswerDialog newInstance() {
-        AnswerDialog f = new AnswerDialog();
+    public static LoginDialog newInstance() {
+        LoginDialog f = new LoginDialog();
         Bundle bundle = new Bundle();
         f.setArguments(bundle);
         return f;
@@ -51,8 +51,7 @@ public class AnswerDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mInflater = inflater;
-        View view = inflater.inflate(R.layout.dialog_lib_answer, container);
-        mCustomPlayerView = (CustomPlayerView) view.findViewById(R.id.lib_custom_player_view);
+        View view = inflater.inflate(R.layout.dlg_login, container);
         return view;
     }
 
@@ -71,8 +70,6 @@ public class AnswerDialog extends DialogFragment {
             }
         });
 
-        String playerUrl = "http://xdj-hdl.8686c.com/xdj-live/5798bf4c2eaae555342860b0.flv";
-        mCustomPlayerView.initPlayer(playerUrl);
 
         getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -89,7 +86,6 @@ public class AnswerDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mCustomPlayerView.releaseVideo();
     }
 
 }

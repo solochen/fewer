@@ -1,4 +1,4 @@
-package com.yilan.lib.playerlib.activity.live.ui;
+package com.yilan.lib.playerlib.activity.live.ui.custom;
 
 import android.content.Context;
 import android.graphics.PixelFormat;

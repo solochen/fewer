@@ -27,7 +27,7 @@ public class Live implements Serializable{
         this.live_stream = live_stream;
     }
 
-    private class LiveStream implements Serializable{
+    public class LiveStream implements Serializable{
         private int ha_stream;
         private String default_res;
         private int default_buffer_ms;
@@ -83,7 +83,7 @@ public class Live implements Serializable{
             this.backup_list = backup_list;
         }
 
-        private class LiveUrlList implements Serializable{
+        public class LiveUrlList implements Serializable{
 
             private String high;
             private String medium;

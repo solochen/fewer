@@ -41,6 +41,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+
     //okgo okhttp3 网络请求
     compile 'com.lzy.net:okgo:3.0.4'
     //glide图片加载

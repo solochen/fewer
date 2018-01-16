@@ -23,7 +23,7 @@ public class Urls {
     public static final String INVITE_CODE = SERVER + "/get_invite_info";
 
     //获得答题直播间信息
-    public static final String GAME_INFO = SERVER + "/get_game_live";
+    public static final String GAME_INFO = "https://virtserver.swaggerhub.com/wangcash/rich_man/1.0.0/get_game_live";//SERVER + "/get_game_live";
 
     //使用邀请码
     public static final String USE_INVITE_CODE = SERVER + "/use_invite_code";
@@ -33,6 +33,9 @@ public class Urls {
 
     //退出答题直播间
     public static final String GAME_LIVE_EXIT = SERVER + "/game_live_exit";
+
+    //获得答题比赛结果
+    public static final String GET_GAME_LIVE_RESULT = SERVER + "/get_game_live_result";
 
     //提交答案
     public static final String ANSWER = SERVER + "/answer";
@@ -45,6 +48,7 @@ public class Urls {
 
     //获得总榜
     public static final String GET_TOTAL_RANK = SERVER + "/get_total_rank";
+
 
     //获得用户信息
     public static final String GET_USER_INFO = SERVER + "/get_user_info";

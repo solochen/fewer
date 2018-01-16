@@ -13,7 +13,7 @@
         android:id="@+id/lib_revive_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="复活卡0"
+        android:text="@string/label_lib_revive_count"
         android:layout_toRightOf="@+id/lib_btn_back"
         />
 

@@ -8,8 +8,12 @@ import com.yilan.lib.playerlib.listener.ResponseCallback;
 
 public interface IPlayerModel {
 
-
     void gameLiveEnter(String uid, String liveId, ResponseCallback callback);
 
     void gameLiveExit(String uid, String liveId, ResponseCallback callback);
+
+    void getGameInfo(ResponseCallback callback);
+
+    void sendCommentToServer(String uid, String nickname, String comment,
+                        ResponseCallback callback);
 }

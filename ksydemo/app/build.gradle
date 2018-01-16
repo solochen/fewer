@@ -37,6 +37,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
+//    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
     compile project(':playerlib')
 }

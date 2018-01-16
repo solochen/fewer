@@ -4,6 +4,13 @@ import android.content.Context;
 import android.text.TextUtils;
 
 
+import com.yilan.lib.playerlib.RongCloud.message.HTAnswerMessage;
+import com.yilan.lib.playerlib.RongCloud.message.HTCommentMessage;
+import com.yilan.lib.playerlib.RongCloud.message.HTFinishMessage;
+import com.yilan.lib.playerlib.RongCloud.message.HTOnlookerMessage;
+import com.yilan.lib.playerlib.RongCloud.message.HTQuestionMessage;
+import com.yilan.lib.playerlib.RongCloud.message.HTResultMessage;
+
 import io.rong.imlib.RongIMClient;
 
 /**
@@ -40,7 +47,12 @@ public class RcSingleton implements RongIMClient.ConnectionStatusListener{
     private void msgRegister(){
         try {
             //注册自定义的消息类型
-//            RongIMClient.registerMessageType(LiveAudienceMessage.class);
+            RongIMClient.registerMessageType(HTAnswerMessage.class);
+            RongIMClient.registerMessageType(HTCommentMessage.class);
+            RongIMClient.registerMessageType(HTFinishMessage.class);
+            RongIMClient.registerMessageType(HTOnlookerMessage.class);
+            RongIMClient.registerMessageType(HTResultMessage.class);
+            RongIMClient.registerMessageType(HTQuestionMessage.class);
         } catch (Exception e) {
         }
     }

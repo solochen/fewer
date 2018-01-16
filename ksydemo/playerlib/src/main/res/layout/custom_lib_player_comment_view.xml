@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lib_player_comment_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/lib_player_btn_show_comment"
+            android:background="@color/lib_translate_color"
+            android:cacheColorHint="@color/lib_translate_color"
+            android:divider="@color/lib_translate_color"
+            android:fadingEdgeLength="10dp"
+            android:listSelector="@color/lib_translate_color"
+            android:requiresFadingEdge="vertical" />
+
+        <ImageButton
+            android:id="@+id/lib_player_btn_show_comment"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_lib_placeholder" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/lib_player_edit_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <EditText
+            android:id="@+id/lib_player_comment"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_toLeftOf="@+id/lib_player_btn_send"
+            android:background="#33ccff"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:longClickable="false"
+            android:maxLines="1"
+            android:textColor="#FFF"
+            android:textColorHint="#FFF"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/lib_player_btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_lib_placeholder" />
+
+    </RelativeLayout>
+
+</LinearLayout>

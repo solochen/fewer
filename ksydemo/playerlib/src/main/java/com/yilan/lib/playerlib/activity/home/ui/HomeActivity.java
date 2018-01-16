@@ -7,8 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.RongCloud.RcSingleton;
+import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
 import com.yilan.lib.playerlib.event.LoginEvent;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
@@ -69,13 +71,13 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         RcSingleton.getInstance().connect(RcToen);
 
         Self self = UserManager.getInstance().getSelf(mContext);
-        if(self == null) {
+        if (self == null) {
             mBonusView.showLoginBtn();
         } else {
             mPresenter.getInviteInfo(String.valueOf(self.getData().getUser_id()));
         }
 
-        mHeaderView.setUserAvatar((self == null) ? "" :self.getData().getAvatar_url());
+        mHeaderView.setUserAvatar((self == null) ? "" : self.getData().getAvatar_url());
         mPresenter.getGameInfo();
 
     }
@@ -152,7 +154,11 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
         //保存邀请码
         SPUtils.put(this, SPConstant.KEY_INVITE_CODE, inviteCode.getInvite_code());
-        //复活卡数量
+
+        //保存复活卡数量
+        SPUtils.put(mContext, SPConstant.KEY_REVIVE_COUNT, inviteCode.getRevive_count());
+
+        //显示复活卡数量
         mTvReviveCount.setText(String.valueOf(inviteCode.getRevive_count()));
         //是否显示输入邀请码按钮
         mBonusView.canBeShowInviteBtn(inviteCode.getCan_be_invited());
@@ -185,7 +191,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
      **/
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LoginEvent e){
+    public void onMessageEvent(LoginEvent e) {
         switch (e.getType()) {
             case LoginEvent.EVENT_LOGIN_RESULT:
 
@@ -208,9 +214,18 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
             LibToast.showToast(mContext, "分享好友点击");
         } else if (v.getId() == R.id.lib_btn_live_enter) {
             if (mGameInfo != null) {
-                //进入直播间传一些参数
+                String liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getMedium();
+                String defRes = mGameInfo.getLive().getLive_stream().getDefault_res();
+                if (defRes.equals("high")) {
+                    liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getHigh();
+                } else if (defRes.equals("medium")) {
+                    liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getMedium();
+                } else if (defRes.equals("low")) {
+                    liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getLow();
+                }
+                PlayerActivity.startActivity(mContext, mGameInfo, liveUrl);
+
             }
-            LibToast.showToast(mContext, "进入直播间");
         }
     }
 }

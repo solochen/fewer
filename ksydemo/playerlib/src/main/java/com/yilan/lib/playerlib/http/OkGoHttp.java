@@ -53,8 +53,8 @@ public class OkGoHttp {
         loggingInterceptor.setColorLevel(Level.INFO);                               //log颜色级别，决定了log在控制台显示的颜色
         builder.addInterceptor(loggingInterceptor);                                 //添加OkGo默认debug日志
 
-        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(new SafeTrustManager());
-        builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
+//        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(new SafeTrustManager());
+//        builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
 
 //        //配置https的域名匹配规则，详细看demo的初始化介绍，不需要就不要加入，使用不当会导致https握手失败
 //        builder.hostnameVerifier(new SafeHostnameVerifier());

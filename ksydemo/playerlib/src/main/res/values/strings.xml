@@ -4,6 +4,7 @@
 
     <string name="label_lib_share_invite_code">分享邀请码&#160;%s</string>
     <string name="label_lib_revive_count">复活卡</string>
+    <string name="label_lib_rule">活动规则 ></string>
 
     <string name="btn_lib_login_bonus">登录才能赢钱</string>
     <string name="btn_lib_share_to_friend">分享给好友</string>
@@ -12,6 +13,8 @@
     <string name="btn_lib_input_code">填写好友邀请码</string>
 
     <string name="btn_lib_late_dlg_invite">邀请好友围观</string>
+    <string name="btn_lib_get_more_code">获得复活卡</string>
+    <string name="btn_lib_login_to_answer">登录答题</string>
 
 
 </resources>

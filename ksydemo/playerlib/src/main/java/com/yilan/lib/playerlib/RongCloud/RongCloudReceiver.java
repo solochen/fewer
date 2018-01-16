@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
+import com.yilan.lib.playerlib.event.EBus;
+import com.yilan.lib.playerlib.event.RongEvent;
 import com.yilan.lib.playerlib.utils.AppUtils;
 
 import io.rong.imlib.RongIMClient;
@@ -91,14 +93,14 @@ public class RongCloudReceiver extends PushMessageReceiver implements RongIMClie
             switch (message.getConversationType()) {
                 case PRIVATE:
                 case CHATROOM:
-//                    EventBus.getDefault().post(new AppEvent.ReceiveMessageEvent(message));
+                    EBus.send(new RongEvent(message));
                     break;
             }
         } else {
             switch (message.getConversationType()) {
                 case PRIVATE:
                 case CHATROOM:
-//                    EventBus.getDefault().post(new AppEvent.ReceiveMessageEvent(message));
+                    EBus.send(new RongEvent(message));
                     break;
             }
         }

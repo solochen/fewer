@@ -7,7 +7,9 @@ package com.yilan.lib.playerlib.global;
 public class RouterConstant {
 
     public static final String HOME_REDIRECT_PATH = "/libhome/home";
-    public static final String HOME_REDIRECT_PARAMS_JSON = "user_info";
+
+
+    public static final String ROUTER_LOGIN_DIALOG = "/libhome/login";
 
 
 

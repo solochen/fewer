@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.yilan.lib.playerlib.R;
-import com.yilan.lib.playerlib.activity.live.ui.CustomPlayerView;
 
 
 /**

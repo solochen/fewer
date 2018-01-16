@@ -57,6 +57,12 @@ public class PlayerKitFragment extends Fragment{
     long mStartTime = 0;
     boolean mPause = false;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

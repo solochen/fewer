@@ -10,6 +10,10 @@ public class SPConstant {
 
     public static final String KEY_INVITE_CODE = "key_invite_code";
 
+    public static final String KEY_REVIVE_COUNT = "key_revive_count";
+
+    public static final String KEY_IS_TELL_USER_DIALOG = "key_is_tell_user";
+
     public static final String testUserInfoJson = "{\n" +
             "\t\"data\": {\n" +
             "\t\t\"user_id\": 5330362952,\n" +

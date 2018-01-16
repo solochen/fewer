@@ -147,4 +147,93 @@ public class ApiLive {
                     }
                 });
     }
+
+
+    /**
+     * 获得答题比赛结果
+     * @param uid
+     * @param callback
+     */
+    public static void getGameLiveResult(String uid, final ResponseCallback callback) {
+        OkGo.<String>get(Urls.GET_GAME_LIVE_RESULT)
+                .params("uid", uid)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        callback.onSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        callback.onError(response.code(), response.message());
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        callback.onFinish();
+                    }
+                });
+    }
+
+
+    /**
+     * 提交答案
+     * @param uid
+     * @param questionId
+     * @param answer
+     * @param callback
+     */
+    public static void answer(String uid, String questionId, String answer, final ResponseCallback callback) {
+        OkGo.<String>post(Urls.ANSWER)
+                .params("uid", uid)
+                .params("question_id", questionId)
+                .params("answer", answer)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        callback.onSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        callback.onError(response.code(), response.message());
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        callback.onFinish();
+                    }
+                });
+    }
+
+
+    /**
+     * 提交弹幕
+     * @param uid
+     * @param nickname
+     * @param comment
+     * @param callback
+     */
+    public static void comment(String uid, String nickname, String comment, final ResponseCallback callback) {
+        OkGo.<String>post(Urls.COMMENT)
+                .params("uid", uid)
+                .params("nickname", nickname)
+                .params("comment", comment)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        callback.onSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        callback.onError(response.code(), response.message());
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        callback.onFinish();
+                    }
+                });
+    }
 }

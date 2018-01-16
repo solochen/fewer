@@ -6,9 +6,15 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yilan.lib.playerlib.global.RouterConstant;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
+
+import java.util.List;
+
 
 @Route(path = "/player/playeractivity")
 public class MainActivity extends AppCompatActivity {
@@ -19,7 +25,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String str = "{ \"nickname\" : [\"康有\", \"124\", \"555\"]}";
+        JSONObject sf = JSON.parseObject(str);
+        List<String> array = JSON.parseArray(sf.getString("nickname"), String.class);
 
+
+//        String daf = sf.get(0);
     }
 
     public void onBtnClick(View v) {

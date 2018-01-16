@@ -59,6 +59,11 @@ public class HomePresenter extends MVPBasePresenter<IHomeView> {
             public void onSuccess(String s) {
                 try {
                     GameInfo gameInfo = JSON.parseObject(s, GameInfo.class);
+
+                    mHomeView.updateGameInfo(gameInfo,
+                            CalculateUtils.formatBonus(gameInfo.getBonus()),
+                            CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
+
                     switch (gameInfo.getStatus()) {
                         case -1:  //准备
                             mHomeView.liveReady(gameInfo.getAd_image());
@@ -70,10 +75,6 @@ public class HomePresenter extends MVPBasePresenter<IHomeView> {
                         default :
                             break;
                     }
-
-                    mHomeView.updateGameInfo(gameInfo,
-                            CalculateUtils.formatBonus(gameInfo.getBonus()),
-                            CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
 
                 } catch (Exception e) {
 

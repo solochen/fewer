@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.yilan.lib.playerlib.activity.live.model.IPlayerModel;
 import com.yilan.lib.playerlib.activity.live.model.PlayerModelImpl;
 import com.yilan.lib.playerlib.activity.live.ui.IPlayerView;
+import com.yilan.lib.playerlib.data.GameInfo;
+import com.yilan.lib.playerlib.data.LiveEnterInfo;
 import com.yilan.lib.playerlib.http.OkGoHttp;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
-import com.yilan.lib.playerlib.data.GameInfo;
-import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.mvp.MVPBasePresenter;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
 
@@ -25,14 +25,19 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
         this.mPlayerModel = new PlayerModelImpl();
     }
 
-
-    public void getInviteInfo(String uid) {
-        mPlayerModel.getInviteInfo(uid, new ResponseCallback() {
+    public void getGameLiveInfo(){
+        mPlayerModel.getGameInfo(new ResponseCallback() {
             @Override
             public void onSuccess(String s) {
                 try {
-                    InviteCode inviteCode = JSON.parseObject(s, InviteCode.class);
-                    mPlayerView.updateInviteCode(inviteCode);
+                    GameInfo gameInfo = JSON.parseObject(s, GameInfo.class);
+                    if(gameInfo.getStatus() == 0){        //开放
+                        mPlayerView.updateGameInfo(gameInfo,
+                                CalculateUtils.formatBonus(gameInfo.getBonus()),
+                                CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
+                    } else if(gameInfo.getStatus() == 1){ //答题中
+                        mPlayerView.onAnswerStatus();
+                    }
                 } catch (Exception e) {
 
                 }
@@ -53,28 +58,21 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
     }
 
 
-    public void getGameInfo(String uid) {
-        mPlayerModel.getGameInfo(uid, new ResponseCallback() {
+    public void gameLiveEnter(String uid, String liveId) {
+
+        mPlayerModel.gameLiveEnter(uid, liveId, new ResponseCallback() {
             @Override
             public void onSuccess(String s) {
                 try {
-                    GameInfo gameInfo = JSON.parseObject(s, GameInfo.class);
-                    switch (gameInfo.getStatus()) {
-                        case -1:  //准备
-                            mPlayerView.liveReady(gameInfo.getAd_image());
-                            break;
-                        case 0: //开放
-                        case 1: //答题中
-                            mPlayerView.liveOpen();
-                            break;
-                        default :
-                            break;
+                    LiveEnterInfo info = JSON.parseObject(s, LiveEnterInfo.class);
+                    if(info.success()){
+                        if(info.getIn_play() == 0){  //0 比赛结束需退出直播间； 1 开放中
+                            mPlayerView.playIsFinish();
+                        }
+                        mPlayerView.setLiveEnterInfo(info);
+                    } else {
+                        // error
                     }
-
-                    mPlayerView.updateGameInfo(gameInfo,
-                            CalculateUtils.formatBonus(gameInfo.getBonus()),
-                            CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
-
                 } catch (Exception e) {
 
                 }
@@ -85,6 +83,47 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
                 if (code == OkGoHttp.CODE_TOKEN_VALID) {
 
                 }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
+    }
+
+
+    public void gameLiveExit(String uid, String liveId) {
+
+        mPlayerModel.gameLiveExit(uid, liveId, new ResponseCallback() {
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
+
+    }
+
+    public void sendCMTToServer(String uid, String nickname, String comment){
+        mPlayerModel.sendCommentToServer(uid, nickname, comment, new ResponseCallback() {
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+
             }
 
             @Override

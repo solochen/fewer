@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/lib_card_layout_bg"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/lab_tv_bonus_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="12sp"
+                android:textColor="#ccc"
+                android:text="奖金" />
+
+            <TextView
+                android:id="@+id/lib_tv_bonus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/lab_tv_bonus_label"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                tools:text="100" />
+
+            <TextView
+                android:id="@+id/lib_tv_bonus_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:translationY="-10dp"
+                android:layout_marginLeft="3dp"
+                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@+id/lib_tv_bonus"
+                android:layout_alignBottom="@+id/lib_tv_bonus"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                tools:text="万" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/lab_tv_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="12sp"
+                android:textColor="#ccc"
+                tools:text="今天" />
+
+            <TextView
+                android:id="@+id/lib_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/lab_tv_time_label"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                tools:text="20:00" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lib_tv_rule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/label_lib_rule"/>
+
+    <Button
+        android:id="@+id/lib_btn_get_revive_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:textColor="#FFF"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:background="@drawable/lib_revive_btn_bg"
+        android:text="@string/btn_lib_get_more_code"
+        />
+
+</LinearLayout>

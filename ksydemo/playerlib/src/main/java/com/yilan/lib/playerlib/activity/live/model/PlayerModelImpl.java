@@ -22,6 +22,16 @@ public class PlayerModelImpl implements IPlayerModel {
         ApiLive.gameLiveExit(uid, liveId, callback);
     }
 
+    @Override
+    public void getGameInfo(final ResponseCallback callback) {
+        ApiLive.getGameInfo(callback);
+    }
 
+
+    @Override
+    public void sendCommentToServer(String uid, String nickname, String comment,
+                                    ResponseCallback callback){
+        ApiLive.comment(uid, nickname, comment, callback);
+    }
 
 }

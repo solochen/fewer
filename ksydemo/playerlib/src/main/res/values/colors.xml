@@ -6,4 +6,6 @@
 
     <color name="lib_card_color">#FFFFFF</color>
     <color name="lib_revive_btn_color">#FF2D55</color>
+    <color name="lib_translate_color">#00000000</color>
+
 </resources>

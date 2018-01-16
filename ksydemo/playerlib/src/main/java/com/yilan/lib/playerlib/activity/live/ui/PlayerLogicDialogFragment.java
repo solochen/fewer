@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.yilan.lib.playerlib.R;
+import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.global.ActivityCollector;
 
 
@@ -28,12 +29,12 @@ public class PlayerLogicDialogFragment extends DialogFragment {
     ViewPager mViewPager;
     PlayerLogicTopFragment mTopFragment;
 
-    private static final String KEY_URL = "liveUrl";
+    private static final String KEY_GAME_INFO = "game_info";
 
-    public static PlayerLogicDialogFragment newInstance(String url) {
+    public static PlayerLogicDialogFragment newInstance(GameInfo info) {
         PlayerLogicDialogFragment f = new PlayerLogicDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(KEY_URL, url);
+        bundle.putSerializable(KEY_GAME_INFO, info);
         f.setArguments(bundle);
         return f;
     }
@@ -54,7 +55,7 @@ public class PlayerLogicDialogFragment extends DialogFragment {
             public Fragment getItem(int position) {
                 mTopFragment = new PlayerLogicTopFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString(KEY_URL, getArguments().getString(KEY_URL));
+                bundle.putSerializable(KEY_GAME_INFO, getArguments().getSerializable(KEY_GAME_INFO));
                 mTopFragment.setArguments(bundle);
                 return mTopFragment;
             }

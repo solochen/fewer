@@ -1,7 +1,8 @@
 package com.yilan.lib.playerlib.activity.live.ui;
 
+
 import com.yilan.lib.playerlib.data.GameInfo;
-import com.yilan.lib.playerlib.data.InviteCode;
+import com.yilan.lib.playerlib.data.LiveEnterInfo;
 
 /**
  * Created by chenshaolong on 2018/1/14.
@@ -9,12 +10,11 @@ import com.yilan.lib.playerlib.data.InviteCode;
 
 public interface IPlayerView {
 
-    void updateInviteCode(InviteCode inviteCode);
-
     void updateGameInfo(GameInfo gameInfo, int displayBonus, String displayUnit);
 
-    void liveReady(String adImage);
+    void onAnswerStatus();
 
-    void liveOpen();
+    void playIsFinish();
 
+    void setLiveEnterInfo(LiveEnterInfo info);
 }
