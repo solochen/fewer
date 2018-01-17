@@ -34,4 +34,9 @@ public class PlayerModelImpl implements IPlayerModel {
         ApiLive.comment(uid, nickname, comment, callback);
     }
 
+    @Override
+    public void sendAnswer(String uid, String questionId, String answerId, ResponseCallback callback) {
+        ApiLive.answer(uid, questionId, answerId, callback);
+    }
+
 }

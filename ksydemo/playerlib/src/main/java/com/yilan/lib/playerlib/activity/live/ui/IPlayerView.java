@@ -17,4 +17,8 @@ public interface IPlayerView {
     void playIsFinish();
 
     void setLiveEnterInfo(LiveEnterInfo info);
+
+    void showErrorMsg(String msg);
+
+    void setWatchingStatus();
 }

@@ -17,6 +17,8 @@ import android.view.WindowManager;
 
 import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.data.GameInfo;
+import com.yilan.lib.playerlib.event.EBus;
+import com.yilan.lib.playerlib.event.LiveEvent;
 import com.yilan.lib.playerlib.global.ActivityCollector;
 
 
@@ -73,7 +75,7 @@ public class PlayerLogicDialogFragment extends DialogFragment {
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     if(ActivityCollector.isActivityExist(PlayerActivity.class) && (getDialog() != null && getDialog().isShowing() && isResumed())) {
-//                        EventBus.getDefault().post(new PlayerLogicEvent(PlayerLogicEvent.PLAYER_LOGIC_LIVE_KEYBACK_FINISH));
+                        EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));
                     }
                     return true;
                 }

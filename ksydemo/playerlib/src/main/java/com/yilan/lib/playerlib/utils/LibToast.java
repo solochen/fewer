@@ -17,4 +17,13 @@ public class LibToast {
         Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
     }
 
+
+    public static void showLongToast(Context context, CharSequence sequence){
+        Toast.makeText(context, sequence, Toast.LENGTH_LONG).show();
+    }
+
+    public static void showLongToast(Context context, int resId){
+        Toast.makeText(context, resId, Toast.LENGTH_LONG).show();
+    }
+
 }

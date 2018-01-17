@@ -5,6 +5,7 @@ import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -77,6 +78,27 @@ public class PlayerCommentView extends FrameLayout {
                 mListener.showCommentEditView();
             }
         });
+
+        mBtnSendComment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onSendComment(mEtInputComment.getText().toString());
+                hideKeyboary();
+            }
+        });
+
+        mEtInputComment.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                        mListener.onSendComment(mEtInputComment.getText().toString());
+                        hideKeyboary();
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     void setAdapter(){
@@ -114,6 +136,12 @@ public class PlayerCommentView extends FrameLayout {
                 mCommentAdapter.remove(i);
             }
         }
+    }
+
+    public void hideKeyboary(){
+        mBtnShowComment.setVisibility(View.VISIBLE);
+        mPlayerEditLayout.setVisibility(View.GONE);
+        KeyBoardUtils.closeKeybord(mEtInputComment, mContext);
     }
 
 

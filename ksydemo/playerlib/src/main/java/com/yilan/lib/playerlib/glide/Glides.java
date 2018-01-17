@@ -43,4 +43,11 @@ public class Glides {
                 .into(view);
     }
 
+    public void loadCenterCrop(Context context, String url, ImageView view){
+        Glide.with(context)
+                .load(url)
+                .centerCrop()
+                .into(view);
+    }
+
 }

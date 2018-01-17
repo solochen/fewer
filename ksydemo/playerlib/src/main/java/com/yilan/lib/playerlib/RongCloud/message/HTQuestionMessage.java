@@ -27,6 +27,11 @@ public class HTQuestionMessage extends MessageContent {
     private List<String> options;
     private Integer count;
     private Integer number;
+    private Integer sec;
+
+    public HTQuestionMessage(){
+
+    }
 
     public HTQuestionMessage(byte[] data) {
         String jsonStr = null;
@@ -46,7 +51,7 @@ public class HTQuestionMessage extends MessageContent {
             }
             setCount(count);
             setNumber(number);
-
+            setSec(sec);
 
             if(jsonObj.has("user")){
                 setUserInfo(parseJsonToUserInfo(jsonObj.getJSONObject("user")));
@@ -69,7 +74,7 @@ public class HTQuestionMessage extends MessageContent {
 
             jsonObj.put("count", count);
             jsonObj.put("number", number);
-
+            jsonObj.put("sec", sec);
 
             if(getJSONUserInfo() != null)
                 jsonObj.putOpt("user",getJSONUserInfo());
@@ -100,6 +105,7 @@ public class HTQuestionMessage extends MessageContent {
         setOptions(ParcelUtils.readListFromParcel(in, String.class));
         setCount(ParcelUtils.readIntFromParcel(in));
         setNumber(ParcelUtils.readIntFromParcel(in));
+        setSec(ParcelUtils.readIntFromParcel(in));
 
         setUserInfo(ParcelUtils.readFromParcel(in,UserInfo.class));
     }
@@ -131,6 +137,7 @@ public class HTQuestionMessage extends MessageContent {
         ParcelUtils.writeToParcel(dest, options);
         ParcelUtils.writeToParcel(dest, count);
         ParcelUtils.writeToParcel(dest, number);
+        ParcelUtils.writeToParcel(dest, sec);
 
         ParcelUtils.writeToParcel(dest, getUserInfo());
     }
@@ -173,5 +180,13 @@ public class HTQuestionMessage extends MessageContent {
 
     public void setNumber(Integer number) {
         this.number = number;
+    }
+
+    public Integer getSec() {
+        return sec;
+    }
+
+    public void setSec(Integer sec) {
+        this.sec = sec;
     }
 }

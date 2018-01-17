@@ -50,10 +50,11 @@ public class CustomPlayerView extends RelativeLayout {
         mInflater = LayoutInflater.from(context);
         mInflater.inflate(R.layout.custom_lib_player_view, this);
         mVideoSurfaceView = (VideoSurfaceView) findViewById(R.id.lib_player_surface);
+        initPlayer();
     }
 
-    public void initPlayer(String url){
 
+    private void initPlayer(){
         mSurfaceHolder = mVideoSurfaceView.getHolder();
         mSurfaceHolder.addCallback(mSurfaceCallback);
         mVideoSurfaceView.setKeepScreenOn(true);
@@ -64,10 +65,12 @@ public class CustomPlayerView extends RelativeLayout {
         mKsyMediaPlayer.setScreenOnWhilePlaying(true);
 
 
-        //下面两行代码设置surfaceview透明背景
-        mVideoSurfaceView.setZOrderOnTop(true);
+//        mVideoSurfaceView.setZOrderOnTop(true);
+        //下面代码设置surfaceview透明背景
         mVideoSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
+    }
 
+    public void player(String url){
         try {
             mKsyMediaPlayer.setDataSource(url);
             mKsyMediaPlayer.prepareAsync();

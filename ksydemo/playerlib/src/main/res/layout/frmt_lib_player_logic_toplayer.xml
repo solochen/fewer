@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lib_player_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/lib_player_def_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <com.yilan.lib.playerlib.activity.live.ui.custom.PlayerHeaderView
         android:id="@+id/lib_player_headerview"
@@ -10,37 +16,44 @@
         android:layout_height="wrap_content" />
 
 
+    <com.yilan.lib.playerlib.activity.live.ui.custom.PlayerAnswerView
+        android:id="@+id/lib_player_answer_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lib_player_headerview" />
+
+
     <com.yilan.lib.playerlib.activity.live.ui.custom.PlayerGameInfoView
         android:id="@+id/lib_player_game_info_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lib_player_headerview"/>
+        android:layout_above="@+id/lib_player_playercommentview" />
 
     <Button
         android:id="@+id/lib_btn_login_to_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/lib_player_playercommentview"
+        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:textColor="#FFF"
-        android:textStyle="bold"
-        android:textSize="16sp"
         android:background="@drawable/lib_revive_btn_bg"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:text="@string/btn_lib_login_to_answer"
+        android:textColor="#FFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <com.yilan.lib.playerlib.activity.live.ui.custom.PlayerCommentView
         android:id="@+id/lib_player_playercommentview"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+         />
 
 
 </RelativeLayout>

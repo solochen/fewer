@@ -6,13 +6,14 @@ package com.yilan.lib.playerlib.global;
 
 public class SPConstant {
 
-    public static final String KEY_USER_INFO = "key_user_info";
+    public static final String KEY_USER_INFO = "key_user_info";  //用户信息
 
-    public static final String KEY_INVITE_CODE = "key_invite_code";
+    public static final String KEY_INVITE_CODE = "key_invite_code";  //邀请码
 
-    public static final String KEY_REVIVE_COUNT = "key_revive_count";
+    public static final String KEY_REVIVE_COUNT = "key_revive_count";  //复活卡数量
 
-    public static final String KEY_IS_TELL_USER_DIALOG = "key_is_tell_user";
+    public static final String KEY_IS_TELL_USER_DIALOG = "key_is_tell_user";  //当前场 是否已经弹出了 "已迟到" 弹窗
+
 
     public static final String testUserInfoJson = "{\n" +
             "\t\"data\": {\n" +

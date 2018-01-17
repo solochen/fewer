@@ -19,7 +19,7 @@ public class EBus {
 
 
     public static void unregister(Object obj){
-        EventBus.getDefault().register(obj);
+        EventBus.getDefault().unregister(obj);
     }
 
 }

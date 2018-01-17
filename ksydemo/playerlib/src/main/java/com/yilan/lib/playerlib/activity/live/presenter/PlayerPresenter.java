@@ -1,6 +1,7 @@
 package com.yilan.lib.playerlib.activity.live.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.yilan.lib.playerlib.activity.live.model.IPlayerModel;
 import com.yilan.lib.playerlib.activity.live.model.PlayerModelImpl;
 import com.yilan.lib.playerlib.activity.live.ui.IPlayerView;
@@ -10,6 +11,7 @@ import com.yilan.lib.playerlib.http.OkGoHttp;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
 import com.yilan.lib.playerlib.mvp.MVPBasePresenter;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
+import com.yilan.lib.playerlib.utils.LibToast;
 
 /**
  * Created by chenshaolong on 2018/1/14.
@@ -133,5 +135,35 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
         });
     }
 
+
+    public void sendAnswer(String uid, int questionId, int answerId){
+        mPlayerModel.sendAnswer(uid, String.valueOf(questionId), String.valueOf(answerId), new ResponseCallback() {
+            @Override
+            public void onSuccess(String s) {
+                try {
+                    JSONObject object = JSON.parseObject(s);
+                    if (object.getInteger("code") != 0) {
+                        mPlayerView.setWatchingStatus();
+                        mPlayerView.showErrorMsg(object.getString("message"));
+                    }
+                }catch (Exception e){
+
+                }
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+                if (code != 200) {
+                    mPlayerView.setWatchingStatus();
+                    mPlayerView.showErrorMsg(msg);
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
+    }
 
 }

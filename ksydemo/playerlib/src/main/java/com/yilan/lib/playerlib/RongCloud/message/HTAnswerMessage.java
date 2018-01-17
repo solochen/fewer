@@ -25,11 +25,12 @@ public class HTAnswerMessage extends MessageContent {
     private String id;
     private String text;
     private List<String> options;
-    private List<String> selected;
+    private List<Integer> selected;
     private Integer question_answer;
     private Integer count;
     private Integer number;
     private Integer losers;
+    private Integer sec;
 
     public HTAnswerMessage(byte[] data) {
         String jsonStr = null;
@@ -49,13 +50,14 @@ public class HTAnswerMessage extends MessageContent {
             }
 
             if(jsonObj.has("selected")) {
-                setSelected(JSON.parseArray(jsonObj.getString("selected"), String.class));
+                setSelected(JSON.parseArray(jsonObj.getString("selected"), Integer.class));
             }
 
             setQuestion_answer(jsonObj.getInt("question_answer"));
             setCount(count);
             setNumber(number);
             setLosers(losers);
+            setSec(sec);
 
 
             if(jsonObj.has("user")){
@@ -82,7 +84,7 @@ public class HTAnswerMessage extends MessageContent {
             jsonObj.put("count", count);
             jsonObj.put("number", number);
             jsonObj.put("losers", losers);
-
+            jsonObj.put("sec", sec);
 
             if(getJSONUserInfo() != null)
                 jsonObj.putOpt("user",getJSONUserInfo());
@@ -111,12 +113,13 @@ public class HTAnswerMessage extends MessageContent {
         setText(ParcelUtils.readFromParcel(in));
 
         setOptions(ParcelUtils.readListFromParcel(in, String.class));
-        setSelected(ParcelUtils.readListFromParcel(in, String.class));
+        setSelected(ParcelUtils.readListFromParcel(in, Integer.class));
 
         setQuestion_answer(ParcelUtils.readIntFromParcel(in));
         setCount(ParcelUtils.readIntFromParcel(in));
         setNumber(ParcelUtils.readIntFromParcel(in));
         setLosers(ParcelUtils.readIntFromParcel(in));
+        setSec(ParcelUtils.readIntFromParcel(in));
 
         setUserInfo(ParcelUtils.readFromParcel(in,UserInfo.class));
     }
@@ -151,6 +154,7 @@ public class HTAnswerMessage extends MessageContent {
         ParcelUtils.writeToParcel(dest, count);
         ParcelUtils.writeToParcel(dest, number);
         ParcelUtils.writeToParcel(dest, losers);
+        ParcelUtils.writeToParcel(dest, sec);
 
         ParcelUtils.writeToParcel(dest, getUserInfo());
     }
@@ -179,11 +183,11 @@ public class HTAnswerMessage extends MessageContent {
         this.options = options;
     }
 
-    public List<String> getSelected() {
+    public List<Integer> getSelected() {
         return selected;
     }
 
-    public void setSelected(List<String> selected) {
+    public void setSelected(List<Integer> selected) {
         this.selected = selected;
     }
 
@@ -217,5 +221,13 @@ public class HTAnswerMessage extends MessageContent {
 
     public void setLosers(Integer losers) {
         this.losers = losers;
+    }
+
+    public Integer getSec() {
+        return sec;
+    }
+
+    public void setSec(Integer sec) {
+        this.sec = sec;
     }
 }

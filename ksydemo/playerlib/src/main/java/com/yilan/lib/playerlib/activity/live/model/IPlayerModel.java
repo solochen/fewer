@@ -16,4 +16,6 @@ public interface IPlayerModel {
 
     void sendCommentToServer(String uid, String nickname, String comment,
                         ResponseCallback callback);
+
+    void sendAnswer(String uid, String questionId, String answerId, ResponseCallback callback);
 }
