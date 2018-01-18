@@ -2,6 +2,7 @@ package com.yilan.lib.playerlib.activity.live.ui.custom;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -82,8 +83,7 @@ public class PlayerCommentView extends FrameLayout {
         mBtnSendComment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onSendComment(mEtInputComment.getText().toString());
-                hideKeyboary();
+                sendComment();
             }
         });
 
@@ -92,13 +92,24 @@ public class PlayerCommentView extends FrameLayout {
             public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
                 if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
                     if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                        mListener.onSendComment(mEtInputComment.getText().toString());
-                        hideKeyboary();
+                        sendComment();
                     }
                 }
                 return false;
             }
         });
+    }
+
+    void sendComment(){
+        mListener.onSendComment(mEtInputComment.getText().toString());
+        mEtInputComment.setText("");
+        hideKeyboary();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, 300);
     }
 
     void setAdapter(){
@@ -112,7 +123,7 @@ public class PlayerCommentView extends FrameLayout {
 
     public void showCommentEdit(){
         mEtInputComment.requestFocus();
-        mBtnShowComment.setVisibility(View.GONE);
+        mBtnShowComment.setVisibility(View.INVISIBLE);
         mPlayerEditLayout.setVisibility(View.VISIBLE);
         KeyBoardUtils.openKeybord(mEtInputComment, mContext);
     }
@@ -139,9 +150,14 @@ public class PlayerCommentView extends FrameLayout {
     }
 
     public void hideKeyboary(){
-        mBtnShowComment.setVisibility(View.VISIBLE);
-        mPlayerEditLayout.setVisibility(View.GONE);
         KeyBoardUtils.closeKeybord(mEtInputComment, mContext);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mBtnShowComment.setVisibility(View.VISIBLE);
+                mPlayerEditLayout.setVisibility(View.GONE);
+            }
+        }, 300);
     }
 
 

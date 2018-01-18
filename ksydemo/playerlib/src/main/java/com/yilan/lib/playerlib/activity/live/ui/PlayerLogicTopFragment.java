@@ -70,7 +70,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     GameInfo mGameInfo;
 
     RelativeLayout mContainer;
-    ImageView mContainerBg;
+    View mContainerBg;
     PlayerHeaderView mHeaderView;
     PlayerAnswerView mAnswerView;
     PlayerCommentView mCommentView;
@@ -92,7 +92,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.frmt_lib_player_logic_toplayer, container, false);
         mContainer = (RelativeLayout) view.findViewById(R.id.lib_player_container);
-        mContainerBg = (ImageView) view.findViewById(R.id.lib_player_def_bg);
+        mContainerBg = view.findViewById(R.id.lib_player_def_bg);
         mHeaderView = (PlayerHeaderView) view.findViewById(R.id.lib_player_headerview);
         mAnswerView = (PlayerAnswerView) view.findViewById(R.id.lib_player_answer_view);
         mCommentView = (PlayerCommentView) view.findViewById(R.id.lib_player_playercommentview);
@@ -132,23 +132,24 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         Self self = UserManager.getInstance().getSelf(mContext);
         mHeaderView.setReviveCount((self == null) ? 0 : (int) SPUtils.get(mContext, SPConstant.KEY_REVIVE_COUNT, 0));
         mPresenter.getGameLiveInfo();
+        mPresenter.chatRoomStatusListener();
+        mPresenter.joinChatRoom(mGameInfo.getLive().getLive_id());
         mPresenter.gameLiveEnter(String.valueOf(self.getData().getUser_id()), mGameInfo.getLive().getLive_id());
         initSetGameInfo();
 
-        Glides.getInstance().loadCenterCrop(mContext, "http://c.hiphotos.baidu.com/image/h%3D300/sign=1ac3db8a3aadcbef1e3478069cae2e0e/cdbf6c81800a19d8765f664b38fa828ba61e4624.jpg", mContainerBg);
 
-        HTQuestionMessage message = new HTQuestionMessage();
-        message.setSec(10);
-        message.setCount(1);
-        message.setOptions(JSON.parseArray("[\n" +
-                " \"就卡死极度疯狂\",\n" +
-                "\"啊空间上大概了解阿三\",\n" +
-                "\"啊水电费娃啊水电费\"\n" +
-                "]", String.class));
-        message.setText("1.看见了卡就算了快递费");
-        message.setId("1123");
-        message.setNumber(12);
-        mAnswerView.setQuestion(message);
+//        HTQuestionMessage message = new HTQuestionMessage();
+//        message.setSec(10);
+//        message.setCount(1);
+//        message.setOptions(JSON.parseArray("[\n" +
+//                " \"就卡死极度疯狂\",\n" +
+//                "\"啊空间上大概了解阿三\",\n" +
+//                "\"啊水电费娃啊水电费\"\n" +
+//                "]", String.class));
+//        message.setText("1.看见了卡就算了快递费");
+//        message.setId("1123");
+//        message.setNumber(12);
+//        mAnswerView.setQuestion(message);
     }
 
     /**
@@ -226,7 +227,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     @Override
     public void updateGameInfo(GameInfo gameInfo, int bonus, String unit) {
 
-        mGameInfoView.setGameInfo(bonus, unit, gameInfo.getGame_date(), gameInfo.getGame_time());
+        mGameInfoView.setGameInfo(bonus, unit, gameInfo.getGame_date(), gameInfo.getCountdown());
         mGameInfoView.setVisibility(View.VISIBLE);
 
     }
@@ -286,8 +287,9 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         } else if(message instanceof HTOnlookerMessage){
 
         } else if(message instanceof HTQuestionMessage){
-
+//            mGameInfoView.setVisibility(View.GONE);
             mAnswerView.setQuestion((HTQuestionMessage) message);
+            mAnswerView.setVisibility(View.VISIBLE);
 
         } else if(message instanceof HTAnswerMessage){
 
@@ -309,6 +311,9 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if(mGameInfoView != null){
+            mGameInfoView.cancelTimer();
+        }
     }
 
 

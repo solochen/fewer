@@ -1,6 +1,7 @@
 package com.yilan.lib.playerlib.global;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.yilan.lib.playerlib.data.Self;
@@ -27,9 +28,9 @@ public class UserManager {
     }
 
 
-
     /**
      * 更新
+     *
      * @param context
      * @return
      */
@@ -43,24 +44,31 @@ public class UserManager {
      *
      * @return
      */
-    public Self getSelf(Context context){
-        if(self == null) {
+    public Self getSelf(Context context) {
+        if (self == null) {
             self = getLocalSelf(context);
-            if(self == null){
+            if (self == null) {
                 return new Self();
             }
         }
         return self;
     }
 
-    public Self getLocalSelf(Context context){
-       String selfJson = (String) SPUtils.get(context, SPConstant.KEY_USER_INFO, "");
-        return (self = JSON.parseObject(selfJson, Self.class));
+    private Self getLocalSelf(Context context) {
+        String selfJson = (String) SPUtils.get(context, SPConstant.KEY_USER_INFO, "");
+        if (TextUtils.isEmpty(selfJson)) {
+            return null;
+        }
+        try {
+            return JSON.parseObject(selfJson, Self.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 
-    public boolean isLogin(Context context){
-        if(self == null) {
+    public boolean isLogin(Context context) {
+        if (self == null) {
             self = getLocalSelf(context);
         }
         return self == null ? false : true;

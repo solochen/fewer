@@ -3,22 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@mipmap/bg_lib_default"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/dm_lib_container_padding"
-    android:paddingRight="@dimen/dm_lib_container_padding">
+    >
 
-    <com.yilan.lib.playerlib.customview.HeaderView
-        android:id="@+id/lib_header_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <FrameLayout
+        android:id="@+id/lib_home_ad_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/lib_bonus_view"
-        android:layout_below="@id/lib_header_view"
-        android:background="#fff"
+        android:layout_height="200dp"
+        android:layout_marginTop="15dp"
+        tools:visibility="gone"
         >
 
         <ImageView
@@ -26,51 +21,72 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_lib_back"
+            android:src="@mipmap/lib_home_ad_default"
+            android:visibility="visible"
             />
 
         <Button
             android:id="@+id/lib_btn_live_enter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="35dp"
+            android:paddingRight="35dp"
             android:onClick="onLibBtnClick"
+            android:textColor="@color/lib_enter_live_color"
+            android:background="@drawable/lib_corner_radius_bg"
             android:layout_gravity="center"
             android:text="进入直播间"
             android:visibility="gone"/>
 
     </FrameLayout>
 
+    <com.yilan.lib.playerlib.customview.HeaderView
+        android:id="@+id/lib_header_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
     <com.yilan.lib.playerlib.customview.BonusView
         android:id="@+id/lib_bonus_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lib_layout_revive"
-        android:layout_marginBottom="15dp" />
+        android:layout_below="@+id/lib_home_ad_layout"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        />
 
 
     <LinearLayout
         android:id="@+id/lib_layout_revive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lib_layout_bottom"
-        android:layout_marginBottom="70dp"
+        android:layout_below="@+id/lib_bonus_view"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@drawable/lib_card_layout_bg"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
 
         <LinearLayout
             android:id="@+id/lib_ll_more_revive"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
             android:onClick="onLibBtnClick"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@mipmap/ic_lib_revive" />
 
             <TextView
@@ -78,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="@string/label_lib_revive_count"
-                android:textColor="#000"
+                android:textColor="#222"
                 android:textSize="16sp" />
 
             <TextView
@@ -97,6 +113,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/lib_revive_btn_bg"
             android:gravity="center"

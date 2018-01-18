@@ -49,9 +49,9 @@ public class HTQuestionMessage extends MessageContent {
             if(jsonObj.has("options")) {
                 setOptions(JSON.parseArray(jsonObj.getString("options"), String.class));
             }
-            setCount(count);
-            setNumber(number);
-            setSec(sec);
+            setCount(jsonObj.getInt("count"));
+            setNumber(jsonObj.getInt("number"));
+            setSec(jsonObj.getInt("sec"));
 
             if(jsonObj.has("user")){
                 setUserInfo(parseJsonToUserInfo(jsonObj.getJSONObject("user")));

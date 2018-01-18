@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/lib_card_layout_bg"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -22,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="#ccc"
                 android:text="奖金" />
 
@@ -32,9 +31,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/lab_tv_bonus_label"
-                android:textSize="40sp"
+                android:textSize="44sp"
                 android:textStyle="bold"
-                android:textColor="#000"
+                android:textColor="#ccc"
                 tools:text="100" />
 
             <TextView
@@ -48,7 +47,7 @@
                 android:layout_alignBottom="@+id/lib_tv_bonus"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="#000"
+                android:textColor="#ccc"
                 tools:text="万" />
 
         </RelativeLayout>
@@ -64,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="#ccc"
                 tools:text="今天" />
 
@@ -74,9 +73,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/lab_tv_time_label"
-                android:textSize="40sp"
+                android:textSize="44sp"
                 android:textStyle="bold"
-                android:textColor="#000"
+                android:textColor="#ccc"
                 tools:text="20:00" />
 
         </RelativeLayout>
@@ -88,6 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:text="@string/label_lib_rule"/>
 
     <Button
@@ -96,10 +96,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="35dp"
         android:textColor="#FFF"
         android:textStyle="bold"
         android:textSize="16sp"

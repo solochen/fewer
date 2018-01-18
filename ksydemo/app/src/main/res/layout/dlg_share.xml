@@ -11,17 +11,26 @@
         android:layout_height="300dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
+        android:paddingTop="30dp"
         android:layout_centerInParent="true"
         android:background="#FFF">
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_wx"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_vertical"
+            android:layout_centerHorizontal="true"
             android:onClick="onBtnClick"
-            android:text="登录" />
+            android:text="微信分享" />
+
+        <Button
+            android:id="@+id/btn_wb"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/btn_wx"
+            android:onClick="onBtnClick"
+            android:text="weibo 分享" />
 
     </RelativeLayout>
 </RelativeLayout>

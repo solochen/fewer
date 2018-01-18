@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <View
         android:id="@+id/lib_player_def_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_lib_default"
+        />
 
     <com.yilan.lib.playerlib.activity.live.ui.custom.PlayerHeaderView
         android:id="@+id/lib_player_headerview"
@@ -20,6 +22,7 @@
         android:id="@+id/lib_player_answer_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_below="@+id/lib_player_headerview" />
 
 
@@ -27,7 +30,9 @@
         android:id="@+id/lib_player_game_info_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lib_player_playercommentview" />
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/lib_player_headerview"
+         />
 
     <Button
         android:id="@+id/lib_btn_login_to_answer"

@@ -89,21 +89,22 @@ public class RongCloudReceiver extends PushMessageReceiver implements RongIMClie
          * 是
          * 否 显示通知
          */
-        if (!AppUtils.isRunningForeground(mContext) && message != null) {
-            switch (message.getConversationType()) {
-                case PRIVATE:
-                case CHATROOM:
-                    EBus.send(new RongEvent(message));
-                    break;
-            }
-        } else {
-            switch (message.getConversationType()) {
-                case PRIVATE:
-                case CHATROOM:
-                    EBus.send(new RongEvent(message));
-                    break;
-            }
-        }
+        EBus.send(new RongEvent(message));
+//        if (!AppUtils.isRunningForeground(mContext) && message != null) {
+//            switch (message.getConversationType()) {
+//                case PRIVATE:
+//                case CHATROOM:
+//                    EBus.send(new RongEvent(message));
+//                    break;
+//            }
+//        } else {
+//            switch (message.getConversationType()) {
+//                case PRIVATE:
+//                case CHATROOM:
+//                    EBus.send(new RongEvent(message));
+//                    break;
+//            }
+//        }
         return false;
 
     }

@@ -1,5 +1,6 @@
 package com.yilan.lib.playerlib.activity.live.ui.custom;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -14,7 +15,8 @@ import com.yilan.lib.playerlib.RongCloud.message.HTAnswerMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTQuestionMessage;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerAnswerViewListener;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
-import com.yilan.lib.playerlib.utils.ProgressButton;
+import com.yilan.lib.playerlib.widget.CircleProgressBar;
+import com.yilan.lib.playerlib.widget.ProgressButton;
 
 import java.util.List;
 
@@ -25,7 +27,6 @@ import java.util.List;
 
 public class PlayerAnswerView extends FrameLayout implements View.OnClickListener{
 
-    int maxTime = 0;
     boolean mIsRelease = false;
     boolean isCanAnswer = false;
 
@@ -35,6 +36,7 @@ public class PlayerAnswerView extends FrameLayout implements View.OnClickListene
     LinearLayout mAnswerOptionLayout;
     TextView mTvQuestion;
     TextView mTvCountDown;
+    CircleProgressBar mCircleProgressBar;
 
     OnPlayerAnswerViewListener mListener;
 
@@ -60,6 +62,7 @@ public class PlayerAnswerView extends FrameLayout implements View.OnClickListene
         mTvQuestion = (TextView) findViewById(R.id.lib_custom_player_question);
         mAnswerOptionLayout = (LinearLayout) findViewById(R.id.lib_custom_player_option_layout);
         mTvCountDown = (TextView) findViewById(R.id.lib_custom_player_countdown);
+        mCircleProgressBar = (CircleProgressBar) findViewById(R.id.lib_answer_custom_round_progress);
 
         setClickListener();
     }
@@ -75,9 +78,10 @@ public class PlayerAnswerView extends FrameLayout implements View.OnClickListene
     /**--------------  问题 ---------------------*/
 
     public void setQuestion(HTQuestionMessage msg){
+        mAnswerOptionLayout.removeAllViews();
         mTvQuestion.setText(msg.getText());
         addOptionView(msg.getOptions(), msg.getCount());
-        countDown(mTvCountDown, msg.getSec());
+        simulateProgress(msg.getSec() * 1000);
     }
 
 
@@ -90,6 +94,9 @@ public class PlayerAnswerView extends FrameLayout implements View.OnClickListene
         for(int i = 0; i < options.size(); i ++) {
             String optionStr = options.get(i);
             View view = mInflater.inflate(R.layout.custom_lib_player_progress, null);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) new LayoutParams(LayoutParams.MATCH_PARENT, CalculateUtils.dip2px(mContext, 50));
+            params.topMargin = CalculateUtils.dip2px(mContext, 15);
+            view.setLayoutParams(params);
             final ProgressButton progressButton = (ProgressButton) view.findViewById(R.id.lib_btn_progress_answer_a);
             TextView answerOption = (TextView) view.findViewById(R.id.lib_tv_progress_answer_option);
             progressButton.setTag((i + 1));
@@ -156,35 +163,30 @@ public class PlayerAnswerView extends FrameLayout implements View.OnClickListene
     }
 
 
-    /**
-     * 倒计时
-     * @param countDownView
-     * @param time
-     */
-    private void countDown(final TextView countDownView, int time) {
-        maxTime = time;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mIsRelease) {
-                    return;
-                }
-                maxTime--;
-                countDownView.setText(String.valueOf(maxTime));
-                if (maxTime <= 0) {
-                    isCanAnswer = false;
-                }else {
-                    countDown(countDownView, maxTime);
-                }
-            }
-        }, 1000);
-    }
-
-
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
 
+    }
+
+
+    private void simulateProgress(int millisTime) {
+        final ValueAnimator animator = ValueAnimator.ofInt(0, 100);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int progress = (int) animation.getAnimatedValue();
+                mCircleProgressBar.setProgress(progress);
+                long currentPlayTime = animation.getCurrentPlayTime() / 1000;
+                long time = (10 - currentPlayTime);
+                if (time < 0) {
+                    isCanAnswer = false;
+                    return;
+                }
+                mTvCountDown.setText(time + "");
+            }
+        });
+        animator.setDuration(millisTime + 1000);
+        animator.start();
     }
 }

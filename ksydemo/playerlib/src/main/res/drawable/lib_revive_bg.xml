@@ -2,9 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
     <item>
         <shape>
-            <solid android:color="@color/lib_card_color" />
+            <solid android:color="#4D33ccff" />
             <corners
-                android:radius="12dp"/>
+                android:radius="1000dp"/>
         </shape>
     </item>
 

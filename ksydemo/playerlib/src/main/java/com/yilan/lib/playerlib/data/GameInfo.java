@@ -10,6 +10,7 @@ public class GameInfo implements Serializable {
 
     private int status = -1; //关闭-1,开放0, 答题中1
     private int bonus;
+    private int countdown;   //倒计时，单位 s
     private String game_date;
     private String game_time;
     private String ad_image;
@@ -61,5 +62,13 @@ public class GameInfo implements Serializable {
 
     public void setLive(Live live) {
         this.live = live;
+    }
+
+    public int getCountdown() {
+        return countdown;
+    }
+
+    public void setCountdown(int countdown) {
+        this.countdown = countdown;
     }
 }

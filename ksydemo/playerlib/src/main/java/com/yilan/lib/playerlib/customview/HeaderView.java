@@ -72,7 +72,7 @@ public class HeaderView extends FrameLayout {
 
 
     public void setUserAvatar(String avatarUrl) {
-        Glides.getInstance().load(mContext, avatarUrl, mIvAvatar);
+        Glides.getInstance().loadAvatar(mContext, avatarUrl, mIvAvatar);
     }
 
     public void setClickListener(OnHeaderViewClickListener listener) {

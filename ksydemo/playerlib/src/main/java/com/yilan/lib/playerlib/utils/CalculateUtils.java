@@ -1,6 +1,8 @@
 package com.yilan.lib.playerlib.utils;
 
 
+import android.content.Context;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -36,6 +38,12 @@ public class CalculateUtils {
         formater.setRoundingMode(RoundingMode.FLOOR);
         formater.setDecimalFormatSymbols(formatSymbols);
         return Double.valueOf(formater.format(d));
+    }
+
+
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 
 

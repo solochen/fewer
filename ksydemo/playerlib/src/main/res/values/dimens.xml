@@ -1,4 +1,6 @@
 <resources>
     <dimen name="dm_lib_header_height">46dp</dimen>
-    <dimen name="dm_lib_container_padding">15dp</dimen>
+    <dimen name="dm_lib_container_margin">15dp</dimen>
+
+    <dimen name="dm_lib_btn_top_bottom_padding">12dp</dimen>
 </resources>

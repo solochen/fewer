@@ -17,8 +17,9 @@
             android:id="@+id/lib_late_dig_close"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:background="@color/lib_translate_color"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_lib_placeholder"/>
+            android:src="@mipmap/ic_lib_close"/>
 
         <ImageView
             android:id="@+id/lib_late_dig_ic"
@@ -26,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/ic_lib_placeholder"/>
+            android:src="@mipmap/ic_lib_revive"/>
 
         <TextView
             android:id="@+id/lib_late_dlg_title"

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/lib_card_layout_bg"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="30dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="12sp"
                 android:textColor="#ccc"
-                android:text="奖金" />
+                android:text="下期奖金" />
 
             <TextView
                 android:id="@+id/lib_tv_bonus"
@@ -35,7 +35,7 @@
                 android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="#000"
-                tools:text="100" />
+                android:text="-"  />
 
             <TextView
                 android:id="@+id/lib_tv_bonus_unit"
@@ -66,7 +66,7 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="12sp"
                 android:textColor="#ccc"
-                tools:text="今天" />
+                android:text="下期时间" />
 
             <TextView
                 android:id="@+id/lib_tv_time"
@@ -77,7 +77,7 @@
                 android:textSize="40sp"
                 android:textStyle="bold"
                 android:textColor="#000"
-                tools:text="20:00" />
+                android:text="-"/>
 
         </RelativeLayout>
 
@@ -89,8 +89,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/dm_lib_btn_top_bottom_padding"
+        android:paddingBottom="@dimen/dm_lib_btn_top_bottom_padding"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
         android:textColor="#FFF"
@@ -107,14 +107,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/dm_lib_btn_top_bottom_padding"
+        android:paddingBottom="@dimen/dm_lib_btn_top_bottom_padding"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:textColor="#FFF"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:background="@drawable/lib_share_btn_bg"
+        android:background="@drawable/lib_invite_code_btn_bg"
         android:text="@string/btn_lib_input_code"
         tools:visibility="visible"
         android:visibility="gone"/>

@@ -37,7 +37,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Comment comment = mList.get(position);
-        String nickName = "<font color=\"#F44A4A\">" + comment.getNickname() + "</font>";
+        String nickName = "<font color=\"#33ccff\">" + comment.getNickname() + "</font>";
         ViewHolder mHolder = (ViewHolder) holder;
         mHolder.mTvComment.setText(Html.fromHtml(nickName + " " + comment.getText()));
     }

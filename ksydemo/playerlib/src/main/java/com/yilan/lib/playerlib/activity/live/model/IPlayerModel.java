@@ -1,5 +1,6 @@
 package com.yilan.lib.playerlib.activity.live.model;
 
+import com.yilan.lib.playerlib.listener.OnChatRoomStatusCallback;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
 
 /**
@@ -18,4 +19,10 @@ public interface IPlayerModel {
                         ResponseCallback callback);
 
     void sendAnswer(String uid, String questionId, String answerId, ResponseCallback callback);
+
+    void joinChatRoom(String liveId);
+
+    void quitChatRoom(String liveId);
+
+    void chatRoomStatusListener(OnChatRoomStatusCallback callback);
 }

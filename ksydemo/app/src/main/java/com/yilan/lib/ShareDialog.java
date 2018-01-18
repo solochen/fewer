@@ -23,15 +23,15 @@ import com.yilan.lib.playerlib.global.RouterConstant;
  * Created by chenshaolong on 2018/1/12.
  */
 
-@Route(path = RouterConstant.ROUTER_LOGIN_DIALOG)
-public class LoginDialog extends DialogFragment {
+@Route(path = RouterConstant.ROUTER_SHARE_DIALOG)
+public class ShareDialog extends DialogFragment {
 
     Context mContext;
     LayoutInflater mInflater;
     RelativeLayout mViewOutSideContainer;
 
-    public static LoginDialog newInstance() {
-        LoginDialog f = new LoginDialog();
+    public static ShareDialog newInstance() {
+        ShareDialog f = new ShareDialog();
         Bundle bundle = new Bundle();
         f.setArguments(bundle);
         return f;
@@ -54,7 +54,7 @@ public class LoginDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mInflater = inflater;
-        View view = inflater.inflate(R.layout.dlg_login, container);
+        View view = inflater.inflate(R.layout.dlg_share, container);
         mViewOutSideContainer = (RelativeLayout) view.findViewById(R.id.rlv_outside_container);
         return view;
     }

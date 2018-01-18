@@ -7,12 +7,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="150dp"
+        >
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/lib_player_comment_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/lib_player_btn_show_comment"
             android:background="@color/lib_translate_color"
             android:cacheColorHint="@color/lib_translate_color"
@@ -25,9 +28,10 @@
             android:id="@+id/lib_player_btn_show_comment"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@color/lib_translate_color"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_lib_placeholder" />
+            android:src="@mipmap/ic_lib_send" />
 
     </RelativeLayout>
 
@@ -52,7 +56,7 @@
             android:layout_toLeftOf="@+id/lib_player_btn_send"
             android:singleLine="true"
             android:gravity="center_vertical"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionSend"
             android:longClickable="false"
             android:maxLines="1"
             android:textColor="#000"
@@ -67,7 +71,7 @@
             android:layout_alignParentRight="true"
             android:scaleType="fitXY"
             android:background="@color/lib_translate_color"
-            android:src="@mipmap/ic_lib_placeholder" />
+            android:src="@mipmap/ic_lib_send" />
 
     </RelativeLayout>
 

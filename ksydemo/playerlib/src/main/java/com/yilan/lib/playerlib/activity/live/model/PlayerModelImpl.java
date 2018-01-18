@@ -1,7 +1,10 @@
 package com.yilan.lib.playerlib.activity.live.model;
 
 import com.yilan.lib.playerlib.http.ApiLive;
+import com.yilan.lib.playerlib.listener.OnChatRoomStatusCallback;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
+
+import io.rong.imlib.RongIMClient;
 
 
 /**
@@ -37,6 +40,57 @@ public class PlayerModelImpl implements IPlayerModel {
     @Override
     public void sendAnswer(String uid, String questionId, String answerId, ResponseCallback callback) {
         ApiLive.answer(uid, questionId, answerId, callback);
+    }
+
+    @Override
+    public void joinChatRoom(String liveId){
+        RongIMClient.getInstance().joinChatRoom(liveId, -1, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        });
+    }
+
+    @Override
+    public void quitChatRoom(String liveId) {
+        RongIMClient.getInstance().quitChatRoom(liveId, new RongIMClient.OperationCallback() {
+            @Override
+            public void onSuccess() {
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+            }
+        });
+    }
+
+    @Override
+    public void chatRoomStatusListener(final OnChatRoomStatusCallback callback) {
+        RongIMClient.getInstance().setChatRoomActionListener(new RongIMClient.ChatRoomActionListener() {
+            @Override
+            public void onJoining(String s) {
+                callback.onJoining(s);
+            }
+
+            @Override
+            public void onJoined(String s) {
+                callback.onJoined(s);
+            }
+
+            @Override
+            public void onQuited(String s) {
+                callback.onQuited(s);
+            }
+
+            @Override
+            public void onError(String s, RongIMClient.ErrorCode errorCode) {
+                callback.onStatusError();
+            }
+        });
     }
 
 }

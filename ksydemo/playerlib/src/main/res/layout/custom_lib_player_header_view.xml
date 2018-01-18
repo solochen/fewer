@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dm_lib_header_height">
+    android:layout_height="@dimen/dm_lib_header_height"
+    >
 
     <ImageButton
         android:id="@+id/lib_btn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_lib_back"/>
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:background="@color/lib_translate_color"
+        android:src="@mipmap/ic_lib_enter"
+        android:rotation="180"/>
+
 
     <TextView
         android:id="@+id/lib_revive_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@mipmap/ic_lib_revive"
+        android:drawablePadding="10dp"
+        android:background="@drawable/lib_revive_bg"
         android:text="@string/label_lib_revive_count"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
         android:layout_toRightOf="@+id/lib_btn_back"
         />
 
@@ -21,7 +34,9 @@
         android:id="@+id/lib_online_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2130232人"
+        android:layout_centerVertical="true"
+        tools:text="2130232人"
+        android:textColor="#FFF"
         android:layout_toLeftOf="@+id/lib_btn_share"
         />
 
@@ -29,7 +44,7 @@
         android:id="@+id/lib_btn_share"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@mipmap/ic_lib_placeholder"
+        android:src="@mipmap/ic_lib_avatar_default"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

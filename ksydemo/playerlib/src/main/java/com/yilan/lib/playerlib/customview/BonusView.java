@@ -23,6 +23,7 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
     private Context mContext;
     private LayoutInflater mInflater;
 
+    TextView mTvBonusLabel;
     TextView mTvBonus;
     TextView mTvBonusUnit;
     TextView mTvStartTimeLabel;
@@ -53,6 +54,7 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mInflater.inflate(R.layout.custom_lib_bouns_view, this);
+        mTvBonusLabel = (TextView) findViewById(R.id.lab_tv_bonus_label);
         mTvBonus = (TextView) findViewById(R.id.lib_tv_bonus);
         mTvBonusUnit = (TextView) findViewById(R.id.lib_tv_bonus_unit);
         mTvStartTimeLabel = (TextView) findViewById(R.id.lab_tv_time_label);
@@ -90,8 +92,8 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
     public void canBeShowInviteBtn(boolean canBeInvited){
         if(canBeInvited){
             mBtnGetInviteCode.setVisibility(VISIBLE);
-            mBtnLogin.setText(R.string.btn_lib_apply_to_friend);
-            mBtnLogin.setVisibility(View.VISIBLE);
+//            mBtnLogin.setText(R.string.btn_lib_apply_to_friend);
+            mBtnLogin.setVisibility(View.GONE);
             mBtnType = 1;
         } else {
             mBtnGetInviteCode.setVisibility(GONE);
@@ -103,6 +105,7 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
     }
 
     public void updateGameInfo(int bonus, String unit, String gameDate, String gameTime){
+//        mTvBonusLabel.setText();
         mTvBonus.setText(String.valueOf(bonus));
         mTvBonusUnit.setText(unit);
         mTvStartTimeLabel.setText(gameDate);
@@ -112,7 +115,7 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == mTvStartTime.getId()){
+        if(id == mBtnLogin.getId()){
             switch (mBtnType) {
                 case 1: //立即报名
                     mListener.onApplyClick();

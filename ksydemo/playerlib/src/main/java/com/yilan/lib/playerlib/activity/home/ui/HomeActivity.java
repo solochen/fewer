@@ -1,29 +1,28 @@
 package com.yilan.lib.playerlib.activity.home.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.yilan.lib.playerlib.R;
-import com.yilan.lib.playerlib.RongCloud.RcSingleton;
-import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
-import com.yilan.lib.playerlib.event.LoginEvent;
-import com.yilan.lib.playerlib.global.SPConstant;
-import com.yilan.lib.playerlib.global.UserManager;
-import com.yilan.lib.playerlib.data.GameInfo;
-import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.activity.home.listener.OnBonusViewClickListener;
 import com.yilan.lib.playerlib.activity.home.presenter.HomePresenter;
+import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
 import com.yilan.lib.playerlib.customview.BonusView;
 import com.yilan.lib.playerlib.customview.HeaderView;
-import com.yilan.lib.playerlib.glide.Glides;
-import com.yilan.lib.playerlib.global.RouterConstant;
-import com.yilan.lib.playerlib.listener.OnHeaderViewClickListener;
+import com.yilan.lib.playerlib.data.GameInfo;
+import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.data.Self;
+import com.yilan.lib.playerlib.event.LoginEvent;
+import com.yilan.lib.playerlib.glide.Glides;
+import com.yilan.lib.playerlib.global.AppManager;
+import com.yilan.lib.playerlib.global.SPConstant;
+import com.yilan.lib.playerlib.global.UserManager;
+import com.yilan.lib.playerlib.listener.OnHeaderViewClickListener;
 import com.yilan.lib.playerlib.mvp.MVPBaseActivity;
 import com.yilan.lib.playerlib.utils.LibToast;
 import com.yilan.lib.playerlib.utils.SPUtils;
@@ -36,7 +35,7 @@ import org.greenrobot.eventbus.ThreadMode;
 /**
  * Created by chenshaolong on 2018/1/14.
  */
-@Route(path = RouterConstant.HOME_REDIRECT_PATH)
+
 public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> implements
         IHomeView,
         OnHeaderViewClickListener,
@@ -50,9 +49,14 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     BonusView mBonusView;
     ImageView mIvAdImage;
     Button mBtnLiveEnter;
+    LinearLayout mLibReviveLayout;
 
     GameInfo mGameInfo;
 
+    public static void startActivity(Context context) {
+        Intent intent = new Intent(context, HomeActivity.class);
+        context.startActivity(intent);
+    }
 
     @Override
     public int getLayout() {
@@ -66,18 +70,14 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         EventBus.getDefault().register(this);
         setClickListener();
 
-        //连接融云 param rctoken
-        String RcToen = "TTV0dNF+5aJ8pog/v0lc5nZ6IRyuHvRWxsFGzQLiIT+ZKsKNcmioSoI/V9fkGZD4qRrNFgY2Hvq2RpAJQQtYfhmz4T96qKNzanybqIc6ZVfct3GfsWgaXg==";
-        RcSingleton.getInstance().connect(RcToen);
-
         Self self = UserManager.getInstance().getSelf(mContext);
-        if (self == null) {
+        if (!UserManager.getInstance().isLogin(this)) {
             mBonusView.showLoginBtn();
         } else {
             mPresenter.getInviteInfo(String.valueOf(self.getData().getUser_id()));
         }
 
-        mHeaderView.setUserAvatar((self == null) ? "" : self.getData().getAvatar_url());
+        mHeaderView.setUserAvatar(self.getData().getAvatar_url());
         mPresenter.getGameInfo();
 
     }
@@ -90,6 +90,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         mBonusView = (BonusView) findViewById(R.id.lib_bonus_view);
         mIvAdImage = (ImageView) findViewById(R.id.lib_ad_image);
         mBtnLiveEnter = (Button) findViewById(R.id.lib_btn_live_enter);
+        mLibReviveLayout = (LinearLayout) findViewById(R.id.lib_layout_revive);
     }
 
     @Override
@@ -119,22 +120,27 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onAvatarClick() {
-        LibToast.showToast(this, "avatar click");
+        if (!UserManager.getInstance().isLogin(mContext)) {
+            AppManager.getInstance().goLogin(getSupportFragmentManager());
+        } else {
+            LibToast.showToast(this, "跳转用户详情");
+        }
+
     }
 
     @Override
     public void onLoginClick() {
-        LibToast.showToast(this, "登录赢钱按钮点击");
+        AppManager.getInstance().goLogin(getSupportFragmentManager());
     }
 
     @Override
     public void onApplyClick() {
-        LibToast.showToast(this, "立即报名");
+//        LibToast.showToast(this, "立即报名");
     }
 
     @Override
     public void onShreClick() {
-        LibToast.showToast(this, "邀请好友分享");
+        AppManager.getInstance().goShare(getSupportFragmentManager());
     }
 
     @Override
@@ -151,6 +157,8 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void updateInviteCode(InviteCode inviteCode) {
+
+        mLibReviveLayout.setVisibility(inviteCode.getCan_be_invited() ? View.GONE : View.VISIBLE);
 
         //保存邀请码
         SPUtils.put(this, SPConstant.KEY_INVITE_CODE, inviteCode.getInvite_code());
@@ -209,9 +217,9 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     public void onLibBtnClick(View v) {
         if (v.getId() == R.id.lib_ll_more_revive) {
-            LibToast.showToast(mContext, "复活卡点击");
+//            LibToast.showToast(mContext, "复活卡点击");
         } else if (v.getId() == R.id.lib_btn_share) {
-            LibToast.showToast(mContext, "分享好友点击");
+            AppManager.getInstance().goShare(getSupportFragmentManager());
         } else if (v.getId() == R.id.lib_btn_live_enter) {
             if (mGameInfo != null) {
                 String liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getMedium();

@@ -10,18 +10,18 @@ import android.widget.TextView;
 
 import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerGameInfoViewListener;
+import com.yilan.lib.playerlib.widget.LibCountDownTimer;
 
 
 /**
  * Created by chenshaolong on 2018/1/14.
  */
 
-public class PlayerGameInfoView extends FrameLayout implements View.OnClickListener{
-
-    private static final String TAG = PlayerGameInfoView.class.getSimpleName();
+public class PlayerGameInfoView extends FrameLayout implements View.OnClickListener {
 
     private Context mContext;
     private LayoutInflater mInflater;
+    LibCountDownTimer mTimer;
 
     TextView mTvBonus;
     TextView mTvBonusUnit;
@@ -29,8 +29,6 @@ public class PlayerGameInfoView extends FrameLayout implements View.OnClickListe
     TextView mTvStartTime;
     Button mBtnGetReviveCode;
     TextView mTvRule;
-
-    private int mBtnType = 1;  // 1 立即报名， 2.邀请好友，3登录才能赢钱
 
     OnPlayerGameInfoViewListener mListener;
 
@@ -62,7 +60,7 @@ public class PlayerGameInfoView extends FrameLayout implements View.OnClickListe
         setClickListener();
     }
 
-    void setClickListener(){
+    void setClickListener() {
         mBtnGetReviveCode.setOnClickListener(this);
         mTvRule.setOnClickListener(this);
     }
@@ -73,21 +71,45 @@ public class PlayerGameInfoView extends FrameLayout implements View.OnClickListe
     }
 
 
-    public void setGameInfo(int bonus, String unit, String gameDate, String gameTime){
+    public void setGameInfo(int bonus, String unit, String gameDate, int gameTime) {
         mTvBonus.setText(String.valueOf(bonus));
         mTvBonusUnit.setText(unit);
         mTvStartTimeLabel.setText(gameDate);
-        mTvStartTime.setText(gameTime);
+        startTimer(gameTime * 1000, 1000, mTvStartTime);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id == mBtnGetReviveCode.getId()){
+        if (id == mBtnGetReviveCode.getId()) {
             mListener.getReviveCode();
-        } else if(id == mTvRule.getId()){
+        } else if (id == mTvRule.getId()) {
             //活动规则
             mListener.goRule();
         }
     }
+
+    /**
+     * 开始倒计时
+     * @param millisInFuture  总时间
+     * @param intever  间隔时间
+     * @param textView
+     */
+    private void startTimer(long millisInFuture, long intever, TextView textView){
+        if(mTimer == null) {
+            mTimer = new LibCountDownTimer(millisInFuture, intever, textView);
+        }
+        mTimer.start();
+    }
+
+    /**
+     * 取消倒计时
+     */
+    public void cancelTimer(){
+        if(mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+    }
+
 }

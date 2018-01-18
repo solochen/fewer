@@ -27,11 +27,11 @@ public class Glides {
         return singleton;
     }
 
-    public void load(Context context, String url, ImageView view){
+    public void loadAvatar(Context context, String url, ImageView view){
         Glide.with(context)
                 .load(url)
                 .asBitmap()
-                .placeholder(R.mipmap.ic_lib_placeholder)
+                .placeholder(R.mipmap.ic_lib_avatar_default)
                 .transform(new CenterCrop(context), new CircleTransform(context))
                 .into(view);
     }

@@ -8,4 +8,6 @@
     <color name="lib_revive_btn_color">#FF2D55</color>
     <color name="lib_translate_color">#00000000</color>
 
+    <color name="lib_enter_live_color">#8F8F8F</color>
+
 </resources>

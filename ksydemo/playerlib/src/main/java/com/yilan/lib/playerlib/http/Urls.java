@@ -20,7 +20,7 @@ public class Urls {
 
 
     //获得邀请码和复活卡信息
-    public static final String INVITE_CODE = SERVER + "/get_invite_info";
+    public static final String INVITE_CODE = "https://virtserver.swaggerhub.com/wangcash/rich_man/1.0.0/get_invite_info";//SERVER + "/get_invite_info";
 
     //获得答题直播间信息
     public static final String GAME_INFO = "https://virtserver.swaggerhub.com/wangcash/rich_man/1.0.0/get_game_live";//SERVER + "/get_game_live";

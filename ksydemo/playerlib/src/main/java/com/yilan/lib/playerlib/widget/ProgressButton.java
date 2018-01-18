@@ -1,4 +1,4 @@
-package com.yilan.lib.playerlib.utils;
+package com.yilan.lib.playerlib.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
