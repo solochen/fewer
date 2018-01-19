@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:singleLine="true"
-        app:progressbtn_backgroud_color="@android:color/holo_blue_light"
-        app:progressbtn_backgroud_second_color="@android:color/white" />
+        app:progressbtn_backgroud_color="@color/lib_answer_progress_bg"
+        app:progressbtn_backgroud_second_color="@color/lib_answer_progress_second_bg" />
 
     <TextView
         android:id="@+id/lib_tv_progress_answer_option"
@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="25dp"
         android:gravity="center_vertical"
+        android:textColor="@color/lib_answer_progress_option_normal_color"
         tools:text="问题的答案"/>
 
     <TextView
@@ -28,6 +29,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:layout_marginRight="25dp"
+        android:textColor="@color/lib_answer_progress_option_selected_color"
         android:gravity="center_vertical"
         tools:text="28.5万"/>
 

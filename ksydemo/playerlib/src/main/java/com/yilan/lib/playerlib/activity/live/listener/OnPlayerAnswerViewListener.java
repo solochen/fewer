@@ -13,4 +13,16 @@ public interface OnPlayerAnswerViewListener {
      * @param optionSelect 当前选择的第一个
      */
     void onAnswerSelected( int questionCount, int optionSelect);
+
+    /**
+     * 通知关闭答题窗口，并设置是否可答题
+     * @param isWatch
+     */
+    void onDismissAnswerView(boolean isWatch);
+
+
+    /**
+     * 使用复活码
+     */
+    void useReviveCode();
 }

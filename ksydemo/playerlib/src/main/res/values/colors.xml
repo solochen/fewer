@@ -10,4 +10,11 @@
 
     <color name="lib_enter_live_color">#8F8F8F</color>
 
+    <color name="lib_answer_progress_bg">#33CCFF</color>
+    <color name="lib_answer_progress_error_bg">#FF2D55</color>
+    <color name="lib_answer_progress_second_bg">#F8F8F8</color>
+
+    <color name="lib_answer_progress_option_normal_color">#828282</color>
+    <color name="lib_answer_progress_option_highlight_color">#000</color>
+    <color name="lib_answer_progress_option_selected_color">#828282</color>
 </resources>

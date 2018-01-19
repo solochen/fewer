@@ -2,7 +2,6 @@ package com.yilan.lib.playerlib.RongCloud;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 
 import com.yilan.lib.playerlib.RongCloud.message.HTAnswerMessage;
@@ -11,6 +10,7 @@ import com.yilan.lib.playerlib.RongCloud.message.HTFinishMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTOnlookerMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTQuestionMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTResultMessage;
+import com.yilan.lib.playerlib.RongCloud.message.HTStartMessage;
 
 import io.rong.imlib.RongIMClient;
 
@@ -54,6 +54,7 @@ public class RcSingleton implements RongIMClient.ConnectionStatusListener{
             RongIMClient.registerMessageType(HTOnlookerMessage.class);
             RongIMClient.registerMessageType(HTResultMessage.class);
             RongIMClient.registerMessageType(HTQuestionMessage.class);
+            RongIMClient.registerMessageType(HTStartMessage.class);
         } catch (Exception e) {
         }
     }
@@ -70,18 +71,14 @@ public class RcSingleton implements RongIMClient.ConnectionStatusListener{
 
                     @Override
                     public void onSuccess(String userId) {
-                        Log.e("", userId);
                     }
 
                     @Override
                     public void onError(RongIMClient.ErrorCode code) {
-                        Log.e("", "");
                     }
 
                     @Override
                     public void onTokenIncorrect() {
-                        Log.e("", "");
-//                        connect();
                     }
                 });
             }

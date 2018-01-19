@@ -12,8 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.yilan.lib.playerlib.R;
+import com.yilan.lib.playerlib.global.AppManager;
 
 
 /**
@@ -30,6 +34,10 @@ public class LateDialog extends DialogFragment {
         f.setArguments(bundle);
         return f;
     }
+
+    ImageButton mCloseBtn;
+    Button mShareBtn;
+    Button mGoWatchBtn;
 
     @Override
     public void onAttach(Context context) {
@@ -49,13 +57,18 @@ public class LateDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mInflater = inflater;
         View view = inflater.inflate(R.layout.dialog_lib_late, container);
-//        mCustomPlayerView = (CustomPlayerView) view.findViewById(R.id.lib_custom_player_view);
+        mCloseBtn = (ImageButton) view.findViewById(R.id.lib_late_dig_close);
+        mShareBtn = (Button) view.findViewById(R.id.lib_late_dlg_btn_invite);
+        mGoWatchBtn = (Button) view.findViewById(R.id.lib_late_dlg_btn_watch);
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setClickListener();
 
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
@@ -71,7 +84,31 @@ public class LateDialog extends DialogFragment {
 
         getDialog().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-//        getDialog().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getDialog().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+
+    private void setClickListener(){
+        mCloseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        mShareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppManager.getInstance().goShare(getChildFragmentManager());
+            }
+        });
+
+        mGoWatchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
     @NonNull

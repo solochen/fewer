@@ -65,21 +65,27 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onMVPCreate() {
-
         mContext = this;
         EventBus.getDefault().register(this);
         setClickListener();
+        loadData();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    private void loadData(){
         Self self = UserManager.getInstance().getSelf(mContext);
         if (!UserManager.getInstance().isLogin(this)) {
             mBonusView.showLoginBtn();
         } else {
             mPresenter.getInviteInfo(String.valueOf(self.getData().getUser_id()));
         }
-
-        mHeaderView.setUserAvatar(self.getData().getAvatar_url());
         mPresenter.getGameInfo();
-
+        mHeaderView.setUserAvatar(self.getData().getAvatar_url());
     }
 
 
@@ -236,4 +242,6 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
             }
         }
     }
+
+
 }

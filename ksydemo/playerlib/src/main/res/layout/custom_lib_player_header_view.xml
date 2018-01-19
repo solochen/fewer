@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        tools:text="2130232人"
+        android:text="0人"
         android:textColor="#FFF"
         android:layout_toLeftOf="@+id/lib_btn_share"
         />
@@ -44,6 +44,7 @@
         android:id="@+id/lib_btn_share"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:background="@color/lib_translate_color"
         android:src="@mipmap/ic_lib_avatar_default"
         android:layout_alignParentRight="true"/>
 

@@ -2,13 +2,17 @@ package com.yilan.lib.playerlib.activity.live.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.ArrayMap;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,6 +25,7 @@ import com.yilan.lib.playerlib.RongCloud.message.HTFinishMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTOnlookerMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTQuestionMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTResultMessage;
+import com.yilan.lib.playerlib.RongCloud.message.HTStartMessage;
 import com.yilan.lib.playerlib.activity.live.dialog.LateDialog;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerAnswerViewListener;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerCommentViewListener;
@@ -39,6 +44,7 @@ import com.yilan.lib.playerlib.event.EBus;
 import com.yilan.lib.playerlib.event.LiveEvent;
 import com.yilan.lib.playerlib.event.RongEvent;
 import com.yilan.lib.playerlib.glide.Glides;
+import com.yilan.lib.playerlib.global.AnimHelper;
 import com.yilan.lib.playerlib.global.AppManager;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
@@ -70,14 +76,18 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     GameInfo mGameInfo;
 
     RelativeLayout mContainer;
-    View mContainerBg;
+    ImageView mContainerBg;
     PlayerHeaderView mHeaderView;
     PlayerAnswerView mAnswerView;
     PlayerCommentView mCommentView;
     PlayerGameInfoView mGameInfoView;
     Button mBtnLoginToAnswer;
 
-    boolean isWatching = true;      //是否在观战
+    boolean isWatching = false;      //是否在观战
+    boolean isUsedReviveCode = false; //是否本场使用过复活卡
+    int mReviveCount = 0; //复活卡数量
+    ArrayMap<Integer, Integer> mCurrentAnswerMap = new ArrayMap<>();
+
     private static final String KEY_GAME_INFO = "game_info";
 
     @Override
@@ -92,7 +102,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.frmt_lib_player_logic_toplayer, container, false);
         mContainer = (RelativeLayout) view.findViewById(R.id.lib_player_container);
-        mContainerBg = view.findViewById(R.id.lib_player_def_bg);
+        mContainerBg = (ImageView) view.findViewById(R.id.lib_player_def_bg);
         mHeaderView = (PlayerHeaderView) view.findViewById(R.id.lib_player_headerview);
         mAnswerView = (PlayerAnswerView) view.findViewById(R.id.lib_player_answer_view);
         mCommentView = (PlayerCommentView) view.findViewById(R.id.lib_player_playercommentview);
@@ -103,7 +113,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         return view;
     }
 
-    void setClickListener(){
+    void setClickListener() {
         mCommentView.setClickListener(this);
         mHeaderView.setClickListener(this);
         mGameInfoView.setClickListener(this);
@@ -135,37 +145,35 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         mPresenter.chatRoomStatusListener();
         mPresenter.joinChatRoom(mGameInfo.getLive().getLive_id());
         mPresenter.gameLiveEnter(String.valueOf(self.getData().getUser_id()), mGameInfo.getLive().getLive_id());
+
+        isUsedReviveCode = (boolean) SPUtils.get(mContext, mGameInfo.getLive().getLive_id(), false);
+        mReviveCount = (int) SPUtils.get(mContext, SPConstant.KEY_REVIVE_COUNT, 0);
+
         initSetGameInfo();
 
-
-//        HTQuestionMessage message = new HTQuestionMessage();
-//        message.setSec(10);
-//        message.setCount(1);
-//        message.setOptions(JSON.parseArray("[\n" +
-//                " \"就卡死极度疯狂\",\n" +
-//                "\"啊空间上大概了解阿三\",\n" +
-//                "\"啊水电费娃啊水电费\"\n" +
-//                "]", String.class));
-//        message.setText("1.看见了卡就算了快递费");
-//        message.setId("1123");
-//        message.setNumber(12);
-//        mAnswerView.setQuestion(message);
+        /**
+         * 设置高斯模糊背景图
+         */
+        Glides.getInstance()
+                .loadResBlur(mContext, mContainerBg, R.mipmap.bg_lib_default, 25);
     }
 
     /**
      * 设置直播信息
      */
-    void initSetGameInfo(){
-        if(mGameInfo.getStatus() == 0){        //开放
+    void initSetGameInfo() {
+        if (mGameInfo.getStatus() == 0) {        //开放
             updateGameInfo(mGameInfo,
                     CalculateUtils.formatBonus(mGameInfo.getBonus()),
                     CalculateUtils.formatBonusUnit(mGameInfo.getBonus()));
-        } else if(mGameInfo.getStatus() == 1){ //答题中
+        } else if (mGameInfo.getStatus() == 1) { //答题中
             onAnswerStatus();
         }
     }
 
-    /**------------------ view 层 点击事件 start -----------------------------**/
+    /**
+     * ------------------ view 层 点击事件 start -----------------------------
+     **/
 
     @Override
     public void onBackClick() {
@@ -174,7 +182,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
     @Override
     public void onBtnShareClick() {
-        //分享
+        AppManager.getInstance().goShare(getChildFragmentManager());
     }
 
     @Override
@@ -183,7 +191,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
          * 1. 未登录 弹窗提示登录
          * 2. 已登录 弹出评论框
          */
-        if(UserManager.getInstance().isLogin(mContext)){
+        if (UserManager.getInstance().isLogin(mContext)) {
             mCommentView.showCommentEdit();
         } else {
             AppManager.getInstance().goLogin(getChildFragmentManager());
@@ -213,15 +221,32 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
     @Override
     public void onAnswerSelected(int questionCount, int optionSelect) {
+        mCurrentAnswerMap.put(questionCount, optionSelect);
         long uid = UserManager.getInstance().getSelf(mContext).getData().getUser_id();
         mPresenter.sendAnswer(String.valueOf(uid), questionCount, optionSelect);
+    }
+
+    @Override
+    public void onDismissAnswerView(boolean isWatch) {
+        isWatching = isWatch;
+        mAnswerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void useReviveCode() {
+        isUsedReviveCode = true;
+        SPUtils.put(mContext, mGameInfo.getLive().getLive_id(), isUsedReviveCode);
+        mReviveCount = mReviveCount - 1;
+        SPUtils.put(mContext, SPConstant.KEY_REVIVE_COUNT, mReviveCount);
+
     }
 
     /**------------------ view 层 点击事件 end -----------------------------**/
 
 
-
-    /**------------------ presenter 层 回掉方法 start -----------------------------**/
+    /**
+     * ------------------ presenter 层 回掉方法 start -----------------------------
+     **/
 
 
     @Override
@@ -232,10 +257,19 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
     }
 
+
+    /**
+     * 开始答题隐藏
+     * 1. 倒计时和直播信息
+     * 2. 高斯模糊图
+     */
+
     @Override
     public void onAnswerStatus() {
+        mGameInfoView.cancelTimer();
         mGameInfoView.setVisibility(View.GONE);
-        if(!UserManager.getInstance().isLogin(mContext)) {
+        mContainerBg.setVisibility(View.GONE);
+        if (!UserManager.getInstance().isLogin(mContext)) {
             mBtnLoginToAnswer.setVisibility(View.VISIBLE);
         }
     }
@@ -248,7 +282,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     @Override
     public void setLiveEnterInfo(LiveEnterInfo info) {
         isWatching = (info.getIs_player() == 0) ? true : false;
-        if(isWatching) {
+        if (isWatching) {
             String localLiveid = (String) SPUtils.get(mContext, SPConstant.KEY_IS_TELL_USER_DIALOG, "");
             if (!localLiveid.equals(mGameInfo.getLive().getLive_id())) {
                 //弹窗提示，你来晚了
@@ -268,7 +302,11 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         isWatching = true;
     }
 
-    /**------------------ presenter 层 回掉方法 end -----------------------------**/
+
+
+    /**
+     * ------------------ presenter 层 回掉方法 end -----------------------------
+     **/
 
     @Override
     protected PlayerPresenter createPresenter() {
@@ -277,41 +315,55 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(RongEvent e){
+    public void onMessageEvent(RongEvent e) {
         MessageContent message = e.getMsg().getContent();
-        if(message instanceof HTCommentMessage){
 
+        if (message instanceof HTCommentMessage) {
             HTCommentMessage c = (HTCommentMessage) message;
             mCommentView.addComment(new Comment(c.getNickname(), c.getText()));
+        }
+        else if (message instanceof HTStartMessage) {
+            onAnswerStatus();
+        } else if (message instanceof HTOnlookerMessage) {
 
-        } else if(message instanceof HTOnlookerMessage){
+            HTOnlookerMessage onlookerMessage = (HTOnlookerMessage) message;
+            mHeaderView.setOnlineCount(onlookerMessage.getOnlookers());
 
-        } else if(message instanceof HTQuestionMessage){
-//            mGameInfoView.setVisibility(View.GONE);
-            mAnswerView.setQuestion((HTQuestionMessage) message);
+        } else if (message instanceof HTQuestionMessage) {
+
+            mAnswerView.setQuestion((HTQuestionMessage) message, isWatching);
             mAnswerView.setVisibility(View.VISIBLE);
 
-        } else if(message instanceof HTAnswerMessage){
+        } else if (message instanceof HTAnswerMessage) {
 
-            mAnswerView.setAnswer((HTAnswerMessage) message);
+            HTAnswerMessage answerMessage = (HTAnswerMessage) message;
+            int myAnswerOption = mCurrentAnswerMap.get(answerMessage.getCount());
+            mAnswerView.setAnswer(answerMessage, isWatching, myAnswerOption, isUsedReviveCode, mReviveCount);
+            mAnswerView.setVisibility(View.VISIBLE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(mAnswerView != null){
+                        mAnswerView.setVisibility(View.GONE);
+                    }
+                }
+            }, answerMessage.getSec() * 1000);
 
-        } else if(message instanceof HTResultMessage){
 
-        } else if(message instanceof HTFinishMessage){
+        } else if (message instanceof HTResultMessage) {
+
+        } else if (message instanceof HTFinishMessage) {
 
         }
-//        else if(){
-//            如果当前页面为开放状态，在答题开始的时候会收到融云消息
-//        }
     }
-
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mCurrentAnswerMap.clear();
         EventBus.getDefault().unregister(this);
-        if(mGameInfoView != null){
+        if (mGameInfoView != null) {
             mGameInfoView.cancelTimer();
         }
     }

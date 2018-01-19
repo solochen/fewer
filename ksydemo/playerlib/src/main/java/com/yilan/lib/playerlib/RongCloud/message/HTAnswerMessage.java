@@ -54,10 +54,10 @@ public class HTAnswerMessage extends MessageContent {
             }
 
             setQuestion_answer(jsonObj.getInt("question_answer"));
-            setCount(count);
-            setNumber(number);
-            setLosers(losers);
-            setSec(sec);
+            setCount(jsonObj.getInt("count"));
+            setNumber(jsonObj.getInt("number"));
+            setLosers(jsonObj.getInt("losers"));
+            setSec(jsonObj.getInt("sec"));
 
 
             if(jsonObj.has("user")){

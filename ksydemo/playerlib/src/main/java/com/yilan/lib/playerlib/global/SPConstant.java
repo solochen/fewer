@@ -12,6 +12,8 @@ public class SPConstant {
 
     public static final String KEY_REVIVE_COUNT = "key_revive_count";  //复活卡数量
 
+    public static final String KEY_IS_USE_REVIVE_CODE = "key_is_use_revive_code"; // 是否使用过复活卡
+
     public static final String KEY_IS_TELL_USER_DIALOG = "key_is_tell_user";  //当前场 是否已经弹出了 "已迟到" 弹窗
 
 

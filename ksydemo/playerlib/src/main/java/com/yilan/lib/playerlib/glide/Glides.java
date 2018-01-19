@@ -8,6 +8,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.yilan.lib.playerlib.R;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 /**
  * Created by chenshaolong on 2018/1/14.
  */
@@ -47,6 +49,13 @@ public class Glides {
         Glide.with(context)
                 .load(url)
                 .centerCrop()
+                .into(view);
+    }
+
+    public void loadResBlur(Context context, ImageView view, int resId, int radius){
+        Glide.with(context)
+                .load(resId)
+                .bitmapTransform(new CenterCrop(context), new BlurTransformation(context, radius))
                 .into(view);
     }
 
