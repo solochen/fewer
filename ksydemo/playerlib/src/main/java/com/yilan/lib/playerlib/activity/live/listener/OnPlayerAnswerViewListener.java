@@ -18,7 +18,9 @@ public interface OnPlayerAnswerViewListener {
      * 通知关闭答题窗口，并设置是否可答题
      * @param isWatch
      */
-    void onDismissAnswerView(boolean isWatch);
+    void onSetIsWatching(boolean isWatch);
+
+    void onShowLosersDialog(int losers);
 
 
     /**

@@ -17,7 +17,9 @@ import android.widget.RelativeLayout;
 import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerCommentViewListener;
 import com.yilan.lib.playerlib.activity.live.ui.adapter.CommentAdapter;
+import com.yilan.lib.playerlib.customview.CustomEditView;
 import com.yilan.lib.playerlib.data.Comment;
+import com.yilan.lib.playerlib.listener.OnEditViewClickListener;
 import com.yilan.lib.playerlib.utils.KeyBoardUtils;
 
 
@@ -25,7 +27,7 @@ import com.yilan.lib.playerlib.utils.KeyBoardUtils;
  * Created by chenshaolong on 2018/1/14.
  */
 
-public class PlayerCommentView extends FrameLayout {
+public class PlayerCommentView extends FrameLayout implements OnEditViewClickListener {
 
     private static final String TAG = PlayerCommentView.class.getSimpleName();
 
@@ -35,9 +37,7 @@ public class PlayerCommentView extends FrameLayout {
     RecyclerView mPlayerCommentView;
     EditText mPlayerCommentText;
     ImageButton mBtnShowComment;
-    EditText mEtInputComment;
-    ImageButton mBtnSendComment;
-    RelativeLayout mPlayerEditLayout;
+    CustomEditView mEtCommentView;
 
     CommentAdapter mCommentAdapter;
     LinearLayoutManager mLinearLayoutManager;
@@ -65,9 +65,8 @@ public class PlayerCommentView extends FrameLayout {
         mPlayerCommentView = (RecyclerView) findViewById(R.id.lib_player_comment_recyclerview);
         mPlayerCommentText = (EditText) findViewById(R.id.lib_player_comment);
         mBtnShowComment = (ImageButton) findViewById(R.id.lib_player_btn_show_comment);
-        mEtInputComment = (EditText) findViewById(R.id.lib_player_comment);
-        mBtnSendComment = (ImageButton) findViewById(R.id.lib_player_btn_send);
-        mPlayerEditLayout = (RelativeLayout) findViewById(R.id.lib_player_edit_layout);
+        mEtCommentView = (CustomEditView) findViewById(R.id.et_input_view);
+        mPlayerCommentText.setBackgroundResource(R.color.lib_translate_color);
         setClickListener();
         setAdapter();
     }
@@ -79,38 +78,18 @@ public class PlayerCommentView extends FrameLayout {
                 mListener.showCommentEditView();
             }
         });
-
-        mBtnSendComment.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendComment();
-            }
-        });
-
-        mEtInputComment.setOnKeyListener(new OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                        sendComment();
-                    }
-                }
-                return false;
-            }
-        });
     }
 
-    void sendComment(){
-        mListener.onSendComment(mEtInputComment.getText().toString());
-        mEtInputComment.setText("");
-        hideKeyboary();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }, 300);
+    @Override
+    public void onCommentSend(String content) {
+        mListener.onSendComment(content);
     }
+
+    @Override
+    public void onHideOther() {
+        mBtnShowComment.setVisibility(View.VISIBLE);
+    }
+
 
     void setAdapter(){
         mLinearLayoutManager = new LinearLayoutManager(mContext);
@@ -122,10 +101,9 @@ public class PlayerCommentView extends FrameLayout {
     }
 
     public void showCommentEdit(){
-        mEtInputComment.requestFocus();
+        mEtCommentView.showEditView();
+        mEtCommentView.setVisibility(View.VISIBLE);
         mBtnShowComment.setVisibility(View.INVISIBLE);
-        mPlayerEditLayout.setVisibility(View.VISIBLE);
-        KeyBoardUtils.openKeybord(mEtInputComment, mContext);
     }
 
     public void addComment(Comment comment){
@@ -149,17 +127,10 @@ public class PlayerCommentView extends FrameLayout {
         }
     }
 
-    public void hideKeyboary(){
-        KeyBoardUtils.closeKeybord(mEtInputComment, mContext);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mBtnShowComment.setVisibility(View.VISIBLE);
-                mPlayerEditLayout.setVisibility(View.GONE);
-            }
-        }, 300);
-    }
 
+    public void hideKeyboary(){
+        mEtCommentView.hideKeyboary();
+    }
 
     public void setClickListener(OnPlayerCommentViewListener listener) {
         mListener = listener;

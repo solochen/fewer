@@ -12,9 +12,16 @@
 
     <string name="btn_lib_input_code">填写好友邀请码</string>
 
-    <string name="btn_lib_late_dlg_invite">邀请好友围观</string>
     <string name="btn_lib_get_more_code">获得复活卡</string>
     <string name="btn_lib_login_to_answer">登录答题</string>
 
+    <string name="dlg_lib_loser_title">你打败了&#160;%s&#160;人</string>
+    <string name="dlg_lib_loser_content">非常棒的记录，快去分享你的战绩给好友吧！</string>
+    <string name="dlg_lib_loser_btn">分享战绩得复活卡</string>
 
+    <string name="dlg_lib_late_title">你迟到了</string>
+    <string name="dlg_lib_late_content">游戏已经开始，你无法加入本场游戏，但仍然可以继续围观和评论</string>
+    <string name="dlg_lib_late_btn">邀请好友围观</string>
+
+    <string name="dlg_lib_continue">继续观看</string>
 </resources>

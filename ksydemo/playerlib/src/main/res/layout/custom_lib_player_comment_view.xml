@@ -36,43 +36,9 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/lib_player_edit_layout"
+    <com.yilan.lib.playerlib.customview.CustomEditView
+        android:id="@+id/et_input_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="5dp"
-        android:background="@drawable/lib_white_radius_btn_bg"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <EditText
-            android:id="@+id/lib_player_comment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/lib_translate_color"
-            android:layout_toLeftOf="@+id/lib_player_btn_send"
-            android:singleLine="true"
-            android:gravity="center_vertical"
-            android:imeOptions="actionSend"
-            android:longClickable="false"
-            android:maxLines="1"
-            android:textColor="#000"
-            android:textCursorDrawable="@null"
-            android:textSize="16sp" />
-
-        <ImageButton
-            android:id="@+id/lib_player_btn_send"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:scaleType="fitXY"
-            android:background="@color/lib_translate_color"
-            android:src="@mipmap/ic_lib_send" />
-
-    </RelativeLayout>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

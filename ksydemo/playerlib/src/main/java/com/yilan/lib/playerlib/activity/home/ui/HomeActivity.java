@@ -13,6 +13,7 @@ import com.yilan.lib.playerlib.activity.home.listener.OnBonusViewClickListener;
 import com.yilan.lib.playerlib.activity.home.presenter.HomePresenter;
 import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
 import com.yilan.lib.playerlib.customview.BonusView;
+import com.yilan.lib.playerlib.customview.CustomEditView;
 import com.yilan.lib.playerlib.customview.HeaderView;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.InviteCode;
@@ -22,6 +23,7 @@ import com.yilan.lib.playerlib.glide.Glides;
 import com.yilan.lib.playerlib.global.AppManager;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
+import com.yilan.lib.playerlib.listener.OnEditViewClickListener;
 import com.yilan.lib.playerlib.listener.OnHeaderViewClickListener;
 import com.yilan.lib.playerlib.mvp.MVPBaseActivity;
 import com.yilan.lib.playerlib.utils.LibToast;
@@ -39,7 +41,8 @@ import org.greenrobot.eventbus.ThreadMode;
 public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> implements
         IHomeView,
         OnHeaderViewClickListener,
-        OnBonusViewClickListener {
+        OnBonusViewClickListener,
+        OnEditViewClickListener {
 
 
     Context mContext;
@@ -49,6 +52,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     BonusView mBonusView;
     ImageView mIvAdImage;
     Button mBtnLiveEnter;
+    CustomEditView mEtCustomView;
     LinearLayout mLibReviveLayout;
 
     GameInfo mGameInfo;
@@ -96,6 +100,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         mBonusView = (BonusView) findViewById(R.id.lib_bonus_view);
         mIvAdImage = (ImageView) findViewById(R.id.lib_ad_image);
         mBtnLiveEnter = (Button) findViewById(R.id.lib_btn_live_enter);
+        mEtCustomView = (CustomEditView) findViewById(R.id.lib_home_custom_edit_view);
         mLibReviveLayout = (LinearLayout) findViewById(R.id.lib_layout_revive);
     }
 
@@ -151,7 +156,19 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onGetInviteCodeClick() {
-        LibToast.showToast(this, "输入邀请码按钮点击");
+        mEtCustomView.showEditView();
+        mEtCustomView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onCommentSend(String content) {
+        mPresenter.useInveteCode(
+                UserManager.getInstance().getSelf(mContext).getData().getUser_id(), content);
+    }
+
+    @Override
+    public void onHideOther() {
+
     }
 
     /**------------- 自定义 view 层点击事件 end ---------------**/

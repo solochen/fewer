@@ -18,27 +18,29 @@ import android.widget.TextView;
 
 import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.global.AppManager;
+import com.yilan.lib.playerlib.utils.StringsUtils;
 
 
 /**
  * Created by chenshaolong on 2018/1/12.
  */
-public class LateDialog extends DialogFragment {
+public class LosersDialog extends DialogFragment {
 
-
-    TextView mTvTitle;
-    TextView mTvContent;
+    private static final String KEY_LOSERS = "key_losers";
 
     Context mContext;
     LayoutInflater mInflater;
 
-    public static LateDialog newInstance() {
-        LateDialog f = new LateDialog();
+    public static LosersDialog newInstance(int losers) {
+        LosersDialog f = new LosersDialog();
         Bundle bundle = new Bundle();
+        bundle.putInt(KEY_LOSERS, losers);
         f.setArguments(bundle);
         return f;
     }
 
+    TextView mTvTitle;
+    TextView mTvContent;
     ImageButton mCloseBtn;
     Button mShareBtn;
     Button mGoWatchBtn;
@@ -59,7 +61,7 @@ public class LateDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mInflater = inflater;
-        View view = inflater.inflate(R.layout.dialog_lib_late, container);
+        View view = inflater.inflate(R.layout.dialog_lib_losers, container);
         mTvTitle = (TextView) view.findViewById(R.id.lib_late_dlg_title);
         mTvContent = (TextView) view.findViewById(R.id.lib_late_dlg_msg);
         mCloseBtn = (ImageButton) view.findViewById(R.id.lib_late_dig_close);
@@ -72,6 +74,8 @@ public class LateDialog extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        int losers = getArguments().getInt(KEY_LOSERS);
+        mTvTitle.setText(StringsUtils.formateStr(mContext, R.string.dlg_lib_loser_title, losers));
 
         setClickListener();
 

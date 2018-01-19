@@ -37,7 +37,7 @@
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
             android:layout_below="@+id/lib_late_dig_ic"
-            android:text="@string/dlg_lib_late_title"/>
+            android:text="@string/dlg_lib_loser_title"/>
 
         <TextView
             android:id="@+id/lib_late_dlg_msg"
@@ -50,7 +50,7 @@
             android:gravity="center_horizontal"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/lib_late_dlg_title"
-            android:text="@string/dlg_lib_late_content"/>
+            android:text="@string/dlg_lib_loser_content"/>
 
 
         <Button
@@ -68,7 +68,7 @@
             android:textSize="16sp"
             android:layout_below="@+id/lib_late_dlg_msg"
             android:background="@drawable/lib_share_btn_bg"
-            android:text="@string/dlg_lib_late_btn"
+            android:text="@string/dlg_lib_loser_btn"
             android:visibility="visible"/>
 
         <Button

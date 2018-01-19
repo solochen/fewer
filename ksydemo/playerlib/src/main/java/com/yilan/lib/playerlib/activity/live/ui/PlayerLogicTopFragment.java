@@ -27,6 +27,7 @@ import com.yilan.lib.playerlib.RongCloud.message.HTQuestionMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTResultMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTStartMessage;
 import com.yilan.lib.playerlib.activity.live.dialog.LateDialog;
+import com.yilan.lib.playerlib.activity.live.dialog.LosersDialog;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerAnswerViewListener;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerCommentViewListener;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerGameInfoViewListener;
@@ -227,9 +228,13 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     }
 
     @Override
-    public void onDismissAnswerView(boolean isWatch) {
+    public void onSetIsWatching(boolean isWatch) {
         isWatching = isWatch;
-        mAnswerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onShowLosersDialog(int losers) {
+        LosersDialog.newInstance(losers).show(getChildFragmentManager(), "losers_dialog");
     }
 
     @Override
@@ -353,7 +358,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         } else if (message instanceof HTResultMessage) {
 
         } else if (message instanceof HTFinishMessage) {
-
+            EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));
         }
     }
 

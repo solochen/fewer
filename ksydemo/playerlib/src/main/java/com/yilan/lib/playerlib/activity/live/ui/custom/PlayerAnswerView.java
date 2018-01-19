@@ -168,7 +168,7 @@ public class PlayerAnswerView extends FrameLayout {
      *
      * @param msg
      */
-    public void setAnswer(HTAnswerMessage msg, boolean isWatching, int myAnswerOption, boolean isUsedReviveCode, int reviveCount) {
+    public void setAnswer(final HTAnswerMessage msg, boolean isWatching, int myAnswerOption, boolean isUsedReviveCode, int reviveCount) {
         resetView();
         if (isWatching) {
             mCountDownLayout.setVisibility(View.GONE);      //隐藏 倒计时
@@ -196,7 +196,17 @@ public class PlayerAnswerView extends FrameLayout {
                 }, 2000);
 
             } else {
-                //1. 打败多少人 2.isWatching = true
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(mListener != null) {
+                            mListener.onSetIsWatching(true);
+                            mListener.onShowLosersDialog(msg.getLosers());
+                            //1. 打败多少人 2.isWatching = true
+                        }
+                    }
+                }, 2000);
+
             }
 
             mIvAnswerError.setImageResource(R.mipmap.ic_lib_error);
@@ -291,7 +301,8 @@ public class PlayerAnswerView extends FrameLayout {
                     boolean isWatching = mCurrentQuestionIsAnswered ? false : true;
                     try {
                         Thread.sleep(1500);
-                        mListener.onDismissAnswerView(isWatching);
+                        setVisibility(GONE);
+                        mListener.onSetIsWatching(isWatching);
                     } catch (Exception e) {
 
                     }

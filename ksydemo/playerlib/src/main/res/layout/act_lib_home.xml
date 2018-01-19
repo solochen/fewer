@@ -129,6 +129,13 @@
 
     </LinearLayout>
 
+
+    <com.yilan.lib.playerlib.customview.CustomEditView
+        android:id="@+id/lib_home_custom_edit_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/lib_layout_bottom"
         android:layout_width="wrap_content"

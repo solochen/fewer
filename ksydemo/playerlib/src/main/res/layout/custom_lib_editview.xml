@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:background="@drawable/lib_white_radius_btn_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="5dp"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <EditText
+        android:id="@+id/lib_player_comment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/lib_player_btn_send"
+        android:gravity="center_vertical"
+        android:imeOptions="actionSend"
+        android:longClickable="false"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#000"
+        android:textCursorDrawable="@null"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/lib_player_btn_send"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@color/lib_translate_color"
+        android:scaleType="fitXY"
+        android:src="@mipmap/ic_lib_send" />
+
+</RelativeLayout>

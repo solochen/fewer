@@ -142,5 +142,28 @@ public class HomePresenter extends MVPBasePresenter<IHomeView> {
 //        });
     }
 
+    /**
+     * 使用邀请码
+     * @param uid
+     * @param code
+     */
+    public void useInveteCode(long uid, String code){
+        mHomeModel.useInviteCode(String.valueOf(uid), code, new ResponseCallback() {
+            @Override
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
+    }
 
 }
