@@ -34,6 +34,14 @@
         android:layout_below="@+id/lib_player_headerview"
          />
 
+
+    <com.yilan.lib.playerlib.activity.live.ui.custom.PlayerWinnerView
+        android:id="@+id/lib_player_winner_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"/>
+
+
     <Button
         android:id="@+id/lib_btn_login_to_answer"
         android:layout_width="match_parent"

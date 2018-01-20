@@ -1,4 +1,4 @@
-package com.yilan.lib.playerlib.customview;
+package com.yilan.lib.playerlib.activity.home.ui.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -17,9 +17,9 @@ import com.yilan.lib.playerlib.listener.OnHeaderViewClickListener;
  * Created by chenshaolong on 2018/1/14.
  */
 
-public class HeaderView extends FrameLayout {
+public class HomeHeaderView extends FrameLayout {
 
-    private static final String TAG = HeaderView.class.getSimpleName();
+    private static final String TAG = HomeHeaderView.class.getSimpleName();
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -29,17 +29,17 @@ public class HeaderView extends FrameLayout {
 
     OnHeaderViewClickListener mListener;
 
-    public HeaderView(Context context) {
+    public HomeHeaderView(Context context) {
         super(context);
         init(context);
     }
 
-    public HeaderView(Context context, AttributeSet attrs) {
+    public HomeHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public HeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HomeHeaderView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

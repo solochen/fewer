@@ -46,6 +46,23 @@ public class CalculateUtils {
     }
 
 
+    /**
+     * 四舍五入格式化下取整，保留N 位
+     * @param d
+     * @return
+     */
+    public static double formatHalfDown(double d, int maxDigit) {
+        DecimalFormatSymbols formatSymbols = DecimalFormatSymbols.getInstance(Locale.US);
+        formatSymbols.setDecimalSeparator('.');
+        DecimalFormat formater = new DecimalFormat();
+        formater.setMaximumFractionDigits(maxDigit);
+        formater.setGroupingSize(0);
+        formater.setRoundingMode(RoundingMode.HALF_DOWN);
+        formater.setDecimalFormatSymbols(formatSymbols);
+        return Double.valueOf(formater.format(d));
+    }
+
+
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);

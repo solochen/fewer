@@ -9,12 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yilan.lib.playerlib.R;
+import com.yilan.lib.playerlib.Test;
 import com.yilan.lib.playerlib.activity.home.listener.OnBonusViewClickListener;
 import com.yilan.lib.playerlib.activity.home.presenter.HomePresenter;
 import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
-import com.yilan.lib.playerlib.customview.BonusView;
-import com.yilan.lib.playerlib.customview.CustomEditView;
-import com.yilan.lib.playerlib.customview.HeaderView;
+import com.yilan.lib.playerlib.activity.home.ui.custom.GameInfoView;
+import com.yilan.lib.playerlib.widget.CustomEditView;
+import com.yilan.lib.playerlib.activity.home.ui.custom.HomeHeaderView;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.data.Self;
@@ -48,8 +49,8 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     Context mContext;
 
     TextView mTvReviveCount;
-    HeaderView mHeaderView;
-    BonusView mBonusView;
+    HomeHeaderView mHeaderView;
+    GameInfoView mBonusView;
     ImageView mIvAdImage;
     Button mBtnLiveEnter;
     CustomEditView mEtCustomView;
@@ -96,8 +97,8 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     @Override
     public void initView() {
         mTvReviveCount = (TextView) findViewById(R.id.lib_tv_revive_count);
-        mHeaderView = (HeaderView) findViewById(R.id.lib_header_view);
-        mBonusView = (BonusView) findViewById(R.id.lib_bonus_view);
+        mHeaderView = (HomeHeaderView) findViewById(R.id.lib_header_view);
+        mBonusView = (GameInfoView) findViewById(R.id.lib_bonus_view);
         mIvAdImage = (ImageView) findViewById(R.id.lib_ad_image);
         mBtnLiveEnter = (Button) findViewById(R.id.lib_btn_live_enter);
         mEtCustomView = (CustomEditView) findViewById(R.id.lib_home_custom_edit_view);
@@ -118,6 +119,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     private void setClickListener() {
         mHeaderView.setClickListener(this);
         mBonusView.setClickListener(this);
+        mEtCustomView.setClickListener(this);
     }
 
     /**
@@ -126,7 +128,9 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onBackClick() {
-        finish();
+        Test test = Test.getInstance();
+        test.share();
+//        finish();
     }
 
     @Override
@@ -162,13 +166,13 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onCommentSend(String content) {
-        mPresenter.useInveteCode(
+        mPresenter.useInviteCode(
                 UserManager.getInstance().getSelf(mContext).getData().getUser_id(), content);
     }
 
     @Override
     public void onHideOther() {
-
+        mEtCustomView.setVisibility(View.GONE);
     }
 
     /**------------- 自定义 view 层点击事件 end ---------------**/
@@ -215,6 +219,14 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         mBonusView.updateGameInfo(displayBonus, displayUnit,
                 gameInfo.getGame_date(), gameInfo.getGame_time());
 
+    }
+
+    @Override
+    public void updateInviteCode(int inviteCode) {
+        //保存复活卡数量
+        SPUtils.put(mContext, SPConstant.KEY_REVIVE_COUNT, inviteCode);
+        //显示复活卡数量
+        mTvReviveCount.setText(String.valueOf(inviteCode));
     }
 
     /**

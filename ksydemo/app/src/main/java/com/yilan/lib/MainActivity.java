@@ -5,11 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.yilan.lib.playerlib.RongCloud.RcSingleton;
+import com.yilan.lib.playerlib.Test;
 import com.yilan.lib.playerlib.activity.home.ui.HomeActivity;
-import com.yilan.lib.playerlib.global.AppManager;
-import com.yilan.lib.playerlib.global.RouterConstant;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
 import com.yilan.lib.playerlib.utils.SPUtils;
@@ -36,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
 //                ARouter.getInstance().build(RouterConstant.HOME_REDIRECT_PATH)
 ////                        .withString(RouterConstant.HOME_REDIRECT_PARAMS_TOKEN, "chenshaolong123")
 //                        .navigation();
+
+                Test.getInstance().setListenr(new Test.Listener() {
+                    @Override
+                    public void share() {
+                        LoginDialog.newInstance().show(getSupportFragmentManager(), "");
+                    }
+                });
+
                 HomeActivity.startActivity(this);
                 break;
 

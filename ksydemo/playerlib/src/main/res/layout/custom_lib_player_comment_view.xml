@@ -36,9 +36,10 @@
     </RelativeLayout>
 
 
-    <com.yilan.lib.playerlib.customview.CustomEditView
+    <com.yilan.lib.playerlib.widget.CustomEditView
         android:id="@+id/et_input_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
 </LinearLayout>

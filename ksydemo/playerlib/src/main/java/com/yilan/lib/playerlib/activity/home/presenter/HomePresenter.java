@@ -1,11 +1,13 @@
 package com.yilan.lib.playerlib.activity.home.presenter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.activity.home.model.HomeModelImpl;
 import com.yilan.lib.playerlib.activity.home.model.IHomeModel;
 import com.yilan.lib.playerlib.activity.home.ui.IHomeView;
+import com.yilan.lib.playerlib.data.UseInviteCode;
 import com.yilan.lib.playerlib.http.OkGoHttp;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
 import com.yilan.lib.playerlib.mvp.MVPBasePresenter;
@@ -147,11 +149,20 @@ public class HomePresenter extends MVPBasePresenter<IHomeView> {
      * @param uid
      * @param code
      */
-    public void useInveteCode(long uid, String code){
+    public void useInviteCode(long uid, String code){
         mHomeModel.useInviteCode(String.valueOf(uid), code, new ResponseCallback() {
             @Override
             public void onSuccess(String s) {
+                try {
+                    UseInviteCode inviteCode = JSON.parseObject(s, UseInviteCode.class);
+                    if(inviteCode.success()) {
+                        mHomeView.updateInviteCode(inviteCode.getRevive_count());
+                    } else {
 
+                    }
+                }catch (Exception e){
+
+                }
             }
 
             @Override

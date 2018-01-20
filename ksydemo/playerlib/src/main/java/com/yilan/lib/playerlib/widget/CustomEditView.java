@@ -1,4 +1,4 @@
-package com.yilan.lib.playerlib.customview;
+package com.yilan.lib.playerlib.widget;
 
 import android.content.Context;
 import android.os.Handler;
@@ -54,6 +54,7 @@ public class CustomEditView extends FrameLayout {
         mInflater.inflate(R.layout.custom_lib_editview, this);
         mBtnSend = (ImageButton) findViewById(R.id.lib_player_btn_send);
         mEtComment = (EditText) findViewById(R.id.lib_player_comment);
+        mEtComment.setBackgroundResource(R.color.lib_translate_color);
         setClickListener();
 
     }
@@ -75,7 +76,7 @@ public class CustomEditView extends FrameLayout {
                         sendComment();
                     }
                 }
-                return false;
+                return true;
             }
         });
 
@@ -83,6 +84,7 @@ public class CustomEditView extends FrameLayout {
     }
 
     public void showEditView(){
+        mEtComment.requestFocus();
         KeyBoardUtils.openKeybord(mEtComment, mContext);
     }
 
@@ -96,12 +98,6 @@ public class CustomEditView extends FrameLayout {
         mListener.onCommentSend(content);
         mEtComment.setText("");
         hideKeyboary();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }, 300);
     }
 
     public void hideKeyboary(){
@@ -110,7 +106,6 @@ public class CustomEditView extends FrameLayout {
             @Override
             public void run() {
                 mListener.onHideOther();
-                setVisibility(GONE);
             }
         }, 300);
     }

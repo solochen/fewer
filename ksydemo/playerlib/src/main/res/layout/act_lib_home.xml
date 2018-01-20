@@ -42,13 +42,13 @@
 
     </FrameLayout>
 
-    <com.yilan.lib.playerlib.customview.HeaderView
+    <com.yilan.lib.playerlib.activity.home.ui.custom.HomeHeaderView
         android:id="@+id/lib_header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 
-    <com.yilan.lib.playerlib.customview.BonusView
+    <com.yilan.lib.playerlib.activity.home.ui.custom.GameInfoView
         android:id="@+id/lib_bonus_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -130,10 +130,11 @@
     </LinearLayout>
 
 
-    <com.yilan.lib.playerlib.customview.CustomEditView
+    <com.yilan.lib.playerlib.widget.CustomEditView
         android:id="@+id/lib_home_custom_edit_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/lib_layout_bottom"
         android:visibility="gone"/>
 
     <LinearLayout

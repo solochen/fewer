@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <com.yilan.lib.playerlib.widget.CustomRecycleView
+        android:id="@+id/lib_player_winner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lib_translate_color"
+        android:cacheColorHint="@color/lib_translate_color"
+        android:divider="@color/lib_translate_color"
+        android:fadingEdgeLength="10dp"
+        android:listSelector="@color/lib_translate_color"
+        android:requiresFadingEdge="vertical" />
+
+</FrameLayout>

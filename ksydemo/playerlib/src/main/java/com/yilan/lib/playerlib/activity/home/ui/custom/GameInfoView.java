@@ -1,4 +1,4 @@
-package com.yilan.lib.playerlib.customview;
+package com.yilan.lib.playerlib.activity.home.ui.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,9 +16,9 @@ import com.yilan.lib.playerlib.activity.home.listener.OnBonusViewClickListener;
  * Created by chenshaolong on 2018/1/14.
  */
 
-public class BonusView extends FrameLayout implements View.OnClickListener{
+public class GameInfoView extends FrameLayout implements View.OnClickListener{
 
-    private static final String TAG = BonusView.class.getSimpleName();
+    private static final String TAG = GameInfoView.class.getSimpleName();
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -35,17 +35,17 @@ public class BonusView extends FrameLayout implements View.OnClickListener{
 
     OnBonusViewClickListener mListener;
 
-    public BonusView(Context context) {
+    public GameInfoView(Context context) {
         super(context);
         init(context);
     }
 
-    public BonusView(Context context, AttributeSet attrs) {
+    public GameInfoView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public BonusView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public GameInfoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

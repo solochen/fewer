@@ -2,25 +2,21 @@ package com.yilan.lib.playerlib.activity.live.ui.custom;
 
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 
 import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerCommentViewListener;
 import com.yilan.lib.playerlib.activity.live.ui.adapter.CommentAdapter;
-import com.yilan.lib.playerlib.customview.CustomEditView;
+import com.yilan.lib.playerlib.widget.CustomEditView;
 import com.yilan.lib.playerlib.data.Comment;
 import com.yilan.lib.playerlib.listener.OnEditViewClickListener;
-import com.yilan.lib.playerlib.utils.KeyBoardUtils;
 
 
 /**
@@ -72,6 +68,7 @@ public class PlayerCommentView extends FrameLayout implements OnEditViewClickLis
     }
 
     void setClickListener(){
+        mEtCommentView.setClickListener(this);
         mBtnShowComment.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +85,7 @@ public class PlayerCommentView extends FrameLayout implements OnEditViewClickLis
     @Override
     public void onHideOther() {
         mBtnShowComment.setVisibility(View.VISIBLE);
+        mEtCommentView.setVisibility(View.GONE);
     }
 
 

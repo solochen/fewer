@@ -8,7 +8,6 @@
     android:background="@drawable/lib_white_radius_btn_bg"
     android:paddingLeft="20dp"
     android:paddingRight="5dp"
-    android:visibility="gone"
     tools:visibility="visible">
 
     <EditText

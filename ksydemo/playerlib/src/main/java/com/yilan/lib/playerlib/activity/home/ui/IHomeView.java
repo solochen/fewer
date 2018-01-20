@@ -17,4 +17,6 @@ public interface IHomeView {
 
     void liveOpen();
 
+    void updateInviteCode(int inviteCode);
+
 }

@@ -37,6 +37,7 @@ import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerAnswerView;
 import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerGameInfoView;
 import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerCommentView;
 import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerHeaderView;
+import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerWinnerView;
 import com.yilan.lib.playerlib.data.Comment;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.LiveEnterInfo;
@@ -82,6 +83,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     PlayerAnswerView mAnswerView;
     PlayerCommentView mCommentView;
     PlayerGameInfoView mGameInfoView;
+    PlayerWinnerView mWinnerView;
     Button mBtnLoginToAnswer;
 
     boolean isWatching = false;      //是否在观战
@@ -109,6 +111,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         mCommentView = (PlayerCommentView) view.findViewById(R.id.lib_player_playercommentview);
         mGameInfoView = (PlayerGameInfoView) view.findViewById(R.id.lib_player_game_info_view);
         mBtnLoginToAnswer = (Button) view.findViewById(R.id.lib_btn_login_to_answer);
+        mWinnerView = (PlayerWinnerView) view.findViewById(R.id.lib_player_winner_view);
 
         setClickListener();
         return view;
@@ -209,7 +212,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
     @Override
     public void getReviveCode() {
-        //获取复活卡  分享
+        AppManager.getInstance().goShare(getChildFragmentManager());
     }
 
     @Override
