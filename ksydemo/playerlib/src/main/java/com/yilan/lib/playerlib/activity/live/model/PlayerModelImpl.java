@@ -43,6 +43,11 @@ public class PlayerModelImpl implements IPlayerModel {
     }
 
     @Override
+    public void getWinnerList(String uid, ResponseCallback callback) {
+        ApiLive.getGameLiveResult(uid, callback);
+    }
+
+    @Override
     public void joinChatRoom(String liveId){
         RongIMClient.getInstance().joinChatRoom(liveId, -1, new RongIMClient.OperationCallback() {
             @Override
@@ -92,5 +97,7 @@ public class PlayerModelImpl implements IPlayerModel {
             }
         });
     }
+
+
 
 }

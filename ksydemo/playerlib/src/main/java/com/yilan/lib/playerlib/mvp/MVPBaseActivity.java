@@ -1,7 +1,5 @@
 package com.yilan.lib.playerlib.mvp;
 
-import android.os.Bundle;
-
 import com.yilan.lib.playerlib.global.BaseActivity;
 
 

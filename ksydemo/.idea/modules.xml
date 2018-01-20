@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/ksydemo.iml" filepath="$PROJECT_DIR$/ksydemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/playerlib/playerlib.iml" filepath="$PROJECT_DIR$/playerlib/playerlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sharelib/sharelib.iml" filepath="$PROJECT_DIR$/sharelib/sharelib.iml" />
     </modules>
   </component>
 </project>

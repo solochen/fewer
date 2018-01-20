@@ -25,4 +25,6 @@ public interface IPlayerModel {
     void quitChatRoom(String liveId);
 
     void chatRoomStatusListener(OnChatRoomStatusCallback callback);
+
+    void getWinnerList(String uid, ResponseCallback callback);
 }

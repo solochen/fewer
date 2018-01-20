@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="100dp"
     android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/iv_avatar"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="100dp"
         tools:src="@mipmap/ic_lib_error" />
 
@@ -16,13 +17,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        android:singleLine="true"
         android:gravity="center_horizontal"
         android:textColor="#FFF"
         android:textSize="18sp"
         tools:text="小六六流" />
 
     <TextView
-        android:id="@+id/iv_bonus"
+        android:id="@+id/tv_bonus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"

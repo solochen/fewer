@@ -11,6 +11,7 @@ import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.event.EBus;
 import com.yilan.lib.playerlib.event.LiveEvent;
 import com.yilan.lib.playerlib.global.BaseActivity;
+import com.yilan.lib.playerlib.utils.HideUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -23,6 +24,7 @@ public class PlayerActivity extends BaseActivity{
 
     private static final String KEY_URL = "liveUrl";
     private static final String KEY_GAME_INFO = "game_info";
+
 
     public static void startActivity(Context context, GameInfo info, String url) {
         Intent mIntent = new Intent(context, PlayerActivity.class);
@@ -44,8 +46,10 @@ public class PlayerActivity extends BaseActivity{
 
     }
 
+
     @Override
     public void onCreate() {
+        HideUtil.init(this);
         EBus.register(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -60,7 +64,6 @@ public class PlayerActivity extends BaseActivity{
 
         PlayerLogicDialogFragment.newInstance(gameInfo)
                 .show(getSupportFragmentManager(), "PlayerLogicDialogFragment");
-
     }
 
 
@@ -71,6 +74,7 @@ public class PlayerActivity extends BaseActivity{
         mPlayerFragment.setArguments(bundle);
         return mPlayerFragment;
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LiveEvent e){

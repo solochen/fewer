@@ -21,11 +21,8 @@ public class HTStartMessage extends MessageContent {
 
     private String live_id;
 
-    public HTStartMessage(String live_id) {
-        this.live_id = live_id;
-    }
-
     public HTStartMessage(byte[] data) {
+
         String jsonStr = null;
 
         try {

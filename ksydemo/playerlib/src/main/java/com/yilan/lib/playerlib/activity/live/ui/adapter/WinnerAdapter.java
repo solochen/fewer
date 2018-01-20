@@ -46,6 +46,10 @@ public class WinnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mHolder.mTvAvatar.getLayoutParams();
             params.topMargin = CalculateUtils.dip2px(mContext, 100);
             mHolder.mTvAvatar.setLayoutParams(params);
+        } else {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mHolder.mTvAvatar.getLayoutParams();
+            params.topMargin = 0;
+            mHolder.mTvAvatar.setLayoutParams(params);
         }
 
         Glides.getInstance().loadAvatar(mContext, winnerInfo.getAvatar(), mHolder.mTvAvatar);
@@ -59,8 +63,9 @@ public class WinnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return mList.size();
     }
 
-    public void add(WinnerInfo.WinnerList info){
-        mList.add(info);
+    public void addAll(List<WinnerInfo.WinnerList> info){
+        mList.clear();
+        mList.addAll(info);
         notifyDataSetChanged();
     }
 
@@ -73,8 +78,8 @@ public class WinnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public ViewHolder(View convertView) {
             super(convertView);
             mTvAvatar = (ImageView) convertView.findViewById(R.id.iv_avatar);
-            mTvNickname = (TextView) convertView.findViewById(R.id.iv_avatar);
-            mTvBonus = (TextView) convertView.findViewById(R.id.iv_avatar);
+            mTvNickname = (TextView) convertView.findViewById(R.id.tv_nickname);
+            mTvBonus = (TextView) convertView.findViewById(R.id.tv_bonus);
         }
     }
 }

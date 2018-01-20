@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.yilan.lib.playerlib.R;
-import com.yilan.lib.playerlib.data.Comment;
+import com.yilan.lib.playerlib.RongCloud.message.Comment;
 
 import java.util.ArrayList;
 import java.util.List;

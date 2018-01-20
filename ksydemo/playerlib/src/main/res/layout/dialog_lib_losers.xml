@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/ic_lib_revive"/>
+            android:src="@mipmap/ic_lib_vs"/>
 
         <TextView
             android:id="@+id/lib_late_dlg_title"

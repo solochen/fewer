@@ -34,7 +34,7 @@ public class PlayerAnswerView extends FrameLayout {
     private Context mContext;
     private LayoutInflater mInflater;
 
-    CustomPlayerView mPlayerView;
+//    CustomPlayerView mPlayerView;
     LinearLayout mAnswerOptionLayout;
     TextView mTvQuestion;
     TextView mTvCountDown;
@@ -66,7 +66,7 @@ public class PlayerAnswerView extends FrameLayout {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mInflater.inflate(R.layout.custom_lib_player_answer_view, this);
-        mPlayerView = (CustomPlayerView) findViewById(R.id.lib_custom_player_view);
+//        mPlayerView = (CustomPlayerView) findViewById(R.id.lib_custom_player_view);
         mTvQuestion = (TextView) findViewById(R.id.lib_custom_player_question);
         mAnswerOptionLayout = (LinearLayout) findViewById(R.id.lib_custom_player_option_layout);
         mTvCountDown = (TextView) findViewById(R.id.lib_custom_player_countdown);

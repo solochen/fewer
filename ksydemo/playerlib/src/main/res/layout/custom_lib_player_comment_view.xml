@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="150dp"
+    >
 
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lib_player_comment_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        >
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/lib_player_btn_show_comment"
+        android:background="@color/lib_translate_color"
+        android:cacheColorHint="@color/lib_translate_color"
+        android:divider="@color/lib_translate_color"
+        android:fadingEdgeLength="10dp"
+        android:listSelector="@color/lib_translate_color"
+        android:requiresFadingEdge="vertical" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/lib_player_comment_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_toLeftOf="@+id/lib_player_btn_show_comment"
-            android:background="@color/lib_translate_color"
-            android:cacheColorHint="@color/lib_translate_color"
-            android:divider="@color/lib_translate_color"
-            android:fadingEdgeLength="10dp"
-            android:listSelector="@color/lib_translate_color"
-            android:requiresFadingEdge="vertical" />
+    android:cacheColorHint="@color/transparent"
+    android:divider="@color/transparent"
+    android:requiresFadingEdge="vertical"
+    android:fadingEdgeLength="12dp"
+    android:listSelector="@color/transparent"
 
-        <ImageButton
-            android:id="@+id/lib_player_btn_show_comment"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@color/lib_translate_color"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_lib_send" />
-
-    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/lib_player_btn_show_comment"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="right|bottom"
+        android:background="@color/lib_translate_color"
+        android:src="@mipmap/ic_lib_chat_btn" />
 
 
     <com.yilan.lib.playerlib.widget.CustomEditView
         android:id="@+id/et_input_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 
-</LinearLayout>
+</FrameLayout>

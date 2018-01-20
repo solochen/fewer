@@ -6,17 +6,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.yilan.lib.playerlib.R;
+import com.yilan.lib.playerlib.RongCloud.message.Comment;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerCommentViewListener;
 import com.yilan.lib.playerlib.activity.live.ui.adapter.CommentAdapter;
 import com.yilan.lib.playerlib.widget.CustomEditView;
-import com.yilan.lib.playerlib.data.Comment;
 import com.yilan.lib.playerlib.listener.OnEditViewClickListener;
+
+import java.util.List;
 
 
 /**
@@ -105,10 +109,20 @@ public class PlayerCommentView extends FrameLayout implements OnEditViewClickLis
     }
 
     public void addComment(Comment comment){
-
         cleanData();
         mCommentAdapter.add(comment);
+        scrollToPosition();
+    }
 
+    public void addComments(List<Comment> comments){
+        cleanData();
+        for(Comment comment : comments){
+            mCommentAdapter.add(comment);
+        }
+        scrollToPosition();
+    }
+
+    private void scrollToPosition(){
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             mLinearLayoutManager.scrollToPosition(mCommentAdapter.getItemCount() - 1);
         } else {

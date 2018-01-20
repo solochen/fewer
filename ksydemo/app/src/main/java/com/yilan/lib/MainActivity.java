@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         //连接融云 param rctoken
         String RcToen = "U8I+R9DoT544ff8hWlgXqqHp1KiFvYM5y36wPsV8IH+uLS96VUqeQIcFq+fF0qw1j5GBqqxNT1zpMSNN1XSB4A==";
+        String RcToken2 = "t7tF3aT5kC8h0fhIAw0MkHLnANZQjsMnW79ngAp3Qey5UJgUv3TO6Nqeop3AoiO/YplsYPe1WG720YF52cNBOg==";
         RcSingleton.getInstance().connect(RcToen);
     }
 

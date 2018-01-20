@@ -87,12 +87,15 @@
 
         <activity
             android:name=".LivePlayerTestActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.home.ui.HomeActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.live.ui.PlayerActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
     </application>
 

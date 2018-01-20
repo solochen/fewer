@@ -21,10 +21,12 @@ public class HTResultMessage extends MessageContent {
 
     private Integer winners;  //最终通关人数
     private Integer bonus;    //人均奖金金额（单位分）
+    private Integer sec;
 
-    public HTResultMessage(int winners, int bonus) {
+    public HTResultMessage(int winners, int bonus, int sec) {
         this.winners = winners;
         this.bonus = bonus;
+        this.sec = sec;
     }
 
     public HTResultMessage(byte[] data) {
@@ -40,6 +42,7 @@ public class HTResultMessage extends MessageContent {
             JSONObject jsonObj = new JSONObject(jsonStr);
             setWinners(jsonObj.getInt("winners"));
             setBonus(jsonObj.getInt("bonus"));
+            setSec(jsonObj.getInt("sec"));
             if(jsonObj.has("user")){
                 setUserInfo(parseJsonToUserInfo(jsonObj.getJSONObject("user")));
             }
@@ -55,6 +58,7 @@ public class HTResultMessage extends MessageContent {
 
             jsonObj.put("winners", winners);
             jsonObj.put("bonus", bonus);
+            jsonObj.put("sec", sec);
 
             if(getJSONUserInfo() != null)
                 jsonObj.putOpt("user",getJSONUserInfo());
@@ -80,6 +84,7 @@ public class HTResultMessage extends MessageContent {
     public HTResultMessage(Parcel in) {
         setWinners(ParcelUtils.readIntFromParcel(in));
         setBonus(ParcelUtils.readIntFromParcel(in));
+        setSec(ParcelUtils.readIntFromParcel(in));
         setUserInfo(ParcelUtils.readFromParcel(in,UserInfo.class));
     }
 
@@ -107,6 +112,7 @@ public class HTResultMessage extends MessageContent {
     public void writeToParcel(Parcel dest, int flags) {
         ParcelUtils.writeToParcel(dest, winners);
         ParcelUtils.writeToParcel(dest, bonus);
+        ParcelUtils.writeToParcel(dest, sec);
 
         ParcelUtils.writeToParcel(dest,getUserInfo());
     }
@@ -125,5 +131,13 @@ public class HTResultMessage extends MessageContent {
 
     public void setBonus(Integer bonus) {
         this.bonus = bonus;
+    }
+
+    public Integer getSec() {
+        return sec;
+    }
+
+    public void setSec(Integer sec) {
+        this.sec = sec;
     }
 }

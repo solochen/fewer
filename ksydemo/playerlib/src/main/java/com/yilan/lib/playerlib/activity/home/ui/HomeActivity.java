@@ -14,6 +14,7 @@ import com.yilan.lib.playerlib.activity.home.listener.OnBonusViewClickListener;
 import com.yilan.lib.playerlib.activity.home.presenter.HomePresenter;
 import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
 import com.yilan.lib.playerlib.activity.home.ui.custom.GameInfoView;
+import com.yilan.lib.playerlib.utils.HideUtil;
 import com.yilan.lib.playerlib.widget.CustomEditView;
 import com.yilan.lib.playerlib.activity.home.ui.custom.HomeHeaderView;
 import com.yilan.lib.playerlib.data.GameInfo;
@@ -70,6 +71,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onMVPCreate() {
+        HideUtil.init(this);
         mContext = this;
         EventBus.getDefault().register(this);
         setClickListener();
@@ -128,9 +130,9 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 
     @Override
     public void onBackClick() {
-        Test test = Test.getInstance();
-        test.share();
-//        finish();
+//        Test test = Test.getInstance();
+//        test.share();
+        finish();
     }
 
     @Override
@@ -266,7 +268,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
                 } else if (defRes.equals("low")) {
                     liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getLow();
                 }
-                PlayerActivity.startActivity(mContext, mGameInfo, liveUrl);
+                PlayerActivity.startActivity(mContext, mGameInfo, "http://xdj-hdl.8686c.com/xdj-live/5a4b8ee8ac11ab9954d2d700.flv");
 
             }
         }

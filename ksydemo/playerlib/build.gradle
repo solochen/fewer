@@ -61,4 +61,5 @@ dependencies {
 //    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
     compile files('libs/fastjson-1.1.45.android.jar')
     compile files('libs/Rong_IMLib.jar')
+    compile project(':sharelib')
 }

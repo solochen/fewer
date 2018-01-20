@@ -1,39 +1,17 @@
 package com.yilan.lib.playerlib.data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by chenshaolong on 2018/1/14.
  */
 
-public class WinnerInfo implements Serializable {
+public class WinnerInfo extends BaseData implements Serializable {
 
-
-    private int code;
-    private String message;
     private int winners;
     private int avg_bouns;
-    private WinnerList winner_list;
-
-    public boolean success(){
-        return code == 200 ? true : false;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    private List<WinnerList> winner_list;
 
     public int getWinners() {
         return winners;
@@ -51,11 +29,11 @@ public class WinnerInfo implements Serializable {
         this.avg_bouns = avg_bouns;
     }
 
-    public WinnerList getWinner_list() {
+    public List<WinnerList> getWinner_list() {
         return winner_list;
     }
 
-    public void setWinner_list(WinnerList winner_list) {
+    public void setWinner_list(List<WinnerList> winner_list) {
         this.winner_list = winner_list;
     }
 

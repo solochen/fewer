@@ -7,12 +7,12 @@ import com.yilan.lib.playerlib.activity.live.model.PlayerModelImpl;
 import com.yilan.lib.playerlib.activity.live.ui.IPlayerView;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.LiveEnterInfo;
+import com.yilan.lib.playerlib.data.WinnerInfo;
 import com.yilan.lib.playerlib.http.OkGoHttp;
 import com.yilan.lib.playerlib.listener.OnChatRoomStatusCallback;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
 import com.yilan.lib.playerlib.mvp.MVPBasePresenter;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
-import com.yilan.lib.playerlib.utils.LibToast;
 
 /**
  * Created by chenshaolong on 2018/1/14.
@@ -30,72 +30,35 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
 
     public void getGameLiveInfo(){
 
-        String infoStr = "{\n" +
-                "  \"status\" : 0,\n" +
-                "  \"bonus\" : 100000,\n" +
-                "  \"game_date\" : \"浠婂ぉ\",\n" +
-                "  \"game_time\" : \"12:30\",\n" +
-                "  \"ad_image\" : \"http://p1.pstatp.com/thumb/2bd50007c29a7cc54e09\",\n" +
-                "  \"live\" : {\n" +
-                "    \"live_id\" : \"1231\",\n" +
-                "    \"live_stream\" : {\n" +
-                "      \"ha_stream\" : \"13241358\",\n" +
-                "      \"default_res\" : \"high\",\n" +
-                "      \"default_buffer_ms\" : 2000,\n" +
-                "      \"avformat\" : \"FLV\",\n" +
-                "      \"main_list\" : {\n" +
-                "        \"high\" : \"http://pull-l3-spe.ixigua.com/live/13241358.flv\",\n" +
-                "        \"medium\" : \"http://pull-l3-spe.ixigua.com/live/13241358_480p.flv\",\n" +
-                "        \"low\" : \"http://pull-l3-spe.ixigua.com/live/13241358_360p.flv\",\n" +
-                "        \"onlyaudio\" : \"http://pull-l3-spe.ixigua.com/live/13241358.flv?onlyaudio=1\"\n" +
-                "      },\n" +
-                "      \"backup_list\" : { }\n" +
-                "    }\n" +
-                "  }\n" +
-                "}";
+        mPlayerModel.getGameInfo(new ResponseCallback() {
+            @Override
+            public void onSuccess(String s) {
+                try {
+                    GameInfo gameInfo = JSON.parseObject(s, GameInfo.class);
+                    if(gameInfo.getStatus() == 0){        //开放
+                        mPlayerView.updateGameInfo(gameInfo,
+                                CalculateUtils.formatBonus(gameInfo.getBonus()),
+                                CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
+                    } else if(gameInfo.getStatus() == 1){ //答题中
+                        mPlayerView.onAnswerStatus();
+                    }
+                } catch (Exception e) {
 
-        try {
-            GameInfo gameInfo = JSON.parseObject(infoStr, GameInfo.class);
-            if(gameInfo.getStatus() == 0){        //开放
-                mPlayerView.updateGameInfo(gameInfo,
-                        CalculateUtils.formatBonus(gameInfo.getBonus()),
-                        CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
-            } else if(gameInfo.getStatus() == 1){ //答题中
-                mPlayerView.onAnswerStatus();
+                }
             }
-        } catch (Exception e) {
 
-        }
+            @Override
+            public void onError(int code, String msg) {
+                if (code == OkGoHttp.CODE_TOKEN_VALID) {
 
-//        mPlayerModel.getGameInfo(new ResponseCallback() {
-//            @Override
-//            public void onSuccess(String s) {
-//                try {
-//                    GameInfo gameInfo = JSON.parseObject(s, GameInfo.class);
-//                    if(gameInfo.getStatus() == 0){        //开放
-//                        mPlayerView.updateGameInfo(gameInfo,
-//                                CalculateUtils.formatBonus(gameInfo.getBonus()),
-//                                CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
-//                    } else if(gameInfo.getStatus() == 1){ //答题中
-//                        mPlayerView.onAnswerStatus();
-//                    }
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onError(int code, String msg) {
-//                if (code == OkGoHttp.CODE_TOKEN_VALID) {
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//
-//            }
-//        });
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
     }
 
 
@@ -196,6 +159,34 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
                     mPlayerView.setWatchingStatus();
                     mPlayerView.showErrorMsg(msg);
                 }
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
+    }
+
+
+    public void getWinnerList(String uid){
+
+        mPlayerModel.getWinnerList(uid, new ResponseCallback() {
+            @Override
+            public void onSuccess(String s) {
+                try {
+                    WinnerInfo winnerInfo = JSON.parseObject(s, WinnerInfo.class);
+                    if(winnerInfo.success()){
+                        mPlayerView.setWinnerList(winnerInfo);
+                    }
+                }catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void onError(int code, String msg) {
+
             }
 
             @Override

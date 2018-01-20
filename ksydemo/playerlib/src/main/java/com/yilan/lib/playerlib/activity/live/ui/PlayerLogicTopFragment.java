@@ -5,20 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.ArrayMap;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.alibaba.fastjson.JSON;
 import com.yilan.lib.playerlib.R;
+import com.yilan.lib.playerlib.RongCloud.message.Comment;
 import com.yilan.lib.playerlib.RongCloud.message.HTAnswerMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTCommentMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTFinishMessage;
@@ -34,25 +31,24 @@ import com.yilan.lib.playerlib.activity.live.listener.OnPlayerGameInfoViewListen
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerHeaderViewListener;
 import com.yilan.lib.playerlib.activity.live.presenter.PlayerPresenter;
 import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerAnswerView;
-import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerGameInfoView;
 import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerCommentView;
+import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerGameInfoView;
 import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerHeaderView;
 import com.yilan.lib.playerlib.activity.live.ui.custom.PlayerWinnerView;
-import com.yilan.lib.playerlib.data.Comment;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.LiveEnterInfo;
 import com.yilan.lib.playerlib.data.Self;
+import com.yilan.lib.playerlib.data.WinnerInfo;
 import com.yilan.lib.playerlib.event.EBus;
 import com.yilan.lib.playerlib.event.LiveEvent;
 import com.yilan.lib.playerlib.event.RongEvent;
 import com.yilan.lib.playerlib.glide.Glides;
-import com.yilan.lib.playerlib.global.AnimHelper;
 import com.yilan.lib.playerlib.global.AppManager;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
 import com.yilan.lib.playerlib.mvp.MVPBaseFragment;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
-import com.yilan.lib.playerlib.utils.KeyBoardUtils;
+import com.yilan.lib.playerlib.utils.HideUtil;
 import com.yilan.lib.playerlib.utils.LibToast;
 import com.yilan.lib.playerlib.utils.SPUtils;
 
@@ -71,7 +67,8 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         OnPlayerHeaderViewListener,
         OnPlayerCommentViewListener,
         OnPlayerGameInfoViewListener,
-        OnPlayerAnswerViewListener {
+        OnPlayerAnswerViewListener,
+        View.OnTouchListener{
 
 
     Context mContext;
@@ -122,18 +119,12 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         mHeaderView.setClickListener(this);
         mGameInfoView.setClickListener(this);
         mAnswerView.setClickListener(this);
+        mContainer.setOnTouchListener(this);
+
         mBtnLoginToAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppManager.getInstance().goLogin(getChildFragmentManager());
-            }
-        });
-
-        mContainer.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mCommentView.hideKeyboary();
-                return false;
             }
         });
     }
@@ -142,6 +133,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         EventBus.getDefault().register(this);
+        HideUtil.init(getActivity());
         mGameInfo = (GameInfo) getArguments().getSerializable(KEY_GAME_INFO);
         Self self = UserManager.getInstance().getSelf(mContext);
         mHeaderView.setReviveCount((self == null) ? 0 : (int) SPUtils.get(mContext, SPConstant.KEY_REVIVE_COUNT, 0));
@@ -162,6 +154,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
                 .loadResBlur(mContext, mContainerBg, R.mipmap.bg_lib_default, 25);
     }
 
+
     /**
      * 设置直播信息
      */
@@ -173,6 +166,17 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         } else if (mGameInfo.getStatus() == 1) { //答题中
             onAnswerStatus();
         }
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                mCommentView.hideKeyboary();
+                break;
+        }
+        return false;
     }
 
     /**
@@ -311,6 +315,12 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     }
 
 
+    @Override
+    public void setWinnerList(WinnerInfo info) {
+        mWinnerView.setWinnerNumber(info.getWinners());
+        mWinnerView.setData(info.getWinner_list());
+        mWinnerView.setVisibility(View.VISIBLE);
+    }
 
     /**
      * ------------------ presenter 层 回掉方法 end -----------------------------
@@ -327,10 +337,12 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         MessageContent message = e.getMsg().getContent();
 
         if (message instanceof HTCommentMessage) {
-            HTCommentMessage c = (HTCommentMessage) message;
-            mCommentView.addComment(new Comment(c.getNickname(), c.getText()));
+
+            mCommentView.addComments(((HTCommentMessage) message).getComments());
         }
         else if (message instanceof HTStartMessage) {
+            HTStartMessage msg = (HTStartMessage) message;
+            LibToast.showToast(mContext, msg.getLive_id());
             onAnswerStatus();
         } else if (message instanceof HTOnlookerMessage) {
 
@@ -359,6 +371,20 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
 
         } else if (message instanceof HTResultMessage) {
+            HTResultMessage resultMessage = (HTResultMessage) message;
+            long uid = UserManager.getInstance().getSelf(mContext).getData().getUser_id();
+            mPresenter.getWinnerList(String.valueOf(uid));
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(mWinnerView != null){
+                        mWinnerView.setVisibility(View.GONE);
+                    }
+                }
+            }, resultMessage.getSec() * 1000);
+
+
 
         } else if (message instanceof HTFinishMessage) {
             EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));

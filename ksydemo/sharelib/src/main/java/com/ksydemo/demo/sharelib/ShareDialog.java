@@ -1,4 +1,4 @@
-package com.yilan.lib;
+package com.ksydemo.demo.sharelib;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,15 +15,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.yilan.lib.playerlib.global.RouterConstant;
-
 
 /**
  * Created by chenshaolong on 2018/1/12.
  */
 
-@Route(path = RouterConstant.ROUTER_SHARE_DIALOG)
 public class ShareDialog extends DialogFragment {
 
     Context mContext;

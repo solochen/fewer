@@ -3,12 +3,16 @@ package com.yilan.lib.playerlib.RongCloud.message;
 import android.os.Parcel;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.rong.common.ParcelUtils;
+import io.rong.common.RLog;
 import io.rong.imlib.MessageTag;
 import io.rong.imlib.model.MessageContent;
 import io.rong.imlib.model.UserInfo;
@@ -19,13 +23,7 @@ import io.rong.imlib.model.UserInfo;
 @MessageTag(value = "HT:COMMENT", flag = MessageTag.NONE)
 public class HTCommentMessage extends MessageContent {
 
-    private String nickname;
-    private String text;
-
-    public HTCommentMessage(String nickname, String content) {
-        this.nickname = nickname;
-        this.text = content;
-    }
+    private List<Comment> comments;
 
     public HTCommentMessage(byte[] data) {
         String jsonStr = null;
@@ -38,14 +36,31 @@ public class HTCommentMessage extends MessageContent {
 
         try {
             JSONObject jsonObj = new JSONObject(jsonStr);
-            setNickname(jsonObj.getString("nickname"));
-            setText(jsonObj.getString("text"));
-            if(jsonObj.has("user")){
-                setUserInfo(parseJsonToUserInfo(jsonObj.getJSONObject("user")));
+            if(jsonObj.has("comments")) {
+                setComments(parseJsonToAssists(jsonObj.getJSONArray("comments")));
             }
         } catch (JSONException e) {
             Log.e("JSONException", e.getMessage());
         }
+    }
+
+
+    public List<Comment> parseJsonToAssists(JSONArray jsonArray) {
+        List<Comment> comments = new ArrayList<>();
+        for(int i = 0; i < jsonArray.length(); i ++){
+            try {
+                Comment comment = new Comment();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String nickname = jsonObject.optString("nickname");
+                String text = jsonObject.optString("text");
+
+                comment.setNickname(nickname);
+                comment.setText(text);
+
+                comments.add(comment);
+            }catch (Exception e){}
+        }
+        return comments;
     }
 
     @Override
@@ -53,8 +68,7 @@ public class HTCommentMessage extends MessageContent {
         JSONObject jsonObj = new JSONObject();
         try {
 
-            jsonObj.put("nickname", nickname);
-            jsonObj.put("text", text);
+            jsonObj.putOpt("comments", getJSONAssists(comments));
 
             if(getJSONUserInfo() != null)
                 jsonObj.putOpt("user",getJSONUserInfo());
@@ -72,14 +86,35 @@ public class HTCommentMessage extends MessageContent {
         return null;
     }
 
+
+    public JSONArray getJSONAssists(List<Comment> comments) {
+        if(comments != null && comments.size() > 0) {
+            JSONArray jsonArray = new JSONArray();
+            for(Comment comment : comments) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("nickname", comment.getNickname());
+                    jsonObject.put("text", comment.getText());
+                    jsonArray.put(jsonObject);
+                } catch (JSONException var3) {
+                    RLog.e("MessageContent", "JSONException " + var3.getMessage());
+                }
+            }
+            return jsonArray;
+        } else {
+            return null;
+        }
+    }
+
+
     /**
      * 构造函数。
      *
      * @param in 初始化传入的 Parcel。
      */
     public HTCommentMessage(Parcel in) {
-        setNickname(ParcelUtils.readFromParcel(in));
-        setText(ParcelUtils.readFromParcel(in));
+        setComments(ParcelUtils.readListFromParcel(in, Comment.class));
+
         setUserInfo(ParcelUtils.readFromParcel(in,UserInfo.class));
     }
 
@@ -105,25 +140,15 @@ public class HTCommentMessage extends MessageContent {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        ParcelUtils.writeToParcel(dest, nickname);
-        ParcelUtils.writeToParcel(dest, text);
-
+        ParcelUtils.writeToParcel(dest, comments);
         ParcelUtils.writeToParcel(dest,getUserInfo());
     }
 
-    public String getNickname() {
-        return nickname;
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
