@@ -12,14 +12,14 @@ public class SPConstant {
 
     public static final String KEY_REVIVE_COUNT = "key_revive_count";  //复活卡数量
 
-    public static final String KEY_IS_USE_REVIVE_CODE = "key_is_use_revive_code"; // 是否使用过复活卡
+//    public static final String KEY_IS_USE_REVIVE_CODE = "key_is_use_revive_code"; // 是否使用过复活卡
 
-    public static final String KEY_IS_TELL_USER_DIALOG = "key_is_tell_user";  //当前场 是否已经弹出了 "已迟到" 弹窗
+//    public static final String KEY_IS_TELL_USER_DIALOG = "key_is_tell_user";  //当前场 是否已经弹出了 "已迟到" 弹窗
 
 
     public static final String testUserInfoJson = "{\n" +
             "\t\"data\": {\n" +
-            "\t\t\"user_id\": 5330362952,\n" +
+            "\t\t\"user_id\": 5330362954,\n" +
             "\t\t\"name\": \"Nos21\",\n" +
             "\t\t\"screen_name\": \"Nos21\",\n" +
             "\t\t\"avatar_url\": \"http://wx.qlogo.cn/mmopen/Q3auHgzwzM7Uhu2Ockjyyq5PBAXqqO1olsUgymtwjhqsSPx0gY6kVibibcnqMicwhrpxX0gibSOV84UmDyCHKgaG5w/0\",\n" +

@@ -49,9 +49,7 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
 
             @Override
             public void onError(int code, String msg) {
-                if (code == OkGoHttp.CODE_TOKEN_VALID) {
-
-                }
+                respCommonError(code, msg);
             }
 
             @Override
@@ -84,9 +82,7 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
 
             @Override
             public void onError(int code, String msg) {
-                if (code == OkGoHttp.CODE_TOKEN_VALID) {
-
-                }
+                respCommonError(code, msg);
             }
 
             @Override
@@ -107,7 +103,7 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
 
             @Override
             public void onError(int code, String msg) {
-
+                respCommonError(code, msg);
             }
 
             @Override
@@ -127,7 +123,7 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
 
             @Override
             public void onError(int code, String msg) {
-
+                respCommonError(code, msg);
             }
 
             @Override
@@ -138,15 +134,14 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
     }
 
 
-    public void sendAnswer(String uid, int questionId, int answerId){
+    public void sendAnswer(String uid, final int questionId, int answerId){
         mPlayerModel.sendAnswer(uid, String.valueOf(questionId), String.valueOf(answerId), new ResponseCallback() {
             @Override
             public void onSuccess(String s) {
                 try {
                     JSONObject object = JSON.parseObject(s);
                     if (object.getInteger("code") != 0) {
-                        mPlayerView.setWatchingStatus();
-                        mPlayerView.showErrorMsg(object.getString("message"));
+                        mPlayerView.resetAnswerAgain(questionId);
                     }
                 }catch (Exception e){
 
@@ -155,9 +150,9 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
 
             @Override
             public void onError(int code, String msg) {
+                respCommonError(code, msg);
                 if (code != 200) {
-                    mPlayerView.setWatchingStatus();
-                    mPlayerView.showErrorMsg(msg);
+                    mPlayerView.resetAnswerAgain(questionId);
                 }
             }
 
@@ -186,7 +181,7 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
 
             @Override
             public void onError(int code, String msg) {
-
+                respCommonError(code, msg);
             }
 
             @Override

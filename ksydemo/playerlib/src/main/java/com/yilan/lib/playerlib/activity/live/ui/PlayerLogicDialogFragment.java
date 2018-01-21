@@ -20,6 +20,7 @@ import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.event.EBus;
 import com.yilan.lib.playerlib.event.LiveEvent;
 import com.yilan.lib.playerlib.global.ActivityCollector;
+import com.yilan.lib.playerlib.utils.SPUtils;
 
 
 /**
@@ -74,8 +75,12 @@ public class PlayerLogicDialogFragment extends DialogFragment {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    if(ActivityCollector.isActivityExist(PlayerActivity.class) && (getDialog() != null && getDialog().isShowing() && isResumed())) {
-                        EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));
+                    if(ActivityCollector.isActivityExist(PlayerActivity.class)
+                            && (getDialog() != null
+                            && getDialog().isShowing() && isResumed())) {
+                        if(!SPUtils.isFastDoubleClick()) {
+                            EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_NOTIFY_EXIT_ALERT));
+                        }
                     }
                     return true;
                 }

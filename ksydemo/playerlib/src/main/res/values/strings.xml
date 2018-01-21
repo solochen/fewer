@@ -6,6 +6,7 @@
     <string name="label_lib_revive_count">复活卡</string>
     <string name="label_lib_rule">活动规则 ></string>
     <string name="label_lib_winner_number">%s人通关</string>
+    <string name="label_lib_start_now">即将开始</string>
 
     <string name="btn_lib_login_bonus">登录才能赢钱</string>
     <string name="btn_lib_share_to_friend">分享给好友</string>
@@ -25,5 +26,7 @@
     <string name="dlg_lib_late_btn">邀请好友围观</string>
 
     <string name="dlg_lib_continue">继续观看</string>
+
+
 
 </resources>

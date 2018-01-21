@@ -8,8 +8,8 @@ import java.io.Serializable;
 
 public class Live implements Serializable{
 
-    private String live_id;
-    private LiveStream live_stream;
+    private String live_id = "";
+    private LiveStream live_stream = new LiveStream();
 
     public String getLive_id() {
         return live_id;
@@ -28,10 +28,10 @@ public class Live implements Serializable{
     }
 
     public class LiveStream implements Serializable{
-        private int ha_stream;
-        private String default_res;
-        private int default_buffer_ms;
-        private String avformat;
+        private int ha_stream = 0;
+        private String default_res = "";
+        private int default_buffer_ms = 0;
+        private String avformat = "";
         private LiveUrlList main_list;
         private LiveUrlList backup_list;
 
@@ -85,10 +85,10 @@ public class Live implements Serializable{
 
         public class LiveUrlList implements Serializable{
 
-            private String high;
-            private String medium;
-            private String low;
-            private String onlyaudio;
+            private String high = "";
+            private String medium = "";
+            private String low = "";
+            private String onlyaudio = "";
 
             public String getHigh() {
                 return high;

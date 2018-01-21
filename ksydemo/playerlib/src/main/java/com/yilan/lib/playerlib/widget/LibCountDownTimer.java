@@ -3,6 +3,8 @@ package com.yilan.lib.playerlib.widget;
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
+import com.yilan.lib.playerlib.R;
+
 /**
  * Created by chenshaolong on 2018/1/18.
  */
@@ -21,7 +23,9 @@ public class LibCountDownTimer extends CountDownTimer {
         long time = millisUntilFinished / 1000;
         if (time <= 59) {
             mTvCountDown.setText(String.format("00:%02d", time));
-        } else {
+        } else if(time <= 0){
+            mTvCountDown.setText(R.string.label_lib_start_now);
+        }else {
             mTvCountDown.setText(String.format("%02d:%02d", time / 60, time % 60));
         }
 

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by chenshaolong on 2018/1/14.
  */
 
-public class InviteCode implements Serializable {
+public class InviteCode extends BaseData implements Serializable {
 
     private String invite_code = "";  //邀请码
     private int revive_count = 0;    //复活卡数量

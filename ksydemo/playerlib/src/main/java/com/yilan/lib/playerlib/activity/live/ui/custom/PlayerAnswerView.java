@@ -6,7 +6,9 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.RongCloud.message.HTAnswerMessage;
 import com.yilan.lib.playerlib.RongCloud.message.HTQuestionMessage;
 import com.yilan.lib.playerlib.activity.live.listener.OnPlayerAnswerViewListener;
+import com.yilan.lib.playerlib.global.AnimHelper;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
 import com.yilan.lib.playerlib.widget.CircleProgressBar;
 import com.yilan.lib.playerlib.widget.ProgressButton;
@@ -33,6 +36,7 @@ public class PlayerAnswerView extends FrameLayout {
 
     private Context mContext;
     private LayoutInflater mInflater;
+    Handler mHandler;
 
 //    CustomPlayerView mPlayerView;
     LinearLayout mAnswerOptionLayout;
@@ -44,6 +48,7 @@ public class PlayerAnswerView extends FrameLayout {
     ImageView mIvRevive;
     TextView mTvReviveUsed;
     ImageView mIvAnswerError;
+    ImageView mIvClock;
 
     OnPlayerAnswerViewListener mListener;
 
@@ -66,6 +71,7 @@ public class PlayerAnswerView extends FrameLayout {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mInflater.inflate(R.layout.custom_lib_player_answer_view, this);
+        mHandler = new Handler();
 //        mPlayerView = (CustomPlayerView) findViewById(R.id.lib_custom_player_view);
         mTvQuestion = (TextView) findViewById(R.id.lib_custom_player_question);
         mAnswerOptionLayout = (LinearLayout) findViewById(R.id.lib_custom_player_option_layout);
@@ -76,6 +82,7 @@ public class PlayerAnswerView extends FrameLayout {
         mIvRevive = (ImageView) findViewById(R.id.lib_custom_player_revive);
         mTvReviveUsed = (TextView) findViewById(R.id.lib_custom_player_revive_used);
         mIvAnswerError = (ImageView) findViewById(R.id.lib_custom_player_answer_error);
+        mIvClock = (ImageView) findViewById(R.id.lib_ic_clock);
 
         setClickListener();
     }
@@ -120,6 +127,13 @@ public class PlayerAnswerView extends FrameLayout {
         mIvAnswerError.setVisibility(GONE);
         mIvRevive.setVisibility(GONE);
         mTvReviveUsed.setVisibility(GONE);
+
+        mTvCountDown.setVisibility(View.VISIBLE);
+        mCircleProgressBar.setVisibility(View.VISIBLE);
+        mIvClock.setVisibility(View.GONE);
+
+        mCircleProgressBar.setProgressStartColor(mContext.getResources().getColor(R.color.colorPrimary));
+        mCircleProgressBar.setProgressEndColor(mContext.getResources().getColor(R.color.colorPrimary));
     }
 
 
@@ -133,25 +147,27 @@ public class PlayerAnswerView extends FrameLayout {
         mAnswerOptionLayout.removeAllViews();
         for (int i = 0; i < options.size(); i++) {
             String optionStr = options.get(i);
-            View view = mInflater.inflate(R.layout.custom_lib_player_progress, null);
+            final View view = mInflater.inflate(R.layout.custom_lib_player_progress, null);
             FrameLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, CalculateUtils.dip2px(mContext, 50));
             params.topMargin = CalculateUtils.dip2px(mContext, 10);
             view.setLayoutParams(params);
             final ProgressButton progressButton = (ProgressButton) view.findViewById(R.id.lib_btn_progress_answer_a);
             progressButton.setBackgroundColor(mContext.getResources().getColor(R.color.lib_answer_progress_second_bg));
             final TextView answerOption = (TextView) view.findViewById(R.id.lib_tv_progress_answer_option);
-            progressButton.setTag((i + 1));
+            view.setTag((i + 1));
             progressButton.setState(ProgressButton.NORMAL);
             answerOption.setText(optionStr);
             progressButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!isWatching && !mCurrentQuestionIsAnswered) {
-                        int optionId = (int) progressButton.getTag();
+                        int optionId = (int) view.getTag();
                         mListener.onAnswerSelected(count, optionId);
                         mCurrentQuestionIsAnswered = true;
                         answerOption.setTextColor(mContext.getResources().getColor(R.color.lib_answer_progress_option_highlight_color));
                         progressButton.setBackgroundColor(mContext.getResources().getColor(R.color.lib_answer_progress_bg));
+                    } else {
+                        AnimHelper.getInstance().startWatchIconAnim(mTvWatch);
                     }
                 }
             });
@@ -178,45 +194,48 @@ public class PlayerAnswerView extends FrameLayout {
             mCountDownLayout.setVisibility(View.GONE);      //隐藏 倒计时
         }
 
-        /**
-         * 答错题
-         */
-        if(myAnswerOption != msg.getQuestion_answer()) {
-            if((reviveCount > 0 && !isUsedReviveCode)) {
-                //复活卡使用逻辑
-                mListener.useReviveCode();
-                mIvRevive.setVisibility(VISIBLE);
-                mTvReviveUsed.setVisibility(isUsedReviveCode ? VISIBLE : GONE);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mIvRevive.setVisibility(GONE);
-                        mTvReviveUsed.setVisibility(VISIBLE);
-                    }
-                }, 2000);
+        if(myAnswerOption == -1) {
+            mTvWatch.setVisibility(VISIBLE);           //显示 『观战』
+            mCountDownLayout.setVisibility(GONE);      //隐藏倒计时
+        } else {
+            /**
+             * 答错题
+             */
+            if(myAnswerOption != msg.getQuestion_answer()) {
+                if((reviveCount > 0 && !isUsedReviveCode)) {
+                    //复活卡使用逻辑
+                    mListener.useReviveCode();
+                    mIvRevive.setVisibility(VISIBLE);
+                    mTvReviveUsed.setVisibility(isUsedReviveCode ? VISIBLE : GONE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mIvRevive.setVisibility(GONE);
+                            mTvReviveUsed.setVisibility(VISIBLE);
+                        }
+                    }, 2000);
+
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(mListener != null) {
+                                mListener.onSetIsWatching(true);
+                                mListener.onShowLosersDialog(msg.getLosers());
+                            }
+                        }
+                    }, 4000);
+
+                }
+
+                mIvAnswerError.setImageResource(R.mipmap.ic_lib_error);
+                mIvAnswerError.setVisibility(View.VISIBLE);
 
             } else {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(mListener != null) {
-                            mListener.onSetIsWatching(true);
-                            mListener.onShowLosersDialog(msg.getLosers());
-                            //1. 打败多少人 2.isWatching = true
-                        }
-                    }
-                }, 2000);
-
+                mIvAnswerError.setImageResource(R.mipmap.ic_lib_correct);
+                mIvAnswerError.setVisibility(View.VISIBLE);
             }
-
-            mIvAnswerError.setImageResource(R.mipmap.ic_lib_error);
-            mIvAnswerError.setVisibility(View.VISIBLE);
-
-        } else {
-            mIvAnswerError.setImageResource(R.mipmap.ic_lib_correct);
-            mIvAnswerError.setVisibility(View.VISIBLE);
         }
-
 
         mTvQuestion.setText(msg.getText());
 
@@ -290,17 +309,22 @@ public class PlayerAnswerView extends FrameLayout {
      *
      * @param millisTime
      */
-    private void simulateProgress(int millisTime) {
+    private void simulateProgress(final int millisTime) {
+        time = millisTime / 1000;
+        mTvCountDown.setText(time + "");
+        AnimHelper.getInstance().startScaleAnim(mTvCountDown);
+        mHandler.removeCallbacksAndMessages(null);
+        countDownTime();
         final ValueAnimator animator = ValueAnimator.ofInt(0, 100);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 long currentPlayTime = animation.getCurrentPlayTime() / 1000;
-                long time = (10 - currentPlayTime);
+                long time = ((millisTime / 1000) - currentPlayTime);
                 if (time < 0) {
                     boolean isWatching = mCurrentQuestionIsAnswered ? false : true;
                     try {
-                        Thread.sleep(1500);
+                        Thread.sleep(1000);
                         setVisibility(GONE);
                         mListener.onSetIsWatching(isWatching);
                     } catch (Exception e) {
@@ -311,10 +335,54 @@ public class PlayerAnswerView extends FrameLayout {
 
                 int progress = (int) animation.getAnimatedValue();
                 mCircleProgressBar.setProgress(progress);
-                mTvCountDown.setText(time + "");
             }
         });
         animator.setDuration(millisTime + 1000);
         animator.start();
     }
+
+    int time = 0;
+    private void countDownTime(){
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                time --;
+                mTvCountDown.setText(time + "");
+                AnimHelper.getInstance().startScaleAnim(mTvCountDown);
+                if(time <= 0) {
+                    mTvCountDown.setVisibility(View.GONE);
+                    mCircleProgressBar.setVisibility(View.GONE);
+                    mIvClock.setVisibility(View.VISIBLE);
+                    AnimHelper.getInstance().startRotateAnim(mIvClock);
+                    return;
+                } else if(time == 3){
+                    mCircleProgressBar.setProgressStartColor(mContext.getResources().getColor(R.color.colorAccent));
+                    mCircleProgressBar.setProgressEndColor(mContext.getResources().getColor(R.color.colorAccent));
+                }
+                countDownTime();
+            }
+        }, 1000);
+    }
+
+
+    /**
+     * 这里由于答题服务器系统错误处理失败
+     * 这里给一次重新选择的机会
+     */
+    public void resetAnswerAgain(int questionId){
+        mCurrentQuestionIsAnswered = false;
+        for(int i = 0; i < mAnswerOptionLayout.getChildCount(); i ++){
+            View view = mAnswerOptionLayout.getChildAt(i);
+            ProgressButton progressButton = (ProgressButton) view.findViewById(R.id.lib_btn_progress_answer_a);
+            TextView answerOption = (TextView) view.findViewById(R.id.lib_tv_progress_answer_option);
+            if(view.getTag() instanceof Integer) {
+                if((int) view.getTag() == questionId){
+                    answerOption.setTextColor(mContext.getResources().getColor(R.color.lib_answer_progress_option_normal_color));
+                    progressButton.setBackgroundColor(mContext.getResources().getColor(R.color.lib_answer_progress_second_bg));
+                }
+            }
+        }
+    }
+
+
 }

@@ -2,21 +2,22 @@ package com.yilan.lib.playerlib.activity.home.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yilan.lib.playerlib.R;
-import com.yilan.lib.playerlib.Test;
 import com.yilan.lib.playerlib.activity.home.listener.OnBonusViewClickListener;
 import com.yilan.lib.playerlib.activity.home.presenter.HomePresenter;
-import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
 import com.yilan.lib.playerlib.activity.home.ui.custom.GameInfoView;
-import com.yilan.lib.playerlib.utils.HideUtil;
-import com.yilan.lib.playerlib.widget.CustomEditView;
 import com.yilan.lib.playerlib.activity.home.ui.custom.HomeHeaderView;
+import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.InviteCode;
 import com.yilan.lib.playerlib.data.Self;
@@ -28,12 +29,16 @@ import com.yilan.lib.playerlib.global.UserManager;
 import com.yilan.lib.playerlib.listener.OnEditViewClickListener;
 import com.yilan.lib.playerlib.listener.OnHeaderViewClickListener;
 import com.yilan.lib.playerlib.mvp.MVPBaseActivity;
+import com.yilan.lib.playerlib.utils.HideUtil;
 import com.yilan.lib.playerlib.utils.LibToast;
 import com.yilan.lib.playerlib.utils.SPUtils;
+import com.yilan.lib.playerlib.widget.CustomEditView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -56,6 +61,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
     Button mBtnLiveEnter;
     CustomEditView mEtCustomView;
     LinearLayout mLibReviveLayout;
+    RelativeLayout mLibHomeContainer;
 
     GameInfo mGameInfo;
 
@@ -75,7 +81,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         mContext = this;
         EventBus.getDefault().register(this);
         setClickListener();
-        loadData();
+        mInnerHandler.postDelayed(getLoadDataTask, 60 * 1000);
     }
 
     @Override
@@ -84,15 +90,31 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         loadData();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mInnerHandler.removeCallbacks(getLoadDataTask);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        mInnerHandler.removeCallbacksAndMessages(null);
+    }
+
+
     private void loadData(){
-        Self self = UserManager.getInstance().getSelf(mContext);
-        if (!UserManager.getInstance().isLogin(this)) {
-            mBonusView.showLoginBtn();
-        } else {
-            mPresenter.getInviteInfo(String.valueOf(self.getData().getUser_id()));
+        if(mHeaderView != null && mBonusView != null && mInnerHandler != null) {
+            Self self = UserManager.getInstance().getSelf(mContext);
+            if (!UserManager.getInstance().isLogin(this)) {
+                mBonusView.showLoginBtn();
+            } else {
+                mPresenter.getInviteInfo(String.valueOf(self.getData().getUser_id()));
+            }
+            mPresenter.getGameInfo();
+            mHeaderView.setUserAvatar(self.getData().getAvatar_url());
         }
-        mPresenter.getGameInfo();
-        mHeaderView.setUserAvatar(self.getData().getAvatar_url());
     }
 
 
@@ -105,6 +127,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         mBtnLiveEnter = (Button) findViewById(R.id.lib_btn_live_enter);
         mEtCustomView = (CustomEditView) findViewById(R.id.lib_home_custom_edit_view);
         mLibReviveLayout = (LinearLayout) findViewById(R.id.lib_layout_revive);
+        mLibHomeContainer = (RelativeLayout) findViewById(R.id.lib_home_container);
     }
 
     @Override
@@ -112,16 +135,24 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         return new HomePresenter(this);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
+
 
     private void setClickListener() {
         mHeaderView.setClickListener(this);
         mBonusView.setClickListener(this);
         mEtCustomView.setClickListener(this);
+
+        mLibHomeContainer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        mEtCustomView.hideKeyboary();
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     /**
@@ -133,6 +164,11 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
 //        Test test = Test.getInstance();
 //        test.share();
         finish();
+    }
+
+    @Override
+    public void onHelpClick() {
+        LibToast.showToast(this, "跳转帮助页");
     }
 
     @Override
@@ -251,6 +287,27 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
         }
     }
 
+    final InnerHandler mInnerHandler = new InnerHandler(this);
+    private static class InnerHandler extends Handler {
+        private final WeakReference<HomeActivity> mActivity;
+
+        public InnerHandler(HomeActivity activity) {
+            mActivity = new WeakReference(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+        }
+    }
+
+    private Runnable getLoadDataTask = new Runnable() {
+        @Override
+        public void run() {
+            loadData();
+            mInnerHandler.postDelayed(this, 60 * 1000);
+        }
+    };
+
 
     public void onLibBtnClick(View v) {
         if (v.getId() == R.id.lib_ll_more_revive) {
@@ -268,7 +325,7 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
                 } else if (defRes.equals("low")) {
                     liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getLow();
                 }
-                PlayerActivity.startActivity(mContext, mGameInfo, "http://xdj-hdl.8686c.com/xdj-live/5a4b8ee8ac11ab9954d2d700.flv");
+                PlayerActivity.startActivity(mContext, mGameInfo, "http://livetest01.any2cn.com/live/s001.flv");
 
             }
         }

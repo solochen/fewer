@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="25dp"
         android:gravity="center_vertical"
-        android:textColor="@color/lib_answer_progress_option_normal_color"
+        android:textColor="@color/lib_answer_progress_option_color"
         tools:text="问题的答案"/>
 
     <TextView

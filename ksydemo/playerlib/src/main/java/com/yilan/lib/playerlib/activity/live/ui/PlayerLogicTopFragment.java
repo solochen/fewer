@@ -3,6 +3,7 @@ package com.yilan.lib.playerlib.activity.live.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.ArrayMap;
 import android.view.LayoutInflater;
@@ -43,18 +44,23 @@ import com.yilan.lib.playerlib.event.EBus;
 import com.yilan.lib.playerlib.event.LiveEvent;
 import com.yilan.lib.playerlib.event.RongEvent;
 import com.yilan.lib.playerlib.glide.Glides;
+import com.yilan.lib.playerlib.global.AnimHelper;
 import com.yilan.lib.playerlib.global.AppManager;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
 import com.yilan.lib.playerlib.mvp.MVPBaseFragment;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
+import com.yilan.lib.playerlib.utils.DialogUtil;
 import com.yilan.lib.playerlib.utils.HideUtil;
 import com.yilan.lib.playerlib.utils.LibToast;
 import com.yilan.lib.playerlib.utils.SPUtils;
+import com.yilan.lib.playerlib.widget.AlertDialogFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.ref.WeakReference;
 
 import io.rong.imlib.model.MessageContent;
 
@@ -86,6 +92,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     boolean isWatching = false;      //是否在观战
     boolean isUsedReviveCode = false; //是否本场使用过复活卡
     int mReviveCount = 0; //复活卡数量
+    String mLiveId = "";
     ArrayMap<Integer, Integer> mCurrentAnswerMap = new ArrayMap<>();
 
     private static final String KEY_GAME_INFO = "game_info";
@@ -94,6 +101,19 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+    }
+
+    final InnerHandler mInnerHandler = new InnerHandler(this);
+    private static class InnerHandler extends Handler {
+        private final WeakReference<PlayerLogicTopFragment> mFragment;
+
+        public InnerHandler(PlayerLogicTopFragment fragment) {
+            mFragment = new WeakReference(fragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+        }
     }
 
     @Nullable
@@ -135,14 +155,18 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         EventBus.getDefault().register(this);
         HideUtil.init(getActivity());
         mGameInfo = (GameInfo) getArguments().getSerializable(KEY_GAME_INFO);
+        if(mGameInfo == null) {
+            mGameInfo = new GameInfo();
+        }
+        mLiveId = mGameInfo.getLive().getLive_id();
         Self self = UserManager.getInstance().getSelf(mContext);
         mHeaderView.setReviveCount((self == null) ? 0 : (int) SPUtils.get(mContext, SPConstant.KEY_REVIVE_COUNT, 0));
         mPresenter.getGameLiveInfo();
         mPresenter.chatRoomStatusListener();
-        mPresenter.joinChatRoom(mGameInfo.getLive().getLive_id());
-        mPresenter.gameLiveEnter(String.valueOf(self.getData().getUser_id()), mGameInfo.getLive().getLive_id());
+        mPresenter.joinChatRoom(mLiveId);
+        mPresenter.gameLiveEnter(String.valueOf(self.getData().getUser_id()), mLiveId);
 
-        isUsedReviveCode = (boolean) SPUtils.get(mContext, mGameInfo.getLive().getLive_id(), false);
+        isUsedReviveCode = (boolean) SPUtils.get(mContext, mLiveId, false);
         mReviveCount = (int) SPUtils.get(mContext, SPConstant.KEY_REVIVE_COUNT, 0);
 
         initSetGameInfo();
@@ -185,7 +209,25 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
     @Override
     public void onBackClick() {
-        EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));
+
+        int bonus = CalculateUtils.formatBonus(mGameInfo.getBonus());
+        String unit = CalculateUtils.formatBonusUnit(mGameInfo.getBonus());
+        String title = "确定退出";
+        String content = "本场奖金" + bonus + unit + "，确定退出？";
+
+        DialogUtil.showAlertDialog(mContext, title, content, new AlertDialogFragment.DialogOnClickListener() {
+            @Override
+            public void onPositiveClick() {
+                Self self = UserManager.getInstance().getSelf(mContext);
+                mPresenter.gameLiveExit(String.valueOf(self.getData().getUser_id()), mLiveId);
+                EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));
+            }
+
+            @Override
+            public void onNegativeClick() {
+
+            }
+        });
     }
 
     @Override
@@ -237,6 +279,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     @Override
     public void onSetIsWatching(boolean isWatch) {
         isWatching = isWatch;
+        EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_END));
     }
 
     @Override
@@ -247,7 +290,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     @Override
     public void useReviveCode() {
         isUsedReviveCode = true;
-        SPUtils.put(mContext, mGameInfo.getLive().getLive_id(), isUsedReviveCode);
+        SPUtils.put(mContext, mLiveId, isUsedReviveCode);
         mReviveCount = mReviveCount - 1;
         SPUtils.put(mContext, SPConstant.KEY_REVIVE_COUNT, mReviveCount);
 
@@ -293,25 +336,19 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
     @Override
     public void setLiveEnterInfo(LiveEnterInfo info) {
+        isUsedReviveCode = (info.getIs_revived() == 0) ? false : true;
+        SPUtils.put(mContext, mLiveId, isUsedReviveCode);
+
         isWatching = (info.getIs_player() == 0) ? true : false;
-        if (isWatching) {
-            String localLiveid = (String) SPUtils.get(mContext, SPConstant.KEY_IS_TELL_USER_DIALOG, "");
-            if (!localLiveid.equals(mGameInfo.getLive().getLive_id())) {
-                //弹窗提示，你来晚了
-                LateDialog.newInstance().show(getChildFragmentManager(), "latedialog");
-                SPUtils.put(mContext, SPConstant.KEY_IS_TELL_USER_DIALOG, mGameInfo.getLive().getLive_id());
-            }
+        if (isWatching && info.getIs_joined() == 0) {
+            //弹窗提示，你来晚了
+            LateDialog.newInstance().show(getChildFragmentManager(), "latedialog");
         }
     }
 
     @Override
-    public void showErrorMsg(String msg) {
-        LibToast.showLongToast(mContext, msg);
-    }
-
-    @Override
-    public void setWatchingStatus() {
-        isWatching = true;
+    public void resetAnswerAgain(int questionId) {
+        mAnswerView.resetAnswerAgain(questionId);
     }
 
 
@@ -341,8 +378,6 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             mCommentView.addComments(((HTCommentMessage) message).getComments());
         }
         else if (message instanceof HTStartMessage) {
-            HTStartMessage msg = (HTStartMessage) message;
-            LibToast.showToast(mContext, msg.getLive_id());
             onAnswerStatus();
         } else if (message instanceof HTOnlookerMessage) {
 
@@ -350,21 +385,31 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             mHeaderView.setOnlineCount(onlookerMessage.getOnlookers());
 
         } else if (message instanceof HTQuestionMessage) {
-
+            EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_START));
             mAnswerView.setQuestion((HTQuestionMessage) message, isWatching);
             mAnswerView.setVisibility(View.VISIBLE);
+            AnimHelper.getInstance().startAnswerCardAnim(mAnswerView);
+
 
         } else if (message instanceof HTAnswerMessage) {
 
+            EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_START));
             HTAnswerMessage answerMessage = (HTAnswerMessage) message;
-            int myAnswerOption = mCurrentAnswerMap.get(answerMessage.getCount());
+
+            int myAnswerOption = -1;
+            if(mCurrentAnswerMap.containsKey(answerMessage.getCount())){
+                myAnswerOption = mCurrentAnswerMap.get(answerMessage.getCount());
+            }
+
             mAnswerView.setAnswer(answerMessage, isWatching, myAnswerOption, isUsedReviveCode, mReviveCount);
             mAnswerView.setVisibility(View.VISIBLE);
-            new Handler().postDelayed(new Runnable() {
+            AnimHelper.getInstance().startAnswerCardAnim(mAnswerView);
+            mInnerHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if(mAnswerView != null){
                         mAnswerView.setVisibility(View.GONE);
+                        EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_END));
                     }
                 }
             }, answerMessage.getSec() * 1000);
@@ -375,7 +420,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             long uid = UserManager.getInstance().getSelf(mContext).getData().getUser_id();
             mPresenter.getWinnerList(String.valueOf(uid));
 
-            new Handler().postDelayed(new Runnable() {
+            mInnerHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if(mWinnerView != null){
@@ -384,10 +429,15 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
                 }
             }, resultMessage.getSec() * 1000);
 
-
-
         } else if (message instanceof HTFinishMessage) {
             EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LiveEvent e){
+        if(e.getType() == LiveEvent.EVENT_LIVE_NOTIFY_EXIT_ALERT){
+            onBackClick();
         }
     }
 
@@ -396,6 +446,8 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     public void onDestroy() {
         super.onDestroy();
         mCurrentAnswerMap.clear();
+        mPresenter.quitChatRoom(mLiveId);
+        mInnerHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
         if (mGameInfoView != null) {
             mGameInfoView.cancelTimer();

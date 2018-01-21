@@ -116,7 +116,7 @@
         android:textSize="16sp"
         android:background="@drawable/lib_invite_code_btn_bg"
         android:text="@string/btn_lib_input_code"
-        android:visibility="visible"
+        android:visibility="gone"
         tools:visibility="visible"
         />
 

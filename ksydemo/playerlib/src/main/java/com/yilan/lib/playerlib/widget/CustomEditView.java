@@ -107,7 +107,7 @@ public class CustomEditView extends FrameLayout {
             public void run() {
                 mListener.onHideOther();
             }
-        }, 300);
+        }, 200);
     }
 
     public void setClickListener(OnEditViewClickListener listener) {

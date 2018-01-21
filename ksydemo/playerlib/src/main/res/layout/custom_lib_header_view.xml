@@ -11,6 +11,14 @@
         android:background="@color/lib_translate_color"
         android:src="@mipmap/ic_lib_close"/>
 
+    <ImageButton
+        android:id="@+id/lib_btn_help"
+        android:layout_width="46dp"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/lib_btn_back"
+        android:background="@color/lib_translate_color"
+        android:src="@mipmap/ic_lib_help"/>
+
     <ImageView
         android:id="@+id/lib_iv_avatar"
         android:layout_width="50dp"

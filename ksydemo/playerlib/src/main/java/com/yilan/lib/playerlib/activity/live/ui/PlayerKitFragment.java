@@ -23,6 +23,11 @@ import com.yilan.lib.playerlib.activity.live.playkit.PlayerQosView;
 import com.yilan.lib.playerlib.activity.live.playkit.QosObject;
 import com.yilan.lib.playerlib.activity.live.playkit.QosThread;
 import com.yilan.lib.playerlib.activity.live.playkit.VideoSurfaceView;
+import com.yilan.lib.playerlib.event.EBus;
+import com.yilan.lib.playerlib.event.LiveEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 
@@ -75,6 +80,7 @@ public class PlayerKitFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        EBus.register(this);
         mPlayerUrl = getArguments().getString(KEY_URL);
         mQosView.setUrl(mPlayerUrl);
         initMediaPlayer();
@@ -92,7 +98,7 @@ public class PlayerKitFragment extends Fragment{
         mQosThread = new QosThread(activityManager, mQosHandler);
 
         mKsyMediaPlayer = new KSYMediaPlayer.Builder(mContext).build();
-        mKsyMediaPlayer.setBufferTimeMax(5);
+        mKsyMediaPlayer.setBufferTimeMax(1);
         mKsyMediaPlayer.setOnBufferingUpdateListener(mOnBufferingUpdateListener);
         mKsyMediaPlayer.setOnCompletionListener(mOnCompletionListener);
         mKsyMediaPlayer.setOnPreparedListener(mOnPreparedListener);
@@ -311,9 +317,23 @@ public class PlayerKitFragment extends Fragment{
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LiveEvent e){
+        switch (e.getType()){
+            case LiveEvent.EVENT_LIVE_OPEN_CARD_START:
+                mVideoSurfaceView.setVisibility(View.GONE);
+            break;
+            case LiveEvent.EVENT_LIVE_OPEN_CARD_END:
+                mVideoSurfaceView.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EBus.unregister(this);
         release();
     }
 

@@ -7,6 +7,7 @@ package com.yilan.lib.playerlib.event;
 public class LoginEvent {
 
     public static final int EVENT_LOGIN_RESULT = 1;
+    public static final int EVENT_LOGIN_TOKEN_VALID = 401;
 
     private int type = -1;
 

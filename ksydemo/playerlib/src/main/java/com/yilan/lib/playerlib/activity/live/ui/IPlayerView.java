@@ -21,9 +21,7 @@ public interface IPlayerView {
 
     void setLiveEnterInfo(LiveEnterInfo info);
 
-    void showErrorMsg(String msg);
-
-    void setWatchingStatus();
+    void resetAnswerAgain(int questionId);
 
     void setWinnerList(WinnerInfo info);
 }

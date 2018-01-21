@@ -8,6 +8,9 @@ package com.yilan.lib.playerlib.event;
 public class LiveEvent {
 
     public static final int EVENT_LIVE_FINISH = -1;
+    public static final int EVENT_LIVE_OPEN_CARD_START = 1;
+    public static final int EVENT_LIVE_OPEN_CARD_END = 2;
+    public static final int EVENT_LIVE_NOTIFY_EXIT_ALERT = 3;
 
     private int type;
 

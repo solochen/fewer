@@ -1,5 +1,9 @@
 package com.yilan.lib.playerlib.mvp;
 
+import com.yilan.lib.playerlib.event.EBus;
+import com.yilan.lib.playerlib.event.LoginEvent;
+import com.yilan.lib.playerlib.http.OkGoHttp;
+
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 
@@ -28,4 +32,13 @@ public abstract class MVPBasePresenter<T> {
             mViewRef = null;
         }
     }
+
+
+    public void respCommonError(int code, String msg){
+        if (code == OkGoHttp.CODE_TOKEN_VALID) {
+            //401 token过期，通知APP
+            EBus.send(new LoginEvent(LoginEvent.EVENT_LOGIN_TOKEN_VALID));
+        }
+    }
+
 }

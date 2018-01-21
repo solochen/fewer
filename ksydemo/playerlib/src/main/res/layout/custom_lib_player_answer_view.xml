@@ -58,6 +58,13 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     tools:text="10" />
+
+                <ImageView
+                    android:id="@+id/lib_ic_clock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_lib_clock"
+                    android:visibility="gone"/>
             </FrameLayout>
 
             <TextView

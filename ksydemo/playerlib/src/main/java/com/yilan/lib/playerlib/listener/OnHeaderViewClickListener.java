@@ -8,4 +8,5 @@ public interface OnHeaderViewClickListener {
 
     void onBackClick();
     void onAvatarClick();
+    void onHelpClick();
 }

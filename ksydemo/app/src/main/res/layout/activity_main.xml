@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yilan.lib.MainActivity"
-    android:orientation="vertical">
+    >
 
     <Button
         android:id="@+id/btn_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:onClick="onBtnClick"
-        android:text="播 放"
+        android:text="知识富翁"
          />
 
 
@@ -19,6 +20,8 @@
         android:id="@+id/btn_init_user_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/btn_player"
         android:onClick="onBtnClick"
         android:text="获取用户信息"
         />
@@ -27,8 +30,11 @@
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/btn_init_user_data"
         android:onClick="onBtnClick"
         android:text="退出登录"
         />
 
-</LinearLayout>
+
+</RelativeLayout>

@@ -26,6 +26,7 @@ public class HomeHeaderView extends FrameLayout {
 
     ImageButton mBtnBack;
     ImageView mIvAvatar;
+    ImageButton mBtnHelp;
 
     OnHeaderViewClickListener mListener;
 
@@ -50,6 +51,7 @@ public class HomeHeaderView extends FrameLayout {
         mInflater.inflate(R.layout.custom_lib_header_view, this);
         mBtnBack = (ImageButton) findViewById(R.id.lib_btn_back);
         mIvAvatar = (ImageView) findViewById(R.id.lib_iv_avatar);
+        mBtnHelp = (ImageButton) findViewById(R.id.lib_btn_help);
         setClickListener();
 
     }
@@ -65,6 +67,12 @@ public class HomeHeaderView extends FrameLayout {
             @Override
             public void onClick(View v) {
                 mListener.onAvatarClick();
+            }
+        });
+        mBtnHelp.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onHelpClick();
             }
         });
 
