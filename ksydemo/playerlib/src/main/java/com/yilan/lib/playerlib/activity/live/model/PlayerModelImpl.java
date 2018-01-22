@@ -1,5 +1,7 @@
 package com.yilan.lib.playerlib.activity.live.model;
 
+import android.util.Log;
+
 import com.yilan.lib.playerlib.http.ApiLive;
 import com.yilan.lib.playerlib.listener.OnChatRoomStatusCallback;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
@@ -52,10 +54,12 @@ public class PlayerModelImpl implements IPlayerModel {
         RongIMClient.getInstance().joinChatRoom(liveId, -1, new RongIMClient.OperationCallback() {
             @Override
             public void onSuccess() {
+                Log.e("", "");
             }
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e("", "");
             }
         });
     }

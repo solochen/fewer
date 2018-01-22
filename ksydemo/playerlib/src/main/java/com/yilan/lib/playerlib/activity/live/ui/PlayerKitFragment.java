@@ -25,6 +25,7 @@ import com.yilan.lib.playerlib.activity.live.playkit.QosThread;
 import com.yilan.lib.playerlib.activity.live.playkit.VideoSurfaceView;
 import com.yilan.lib.playerlib.event.EBus;
 import com.yilan.lib.playerlib.event.LiveEvent;
+import com.yilan.lib.playerlib.global.AnimHelper;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -325,6 +326,7 @@ public class PlayerKitFragment extends Fragment{
             break;
             case LiveEvent.EVENT_LIVE_OPEN_CARD_END:
                 mVideoSurfaceView.setVisibility(View.VISIBLE);
+                AnimHelper.getInstance().zoomOutAnimator(mVideoSurfaceView);
                 break;
         }
     }

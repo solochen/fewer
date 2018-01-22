@@ -44,7 +44,7 @@ public class AnimHelper {
      * 倒计时结束抖动动画
      * @param view
      */
-    public void startRotateAnim(final View view) {
+    public void startClockRotateAnim(final View view) {
         view.setPivotX(view.getWidth() / 2);
         view.setPivotY(view.getHeight() / 2);
         ObjectAnimator anim1 = ObjectAnimator.ofFloat(view, "rotation", 0, 30, 0, -30, 0);
@@ -76,16 +76,43 @@ public class AnimHelper {
 
     /**
      * 出题卡片弹出动画
-     * @param view
      */
-    public void startAnswerCardAnim(final View view) {
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(view, "scaleX", 0.0f, 1.1f, 1.0f);
-        ObjectAnimator anim2 = ObjectAnimator.ofFloat(view, "scaleY", 0.0f, 1.1f, 1.0f);
+    public void zoomInDownAnimator(final View target) {
         AnimatorSet animSet = new AnimatorSet();
-        animSet.setDuration(1000);
+        animSet.setDuration(800);
         animSet.setInterpolator(new OvershootInterpolator());
-        animSet.playTogether(anim1, anim2);
+        animSet.playTogether(
+        ObjectAnimator.ofFloat(target, "scaleX", 0.1f, 0.475f, 1),
+                ObjectAnimator.ofFloat(target, "scaleY", 0.1f, 0.475f, 1),
+                ObjectAnimator.ofFloat(target, "translationY", -target.getBottom(), 60, 0),
+                ObjectAnimator.ofFloat(target, "alpha", 0, 1, 1));
         animSet.start();
+
+    }
+
+    /**
+     * 出题卡片消失动画
+     * @param target
+     */
+    public void zoomOutUpAnimator(final View target) {
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(800);
+        animSet.setInterpolator(new OvershootInterpolator());
+        animSet.playTogether(
+                ObjectAnimator.ofFloat(target, "alpha", 1, 0, 0),
+                ObjectAnimator.ofFloat(target, "scaleX", 1, 0.3f, 0),
+                ObjectAnimator.ofFloat(target, "scaleY", 1, 0.3f, 0));
+        animSet.start();
+
+    }
+
+    public void zoomOutAnimator(View target){
+//        AnimatorSet animSet = new AnimatorSet();
+//        animSet.setDuration(300);
+//        animSet.setInterpolator(new OvershootInterpolator());
+//        animSet.playTogether(
+//                ObjectAnimator.ofFloat(target, "scaleX", 0, 1.0f));
+//        animSet.start();
     }
 
 }

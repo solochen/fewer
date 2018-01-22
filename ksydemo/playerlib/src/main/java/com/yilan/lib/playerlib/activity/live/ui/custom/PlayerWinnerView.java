@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.yilan.lib.playerlib.R;
 import com.yilan.lib.playerlib.activity.live.ui.adapter.WinnerAdapter;
 import com.yilan.lib.playerlib.data.WinnerInfo;
-import com.yilan.lib.playerlib.utils.CalculateUtils;
 import com.yilan.lib.playerlib.utils.StringsUtils;
 import com.yilan.lib.playerlib.widget.CustomRecycleView;
 

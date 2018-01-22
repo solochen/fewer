@@ -1,5 +1,7 @@
 package com.yilan.lib.playerlib.activity.live.presenter;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.yilan.lib.playerlib.activity.live.model.IPlayerModel;
@@ -8,7 +10,6 @@ import com.yilan.lib.playerlib.activity.live.ui.IPlayerView;
 import com.yilan.lib.playerlib.data.GameInfo;
 import com.yilan.lib.playerlib.data.LiveEnterInfo;
 import com.yilan.lib.playerlib.data.WinnerInfo;
-import com.yilan.lib.playerlib.http.OkGoHttp;
 import com.yilan.lib.playerlib.listener.OnChatRoomStatusCallback;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
 import com.yilan.lib.playerlib.mvp.MVPBasePresenter;
@@ -204,22 +205,22 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
         mPlayerModel.chatRoomStatusListener(new OnChatRoomStatusCallback() {
             @Override
             public void onJoining(String s) {
-
+                Log.e("", "");
             }
 
             @Override
             public void onJoined(String s) {
-
+                Log.e("", "");
             }
 
             @Override
             public void onQuited(String s) {
-
+                Log.e("", "");
             }
 
             @Override
             public void onStatusError() {
-
+                Log.e("", "");
             }
         });
     }

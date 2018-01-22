@@ -12,9 +12,9 @@ public class Urls {
 
     static {
         if(AppUtils.isDebug()) {
-            SERVER = "http://192.168.0.26";
+            SERVER = "http://47.100.187.114";// "http://192.168.0.26";
         } else {
-            SERVER = "http://192.168.0.26";
+            SERVER = "http://47.100.187.114";//"http://192.168.0.26";
         }
     }
 

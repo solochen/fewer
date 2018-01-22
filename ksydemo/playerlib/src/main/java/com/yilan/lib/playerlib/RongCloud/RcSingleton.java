@@ -2,6 +2,7 @@ package com.yilan.lib.playerlib.RongCloud;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import com.yilan.lib.playerlib.RongCloud.message.HTAnswerMessage;
@@ -71,14 +72,17 @@ public class RcSingleton implements RongIMClient.ConnectionStatusListener{
 
                     @Override
                     public void onSuccess(String userId) {
+                        Log.e("", "");
                     }
 
                     @Override
                     public void onError(RongIMClient.ErrorCode code) {
+                        Log.e("", "");
                     }
 
                     @Override
                     public void onTokenIncorrect() {
+                        Log.e("", "");
                     }
                 });
             }

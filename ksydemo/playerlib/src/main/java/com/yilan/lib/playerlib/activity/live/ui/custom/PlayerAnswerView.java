@@ -6,9 +6,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -325,7 +323,8 @@ public class PlayerAnswerView extends FrameLayout {
                     boolean isWatching = mCurrentQuestionIsAnswered ? false : true;
                     try {
                         Thread.sleep(1000);
-                        setVisibility(GONE);
+//                        setVisibility(GONE);
+                        AnimHelper.getInstance().zoomOutUpAnimator(PlayerAnswerView.this);
                         mListener.onSetIsWatching(isWatching);
                     } catch (Exception e) {
 
@@ -353,7 +352,7 @@ public class PlayerAnswerView extends FrameLayout {
                     mTvCountDown.setVisibility(View.GONE);
                     mCircleProgressBar.setVisibility(View.GONE);
                     mIvClock.setVisibility(View.VISIBLE);
-                    AnimHelper.getInstance().startRotateAnim(mIvClock);
+                    AnimHelper.getInstance().startClockRotateAnim(mIvClock);
                     return;
                 } else if(time == 3){
                     mCircleProgressBar.setProgressStartColor(mContext.getResources().getColor(R.color.colorAccent));
@@ -370,13 +369,13 @@ public class PlayerAnswerView extends FrameLayout {
      * 这里给一次重新选择的机会
      */
     public void resetAnswerAgain(int questionId){
-        mCurrentQuestionIsAnswered = false;
         for(int i = 0; i < mAnswerOptionLayout.getChildCount(); i ++){
             View view = mAnswerOptionLayout.getChildAt(i);
             ProgressButton progressButton = (ProgressButton) view.findViewById(R.id.lib_btn_progress_answer_a);
             TextView answerOption = (TextView) view.findViewById(R.id.lib_tv_progress_answer_option);
             if(view.getTag() instanceof Integer) {
                 if((int) view.getTag() == questionId){
+                    mCurrentQuestionIsAnswered = false;
                     answerOption.setTextColor(mContext.getResources().getColor(R.color.lib_answer_progress_option_normal_color));
                     progressButton.setBackgroundColor(mContext.getResources().getColor(R.color.lib_answer_progress_second_bg));
                 }

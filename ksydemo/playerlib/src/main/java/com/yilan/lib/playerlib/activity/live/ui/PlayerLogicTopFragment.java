@@ -52,7 +52,6 @@ import com.yilan.lib.playerlib.mvp.MVPBaseFragment;
 import com.yilan.lib.playerlib.utils.CalculateUtils;
 import com.yilan.lib.playerlib.utils.DialogUtil;
 import com.yilan.lib.playerlib.utils.HideUtil;
-import com.yilan.lib.playerlib.utils.LibToast;
 import com.yilan.lib.playerlib.utils.SPUtils;
 import com.yilan.lib.playerlib.widget.AlertDialogFragment;
 
@@ -388,7 +387,9 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_START));
             mAnswerView.setQuestion((HTQuestionMessage) message, isWatching);
             mAnswerView.setVisibility(View.VISIBLE);
-            AnimHelper.getInstance().startAnswerCardAnim(mAnswerView);
+
+
+            AnimHelper.getInstance().zoomInDownAnimator(mAnswerView);
 
 
         } else if (message instanceof HTAnswerMessage) {
@@ -403,12 +404,13 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
 
             mAnswerView.setAnswer(answerMessage, isWatching, myAnswerOption, isUsedReviveCode, mReviveCount);
             mAnswerView.setVisibility(View.VISIBLE);
-            AnimHelper.getInstance().startAnswerCardAnim(mAnswerView);
+            AnimHelper.getInstance().zoomInDownAnimator(mAnswerView);
             mInnerHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     if(mAnswerView != null){
                         mAnswerView.setVisibility(View.GONE);
+                        AnimHelper.getInstance().zoomOutUpAnimator(mAnswerView);
                         EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_END));
                     }
                 }
