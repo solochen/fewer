@@ -100,7 +100,7 @@
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold"
-            tools:text="1. 哈吉卡老实交代发几块阿三江东父老卡仕达阿喀琉斯打飞机" />
+            tools:text="1. 哈吉卡老实交代发几块阿三江东父老卡仕达阿喀琉斯打" />
 
         <LinearLayout
             android:id="@+id/lib_custom_player_option_layout"
@@ -113,25 +113,28 @@
             tools:layout_height="140dp" />
 
         <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
-
-            <ImageView
-                android:id="@+id/lib_custom_player_revive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_lib_revive"
-                android:visibility="gone" />
+            android:layout_width="100dp"
+            android:layout_height="100dp" >
 
             <TextView
                 android:id="@+id/lib_custom_player_revive_used"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已复活"
+                android:layout_gravity="center"
+                android:text="@string/label_lib_revived"
                 android:textColor="#FF2D55"
-                android:textSize="16sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/lib_custom_player_revive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_lib_revive"
+                android:visibility="gone" />
+
 
         </FrameLayout>
 

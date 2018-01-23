@@ -115,6 +115,7 @@ public class PlayerCommentView extends FrameLayout implements OnEditViewClickLis
     }
 
     public void addComments(List<Comment> comments){
+        if(comments == null || comments.size() <= 0) return;
         cleanData();
         for(Comment comment : comments){
             mCommentAdapter.add(comment);

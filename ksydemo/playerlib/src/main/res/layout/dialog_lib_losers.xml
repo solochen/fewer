@@ -6,7 +6,7 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:orientation="vertical"
-    android:background="#3D000000">
+    android:background="@color/lib_custom_dlg_bg">
 
     <RelativeLayout
         android:layout_width="match_parent"

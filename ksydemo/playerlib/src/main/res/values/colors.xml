@@ -19,4 +19,5 @@
     <color name="lib_answer_progress_option_selected_color">#828282</color>
 
     <color name="lib_answer_progress_option_color">#222</color>
+    <color name="lib_custom_dlg_bg">#3D000000</color>
 </resources>

@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#191970">
+    android:background="@color/lib_custom_dlg_bg">
 
     <com.yilan.lib.playerlib.activity.live.playkit.VideoSurfaceView
         android:id="@+id/lib_player_surface"

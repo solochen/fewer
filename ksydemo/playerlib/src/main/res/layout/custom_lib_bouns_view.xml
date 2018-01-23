@@ -24,7 +24,7 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="12sp"
                 android:textColor="#ccc"
-                android:text="下期奖金" />
+                android:text="@string/label_lib_game_next_bonus" />
 
             <TextView
                 android:id="@+id/lib_tv_bonus"
@@ -66,7 +66,7 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="12sp"
                 android:textColor="#ccc"
-                android:text="下期时间" />
+                android:text="@string/label_lib_game_next_time" />
 
             <TextView
                 android:id="@+id/lib_tv_time"

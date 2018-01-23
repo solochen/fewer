@@ -281,8 +281,8 @@ public class PlayerAnswerView extends FrameLayout {
                 }
             }
 
-
-            double curProgress = CalculateUtils.div(selectedNum, selectedTotal(message.getSelected()));
+            int total = selectedTotal(message.getSelected());
+            double curProgress = (total == 0) ? 0 : CalculateUtils.div(selectedNum, total);
             curProgress = CalculateUtils.formatDecimal(curProgress, 4);
             progressButton.setState(ProgressButton.DOWNLOADING);
             progressButton.setProgressText("", (float) CalculateUtils.mul(curProgress, 100));

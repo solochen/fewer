@@ -36,13 +36,15 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
             public void onSuccess(String s) {
                 try {
                     GameInfo gameInfo = JSON.parseObject(s, GameInfo.class);
-                    if(gameInfo.getStatus() == 0){        //开放
+                    if(gameInfo.getStatus() == 0 || gameInfo.getStatus() == 1){        //开放
                         mPlayerView.updateGameInfo(gameInfo,
                                 CalculateUtils.formatBonus(gameInfo.getBonus()),
                                 CalculateUtils.formatBonusUnit(gameInfo.getBonus()));
-                    } else if(gameInfo.getStatus() == 1){ //答题中
-                        mPlayerView.onAnswerStatus();
                     }
+
+//                    else if(gameInfo.getStatus() == 1){ //答题中
+//                        mPlayerView.onAnswerStatus();
+//                    }
                 } catch (Exception e) {
 
                 }
@@ -71,6 +73,7 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
                     if(info.success()){
                         if(info.getIn_play() == 0){  //0 比赛结束需退出直播间； 1 开放中
                             mPlayerView.playIsFinish();
+                            return;
                         }
                         mPlayerView.setLiveEnterInfo(info);
                     } else {
@@ -186,7 +189,8 @@ public class PlayerPresenter extends MVPBasePresenter<IPlayerView> {
             }
 
             @Override
-            public void onFinish() {
+            public void onFinish() {//3,4,5,6,7,8,9,10,11,12
+                // map ti
 
             }
         });

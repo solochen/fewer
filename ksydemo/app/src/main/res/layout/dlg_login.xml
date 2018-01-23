@@ -4,7 +4,7 @@
     android:id="@+id/rlv_outside_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3D000000">
+    android:background="@color/lib_custom_dlg_bg">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -75,6 +75,7 @@ public class PlayerGameInfoView extends FrameLayout implements View.OnClickListe
         mTvBonus.setText(String.valueOf(bonus));
         mTvBonusUnit.setText(unit);
         mTvStartTimeLabel.setText(gameDate);
+
         startTimer(gameTime * 1000, 1000, mTvStartTime);
     }
 

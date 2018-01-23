@@ -30,9 +30,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mExplosionField = ExplosionField.attach2Window(this);
 
-        //连接融云 param rctoken
+        //连接融云 param rctoke
+        //5330362952
         String RcMeiZu = "U8I+R9DoT544ff8hWlgXqqHp1KiFvYM5y36wPsV8IH+uLS96VUqeQIcFq+fF0qw1j5GBqqxNT1zpMSNN1XSB4A==";
+
+        //5330362954
         String RcMI5 = "t7tF3aT5kC8h0fhIAw0MkHLnANZQjsMnW79ngAp3Qey5UJgUv3TO6Nqeop3AoiO/YplsYPe1WG720YF52cNBOg==";
+
+        //5330362953
         String RcTokenHonner8 = "oqrxoLkUEZBx6isjirJciaHp1KiFvYM5y36wPsV8IH9lSLvOgu8Y4N/yfnGSEcD3Q+bxxBamFWXPGUp9Kw2oCe8zriRFJEdl";
         RcSingleton.getInstance().connect(RcTokenHonner8);
 

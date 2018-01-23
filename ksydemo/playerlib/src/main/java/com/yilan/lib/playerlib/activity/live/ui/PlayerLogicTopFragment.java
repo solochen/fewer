@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -73,7 +74,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         OnPlayerCommentViewListener,
         OnPlayerGameInfoViewListener,
         OnPlayerAnswerViewListener,
-        View.OnTouchListener{
+        View.OnTouchListener {
 
 
     Context mContext;
@@ -103,6 +104,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     }
 
     final InnerHandler mInnerHandler = new InnerHandler(this);
+
     private static class InnerHandler extends Handler {
         private final WeakReference<PlayerLogicTopFragment> mFragment;
 
@@ -154,7 +156,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         EventBus.getDefault().register(this);
         HideUtil.init(getActivity());
         mGameInfo = (GameInfo) getArguments().getSerializable(KEY_GAME_INFO);
-        if(mGameInfo == null) {
+        if (mGameInfo == null) {
             mGameInfo = new GameInfo();
         }
         mLiveId = mGameInfo.getLive().getLive_id();
@@ -168,7 +170,8 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         isUsedReviveCode = (boolean) SPUtils.get(mContext, mLiveId, false);
         mReviveCount = (int) SPUtils.get(mContext, SPConstant.KEY_REVIVE_COUNT, 0);
 
-        initSetGameInfo();
+//        initSetGameInfo();
+        mGameInfoView.setVisibility(View.VISIBLE);
 
         /**
          * 设置高斯模糊背景图
@@ -181,20 +184,18 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     /**
      * 设置直播信息
      */
-    void initSetGameInfo() {
-        if (mGameInfo.getStatus() == 0) {        //开放
-            updateGameInfo(mGameInfo,
-                    CalculateUtils.formatBonus(mGameInfo.getBonus()),
-                    CalculateUtils.formatBonusUnit(mGameInfo.getBonus()));
-        } else if (mGameInfo.getStatus() == 1) { //答题中
-            onAnswerStatus();
-        }
-    }
-
-
+//    void initSetGameInfo() {
+//        if (mGameInfo.getStatus() == 0) {        //开放
+//            updateGameInfo(mGameInfo,
+//                    CalculateUtils.formatBonus(mGameInfo.getBonus()),
+//                    CalculateUtils.formatBonusUnit(mGameInfo.getBonus()));
+//        } else if (mGameInfo.getStatus() == 1) { //答题中
+//            onAnswerStatus();
+//        }
+//    }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mCommentView.hideKeyboary();
                 break;
@@ -291,6 +292,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         isUsedReviveCode = true;
         SPUtils.put(mContext, mLiveId, isUsedReviveCode);
         mReviveCount = mReviveCount - 1;
+        mHeaderView.setReviveCount(mReviveCount);
         SPUtils.put(mContext, SPConstant.KEY_REVIVE_COUNT, mReviveCount);
 
     }
@@ -306,8 +308,12 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     @Override
     public void updateGameInfo(GameInfo gameInfo, int bonus, String unit) {
 
-        mGameInfoView.setGameInfo(bonus, unit, gameInfo.getGame_date(), gameInfo.getCountdown());
-        mGameInfoView.setVisibility(View.VISIBLE);
+        if (gameInfo.getCountdown() < 0) {
+            onAnswerStatus();
+        } else {
+            mGameInfoView.setGameInfo(bonus, unit, gameInfo.getGame_date(), gameInfo.getCountdown());
+            mGameInfoView.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -331,6 +337,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     @Override
     public void playIsFinish() {
         //弹窗，提示直播已结束
+        EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_FINISH));
     }
 
     @Override
@@ -375,8 +382,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
         if (message instanceof HTCommentMessage) {
 
             mCommentView.addComments(((HTCommentMessage) message).getComments());
-        }
-        else if (message instanceof HTStartMessage) {
+        } else if (message instanceof HTStartMessage) {
             onAnswerStatus();
         } else if (message instanceof HTOnlookerMessage) {
 
@@ -384,6 +390,16 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             mHeaderView.setOnlineCount(onlookerMessage.getOnlookers());
 
         } else if (message instanceof HTQuestionMessage) {
+
+
+            HTQuestionMessage questionMessage = (HTQuestionMessage) message;
+
+            Log.e("playerlogic:", "id:" + questionMessage.getId() + "\n"
+                    + " count:" + questionMessage.getCount() + "\n"
+                    + "options:" + questionMessage.getOptions().toString() + "\n"
+                    + "number:" + questionMessage.getNumber());
+
+
             EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_START));
             mAnswerView.setQuestion((HTQuestionMessage) message, isWatching);
             mAnswerView.setVisibility(View.VISIBLE);
@@ -397,8 +413,15 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_START));
             HTAnswerMessage answerMessage = (HTAnswerMessage) message;
 
+            Log.e("playerlogic:", "id:" + answerMessage.getId() + "\n"
+                    + " count:" + answerMessage.getCount() + "\n"
+                    + "options:" + answerMessage.getOptions().toString() + "\n"
+                    + "number:" + answerMessage.getNumber() + "\n"
+                    + "Question_answer: " + answerMessage.getQuestion_answer() + "\n"
+                    + "losers:" + answerMessage.getLosers());
+
             int myAnswerOption = -1;
-            if(mCurrentAnswerMap.containsKey(answerMessage.getCount())){
+            if (mCurrentAnswerMap.containsKey(answerMessage.getCount())) {
                 myAnswerOption = mCurrentAnswerMap.get(answerMessage.getCount());
             }
 
@@ -408,7 +431,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             mInnerHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(mAnswerView != null){
+                    if (mAnswerView != null) {
                         mAnswerView.setVisibility(View.GONE);
                         AnimHelper.getInstance().zoomOutUpAnimator(mAnswerView);
                         EBus.send(new LiveEvent(LiveEvent.EVENT_LIVE_OPEN_CARD_END));
@@ -425,7 +448,7 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
             mInnerHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(mWinnerView != null){
+                    if (mWinnerView != null) {
                         mWinnerView.setVisibility(View.GONE);
                     }
                 }
@@ -437,8 +460,8 @@ public class PlayerLogicTopFragment extends MVPBaseFragment<IPlayerView, PlayerP
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LiveEvent e){
-        if(e.getType() == LiveEvent.EVENT_LIVE_NOTIFY_EXIT_ALERT){
+    public void onMessageEvent(LiveEvent e) {
+        if (e.getType() == LiveEvent.EVENT_LIVE_NOTIFY_EXIT_ALERT) {
             onBackClick();
         }
     }
