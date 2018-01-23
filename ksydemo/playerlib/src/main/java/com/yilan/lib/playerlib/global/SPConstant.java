@@ -19,7 +19,7 @@ public class SPConstant {
 
     public static final String testUserInfoJson = "{\n" +
             "\t\"data\": {\n" +
-            "\t\t\"user_id\": 5330362953,\n" +
+            "\t\t\"user_id\": 5330362954,\n" +
             "\t\t\"name\": \"Nos21\",\n" +
             "\t\t\"screen_name\": \"Nos21\",\n" +
             "\t\t\"avatar_url\": \"http://wx.qlogo.cn/mmopen/Q3auHgzwzM7Uhu2Ockjyyq5PBAXqqO1olsUgymtwjhqsSPx0gY6kVibibcnqMicwhrpxX0gibSOV84UmDyCHKgaG5w/0\",\n" +

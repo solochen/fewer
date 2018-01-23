@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.yilan.lib.playerlib.RongCloud.RcSingleton;
 import com.yilan.lib.playerlib.Test;
 import com.yilan.lib.playerlib.activity.home.ui.HomeActivity;
+import com.yilan.lib.playerlib.activity.live.dialog.WinDialog;
 import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
 import com.yilan.lib.playerlib.global.AnimHelper;
 import com.yilan.lib.playerlib.global.SPConstant;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         //5330362953
         String RcTokenHonner8 = "oqrxoLkUEZBx6isjirJciaHp1KiFvYM5y36wPsV8IH9lSLvOgu8Y4N/yfnGSEcD3Q+bxxBamFWXPGUp9Kw2oCe8zriRFJEdl";
-        RcSingleton.getInstance().connect(RcTokenHonner8);
+        RcSingleton.getInstance().connect(RcMI5);
 
 
     }
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.btn_anim_test:
+                WinDialog.newInstance(1).show(getSupportFragmentManager(), "");
                 mExplosionField.explode(v);
                 v.setOnClickListener(null);
                 break;

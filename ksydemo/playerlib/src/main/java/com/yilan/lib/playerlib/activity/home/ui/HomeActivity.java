@@ -325,8 +325,8 @@ public class HomeActivity extends MVPBaseActivity<IHomeView, HomePresenter> impl
                 } else if (defRes.equals("low")) {
                     liveUrl = mGameInfo.getLive().getLive_stream().getMain_list().getLow();
                 }
-                liveUrl = "http://xdj-hdl.8686c.com/xdj-live/5798bf4c2eaae555342860b0.flv";
-                //http://livetest01.any2cn.com/live/s001.flv
+//                liveUrl = "http://xdj-hdl.8686c.com/xdj-live/5798bf4c2eaae555342860b0.flv";
+//                http://livetest01.any2cn.com/live/s001.flv
                 PlayerActivity.startActivity(mContext, mGameInfo, liveUrl);
 
             }

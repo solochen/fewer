@@ -36,6 +36,8 @@
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
+            android:textColor="#000"
+            android:textSize="18sp"
             android:layout_below="@+id/lib_late_dig_ic"
             android:text="@string/dlg_lib_late_title"/>
 

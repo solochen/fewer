@@ -29,6 +29,9 @@
     <string name="dlg_lib_late_btn">邀请好友围观</string>
 
     <string name="dlg_lib_continue">继续观看</string>
+    <string name="dlg_lib_win_title">闯关成功</string>
+    <string name="dlg_lib_win_content">恭喜获得%s现金奖励</string>
+    <string name="dlg_lib_my_packet">我的钱包</string>
 
 
 
