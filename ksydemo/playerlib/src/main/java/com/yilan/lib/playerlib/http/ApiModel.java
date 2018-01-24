@@ -9,7 +9,7 @@ import com.yilan.lib.playerlib.listener.ResponseCallback;
  * Created by chenshaolong on 2018/1/15.
  */
 
-public class ApiLive {
+public class ApiModel {
 
     /**
      * 获得邀请码和复活卡信息

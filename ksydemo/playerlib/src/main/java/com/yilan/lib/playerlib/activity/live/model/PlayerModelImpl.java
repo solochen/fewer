@@ -2,7 +2,7 @@ package com.yilan.lib.playerlib.activity.live.model;
 
 import android.util.Log;
 
-import com.yilan.lib.playerlib.http.ApiLive;
+import com.yilan.lib.playerlib.http.ApiModel;
 import com.yilan.lib.playerlib.listener.OnChatRoomStatusCallback;
 import com.yilan.lib.playerlib.listener.ResponseCallback;
 
@@ -18,35 +18,35 @@ public class PlayerModelImpl implements IPlayerModel {
 
     @Override
     public void gameLiveEnter(String uid, String liveId, final ResponseCallback callback) {
-        ApiLive.gameLiveEnter(uid, liveId, callback);
+        ApiModel.gameLiveEnter(uid, liveId, callback);
     }
 
 
     @Override
     public void gameLiveExit(String uid, String liveId, final ResponseCallback callback) {
-        ApiLive.gameLiveExit(uid, liveId, callback);
+        ApiModel.gameLiveExit(uid, liveId, callback);
     }
 
     @Override
     public void getGameInfo(final ResponseCallback callback) {
-        ApiLive.getGameInfo(callback);
+        ApiModel.getGameInfo(callback);
     }
 
 
     @Override
     public void sendCommentToServer(String uid, String nickname, String comment,
                                     ResponseCallback callback){
-        ApiLive.comment(uid, nickname, comment, callback);
+        ApiModel.comment(uid, nickname, comment, callback);
     }
 
     @Override
     public void sendAnswer(String uid, String questionId, String answerId, ResponseCallback callback) {
-        ApiLive.answer(uid, questionId, answerId, callback);
+        ApiModel.answer(uid, questionId, answerId, callback);
     }
 
     @Override
     public void getWinnerList(String uid, ResponseCallback callback) {
-        ApiLive.getGameLiveResult(uid, callback);
+        ApiModel.getGameLiveResult(uid, callback);
     }
 
     @Override

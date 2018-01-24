@@ -1,19 +1,13 @@
 package com.yilan.lib;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.yilan.lib.playerlib.RongCloud.RcSingleton;
-import com.yilan.lib.playerlib.Test;
 import com.yilan.lib.playerlib.activity.home.ui.HomeActivity;
 import com.yilan.lib.playerlib.activity.live.dialog.WinDialog;
-import com.yilan.lib.playerlib.activity.live.ui.PlayerActivity;
-import com.yilan.lib.playerlib.global.AnimHelper;
 import com.yilan.lib.playerlib.global.SPConstant;
 import com.yilan.lib.playerlib.global.UserManager;
 import com.yilan.lib.playerlib.utils.SPUtils;
